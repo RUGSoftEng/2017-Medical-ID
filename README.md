@@ -1,5 +1,5 @@
 # 2017-Medical-ID
-[VIEW](http://htmlpreview.github.io/?https://github.com/RUGSoftEng/2017-Medical-ID/blob/beta-0.1/index.html)
+htmlpreview: [VIEW](https://htmlpreview.github.io/?https://raw.githubusercontent.com/RUGSoftEng/2017-Medical-ID/develop/index.html)
 
 ### cmd Reminders ###
 
