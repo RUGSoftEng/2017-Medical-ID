@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	
+<!-- Mirrored from thijshavinga.nl/se/create_document.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 05 Mar 2017 10:06:06 GMT -->
+<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Medical ID - Create Document</title>
+		<link rel="stylesheet" href="style/style.css">
+		<link rel="stylesheet" href="style/demo.css">
+		<script src="../../ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script type="text/javascript" src="js/res.js"></script>
+		<script type="text/javascript" src="js/document.js"></script>
+		<script type="text/javascript" src="js/lib/pdfmake.min.js"></script>
+		<script type="text/javascript" src="js/lib/vfs_fonts.js"></script>
+		<meta name="viewport" content="width=device-width">
+	</head>
+
+	<body>
+		<ul id="nav">
+			<li class="navText left_float unselectable">mID</li>
+			<li class="navText navLink right_float"><a href="create_document.html">Document</a></li>
+			<li class="navText navLink right_float"><a href="create_card.html">Card</a></li>
+			<li class="navText navLink right_float"><a href="index-2.html">Home</a></a></li>
+		</ul>
+		<div class="splitter"></div>
+		<div id="banner">
+			<div id="bannerTitle"><p class="unselectable">Medical<br />ID</p></div>
+		</div>
+		<div class="splitter"></div>
+			<div id="main">
+				<h2>Medical ID document creator</h2>
+				<p class='justify'>This is an offline demo for creating a Medical ID document. This means none of the entered data will be sent over the internet.</p>
+				<p class='justify'>To create a field without a label, keep the label blank. Be concise in the labels, the maximum length for labels is 15 characters. The maximum length for text is 200 characters.</p>
+				<table id='fields'>
+					<thead>
+						<tr><td>Label</td><td>Text</td></tr>
+					</thead>
+					<tr><td><input class='label' maxlength='15' type='text' value='Name' readonly /></td><td><input class='field' maxlength='200' type='text' /></td></tr>
+					<tr><td><input class='label' maxlength='15' type='text' value='Nationality' readonly /></td><td><input class='field' maxlength='200' type='text' /></td></tr>
+				</table><br />
+				<input type='button' value='Add field' onClick='addField()' />   
+				<input type='button' value='Create' onClick='MedicalDocument.buildPDF()' />
+			</div>			
+	</body>
+
+<!-- Mirrored from thijshavinga.nl/se/create_document.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 05 Mar 2017 10:06:23 GMT -->
+</html>
