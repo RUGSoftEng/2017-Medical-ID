@@ -1,0 +1,67 @@
+table {
+	border-spacing: 0;
+    border-collapse: collapse;
+    background-color: #BCD;
+}
+
+thead td {
+	width: 200px;
+}
+
+tr, td {
+	margin: 0px;
+	padding: 0px;
+}
+
+thead {
+    display: table-header-group;
+    vertical-align: middle;
+    background-color: #14234F;
+    color: white;
+}
+
+table input, table select {
+	width: 200px;
+	background-color: #BCD;
+	border: none;
+	padding: 5px;
+	font-size: 1.1em;
+	
+	border-right: 1px solid #14234F;
+	border-left: 1px solid #14234F;
+}
+
+table input:hover, table select:hover {
+	background-color: #CDE;
+}
+
+table select {
+	width: 212px;
+}
+
+table input[type='button'] {
+	width: auto;
+}
+
+input[type='button'] {
+	background-color: #14234F;
+	border: none;
+	padding: 2px;
+	margin: 2px;
+	border-radius: 3px;
+	font-size: 1.1em;
+	color: white;
+	cursor: pointer;
+}
+
+input[type='button']:hover {
+	background-color: grey;
+}
+
+thead td {
+	text-align: center;
+	font-size: 1.1em;
+	font-weight: bold;
+	padding: 5px;
+}
+
