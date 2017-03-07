@@ -173,15 +173,13 @@ h2 {
 }
 
 .bigButtonCell {
-	list-style-type: none;
 	background-color: #14234F;
 	color: white;
 	font-size: 2em;
 	border-radius: 15px;
-	padding: 10px 0;
-	width: 60%;
 	text-decoration: none;
 	margin: 10px;
+	padding: 10px;
 }
 
 .bigButtonCell a {
