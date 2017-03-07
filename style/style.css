@@ -154,6 +154,7 @@ h2 {
 	float: left;
 }
 
+
 .bigButton {
 	list-style-type: none;
 	background-color: #14234F;
@@ -167,17 +168,35 @@ h2 {
 	margin: 0 auto;
 }
 
-.bigButton:hover {
+.bigButton:hover, .bigButtonCell:hover {
 	background-color: #333;
+}
+
+.bigButtonCell {
+	list-style-type: none;
+	background-color: #14234F;
+	color: white;
+	font-size: 2em;
+	border-radius: 15px;
+	padding: 10px 0;
+	width: 60%;
+	text-decoration: none;
+	margin: 10px;
+}
+
+.bigButtonCell a {
+	color: white;
+	text-decoration: none;
 }
 
 @media (max-width: 768px) {
 	html {
-		width: 768px;
+		min-width: 650px;
 	}
 
 	body {
 		margin: 0;
+		
 	}
 
 	#banner{
