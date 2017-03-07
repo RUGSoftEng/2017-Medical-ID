@@ -32,18 +32,27 @@
 		</div>
 		<div class="splitter"></div>
 			<div id="main">
-				<h2>Medical ID document creator</h2>
-				<p class='justify'>This is an offline demo for creating a Medical ID document. This means none of the entered data will be sent over the internet.</p>
-				<p class='justify'>To create a field without a label, keep the label blank. Be concise in the labels, the maximum length for labels is 15 characters. The maximum length for text is 200 characters.</p>
-				<table id='fields'>
-					<thead>
-						<tr><td>Label</td><td>Text</td></tr>
-					</thead>
-					<tr><td><input class='label' maxlength='15' type='text' value='Name' readonly /></td><td><input class='field' maxlength='200' type='text' /></td></tr>
-					<tr><td><input class='label' maxlength='15' type='text' value='Nationality' readonly /></td><td><input class='field' maxlength='200' type='text' /></td></tr>
-				</table><br />
-				<input type='button' value='Add field' onClick='addField()' />   
-				<input type='button' value='Create' onClick='MedicalDocument.buildPDF()' />
+				<div id='PDFPreview'>
+					<p>
+					<input type='button' value='Download' onClick='MedicalDocument.downloadPDF()' />
+					<input type='button' value='Back' onClick='MedicalDocument.hidePDF()' /> | To save your data for future re-use, please <a onClick='unimplementedFeature()' href='#'>sign up</a>.
+					</p>
+					<iframe id='previewFrame'></iframe>
+				</div>
+				<div id='PDFCreate'>
+					<h2>Medical ID document creator</h2>
+					<p class='justify'>This is an offline demo for creating a Medical ID document. This means none of the entered data will be sent over the internet.</p>
+					<p class='justify'>To create a field without a label, keep the label blank. Be concise in the labels, the maximum length for labels is 15 characters. The maximum length for text is 200 characters.</p>
+					<table id='fields'>
+						<thead>
+							<tr><td>Label</td><td>Text</td></tr>
+						</thead>
+						<tr><td><input class='label' maxlength='15' type='text' value='Name' readonly /></td><td><input class='field' maxlength='200' type='text' /></td></tr>
+						<tr><td><input class='label' maxlength='15' type='text' value='Nationality' readonly /></td><td><input class='field' maxlength='200' type='text' /></td></tr>
+					</table><br />
+					<input type='button' value='Add field' onClick='addField()' />   
+					<input type='button' value='Create' onClick='MedicalDocument.showPDF()' />
+				</div>
 			</div>			
 	</body>
 

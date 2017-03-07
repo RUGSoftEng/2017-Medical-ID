@@ -65,3 +65,15 @@ thead td {
 	padding: 5px;
 }
 
+#PDFPreview {
+	width: 100%;
+	height: 600px;
+	display: none;
+}
+
+#previewFrame {
+	width: 100%;
+	height: 500px;
+}
+
+

@@ -48,6 +48,25 @@ MedicalDocument.drawCard = function (doc, x, y, barSize) {
 	doc.roundedRect(x,y,85.6,53.98,3,3,'S')
 	}
 
+MedicalDocument.showPDF = function () {
+	MedicalDocument.buildPDF();
+	previewFrame.src = MedicalDocument.doc.output('datauristring');
+	$('#PDFCreate').fadeOut(function() {
+		$('#PDFPreview').fadeIn();
+		});
+}
+
+MedicalDocument.hidePDF = function () {
+	$('#PDFPreview').fadeOut(function() {
+		$('#PDFCreate').fadeIn();
+		});
+	previewFrame.src = '';
+}
+
+MedicalDocument.downloadPDF = function () {
+	MedicalDocument.doc.save("MedicalID_card.pdf");
+}
+
 //Method to generate a PDF and present it to the user
 MedicalDocument.buildPDF = function () {
 	MedicalDocument.parseValues();
@@ -98,6 +117,5 @@ MedicalDocument.buildPDF = function () {
 	doc.setFontSize(14);
 	doc.text(104, 19, "SCAN FOR MORE INFORMATION");
 	
-	//Output the PDF to the user
-	doc.save("medicalID_card.pdf");
+	MedicalDocument.doc = doc;
 }

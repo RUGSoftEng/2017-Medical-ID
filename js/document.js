@@ -1,3 +1,10 @@
+$(function() {
+	previewFrame.src = '';
+	});
+
+
+
+
 //Adds a field HTML row in the table
 function addField() {
 	$('#fields').append("<tr><td><input class='label' maxlength='15' type='text' /></td><td><input class='field' maxlength='200' type='text' /></td><td><input class='removeField' type='button' value='Remove' /></td></tr>");
@@ -43,11 +50,32 @@ MedicalDocument.formatDate = function () {
 	return dd + '-' + mm + '-' + yyyy;
 	}
 
+MedicalDocument.showPDF = function () {
+	MedicalDocument.buildPDF();
+	pdfMake.createPdf(MedicalDocument.doc).getDataUrl(function(data) {
+		previewFrame.src = data;
+		$('#PDFCreate').fadeOut(function() {
+			$('#PDFPreview').fadeIn();
+			});
+		});
+}
+
+MedicalDocument.hidePDF = function () {
+	$('#PDFPreview').fadeOut(function() {
+		$('#PDFCreate').fadeIn();
+		});
+	previewFrame.src = '';
+}
+
+MedicalDocument.downloadPDF = function () {
+	pdfMake.createPdf(MedicalDocument.doc).download("MedicalID_document.pdf");
+}
+
 //Method to generate a PDF and present it to the user
 MedicalDocument.buildPDF = function () {
-	this.parseValues()
+	this.parseValues();
 	
-	var doc = {
+	MedicalDocument.doc = {
 		content: [
 			{
 				columns: [
@@ -89,6 +117,4 @@ MedicalDocument.buildPDF = function () {
 			}
 		}
 	};
-	
-	pdfMake.createPdf(doc).download('MedicalID.pdf');
 }
