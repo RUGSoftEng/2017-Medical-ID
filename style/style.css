@@ -16,6 +16,14 @@ html {
 	float: left;
 }
 
+.right_pad{
+	padding-right: 15px;
+}
+
+.left_pad {
+	padding-left: 15px;
+}
+
 .s60 {
 	width: 60%;
 }
@@ -54,7 +62,7 @@ body {
 	background: rgb(207, 236, 252);
 	margin: 0 10%;
 	font-family: 'Varela Round', sans-serif;
-	#min-height: 100vh;
+	min-height: 100vh;
 }
 
 #banner {
@@ -83,8 +91,8 @@ body {
 }
 
 .navText {
-    color: white;
-    text-align: center;
+  color: white;
+  text-align: center;
 	padding: 0.7em 0.8em;
 	display: block;
 	font-size: 1.25em;
@@ -109,46 +117,98 @@ h2 {
 	background-color: black;
 }
 
-#mainImage {
-	display: block;
-	width: 80%;
-	margin: 0 auto;
+#thumb {
+	width: 200px;
+	float: right;
+	margin: 5px;
 }
 
 #main {
 	padding: 15px;
-	min-height: 50vh;
+	display: flex;
 }
 
-a.bigButton {
+#fullWidth {
+	width: 100%;
+	border-spacing: 20px;
+}
+
+#fullWidth td {
+	border: 1px solid black;
+	width: 50%;
+	text-align: center;
+}
+
+.exampleImg {
+	width: 70%;
+	margin: 5px;
+	border-radius: 10px;
+	box-shadow: 0px -5px 5px #050914;
+}
+
+.block {
+	width: 45%;
+	margin: 5px;
+	height: 200px;
+	border: 1px solid black;
+	float: left;
+}
+
+
+.bigButton {
+	list-style-type: none;
 	background-color: #14234F;
 	color: white;
 	font-size: 2em;
-	padding: 10px;
-	
-	text-decoration: none;
 	border-radius: 15px;
+	display: list-item;
+	padding: 10px 0;
+	width: 60%;
+	text-decoration: none;
+	margin: 0 auto;
 }
 
-a.bigButton:hover {
+.bigButton:hover, .bigButtonCell:hover {
 	background-color: #333;
 }
 
+.bigButtonCell {
+	background-color: #14234F;
+	color: white;
+	font-size: 2em;
+	border-radius: 15px;
+	text-decoration: none;
+	margin: 10px;
+	padding: 10px;
+}
+
+.bigButtonCell a {
+	color: white;
+	text-decoration: none;
+}
+
+.buttonLink, .buttonLink:visited {
+	color: #14234F;
+	font-weight: bold;
+	font-size: 1.2em;
+	text-decoration: none;
+}
 
 @media (max-width: 768px) {
 	html {
-		width: 768px;
+		min-width: 650px;
 	}
-	
+
 	body {
 		margin: 0;
+		
 	}
-	
+
 	#banner{
 		background: none;
 		background-color: #14234f;
 	}
-	
+
   #bannerTitle {
 	float: right;
 	margin-left: 0;
