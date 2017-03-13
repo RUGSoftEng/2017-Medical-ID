@@ -67,7 +67,7 @@ body {
 
 #banner {
 	width: 100%;
-	background: url("back.jpg");
+	background: url("../img/back.jpg");
 	background-color: #14234F;
 	background-size: 100% 100%;
 	display: inline-block;
@@ -208,10 +208,10 @@ h2 {
 		background: none;
 		background-color: #14234f;
 	}
-
-  #bannerTitle {
-	float: right;
-	margin-left: 0;
-	margin-right: 5%;
-  }
+	
+	#bannerTitle {
+		float: right;
+		margin-left: 0;
+		margin-right: 5%;
+	}
 }
