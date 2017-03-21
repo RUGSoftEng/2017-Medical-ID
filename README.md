@@ -1,17 +1,31 @@
-# Node.js Loginapp
+# 2017-Medical-ID
+htmlpreview: [VIEW](https://htmlpreview.github.io/?https://raw.githubusercontent.com/RUGSoftEng/2017-Medical-ID/develop/index.html)
 
-This is a user login and registration app using Node.js, Express, Passport and Mongoose. It is part of the YouTube series [here](https://www.youtube.com/watch?v=Z1ktxiqyiLA)
+### cmd Reminders ###
 
-### Version
-1.1.0
+**Obtaining files:**   
+git clone -b develop https://github.com/RUGSoftEng/2017-Medical-ID.git  
+git pull origin develop
 
-### Usage
+**Creating a new branch:**   
+git checkout -b newBranch develop
 
+**Before a push:**   
+git status  
+git add folderName/* (or: git add -A)  
+(remove file:) git rm fileName  
+git commit -m "I just did some change"   
+git push origin branchName 
 
-### Installation
+**Add tag:**  
+git tag -a tagName hashofCommit -m "tagging message"  
+git push --follow-tags  
 
-Loginapp requires [Node.js](https://nodejs.org/) v4+ to run.
+**Delete tag:**  
+git tag -d tagName  
+git push --delete origin tagName
 
+**Install and run instructions:**
 ```sh
 $ npm install
 ```
