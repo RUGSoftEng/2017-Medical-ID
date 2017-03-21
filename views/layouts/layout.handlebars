@@ -1,70 +1,91 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>LoginApp</title>
-	<link rel="stylesheet" href="/css/bootstrap.css" />
-	<link rel="stylesheet" href="/css/style.css" />
+	<head>
+		<title>Medical ID</title>
+		<link rel="stylesheet" href="/css/bootstrap.css" />
+		<link rel="stylesheet" href="/css/style.css" />
 
-	<!-- ALL JS, need to find a better way to do this (RequireJS?) -->
-	<script type="text/javascript" src="/js/lib/jquery.min.js"></script>
-	<script type="text/javascript" src="/js/lib/jspdf.min.js"></script>
-	<script type="text/javascript" src="/js/lib/pdfmake.min.js"></script>
-	<script type="text/javascript" src="/js/lib/vfs_fonts.js"></script>
+		<!-- ALL JS, need to find a better way to do this (RequireJS?) -->
+		<script type="text/javascript" src="/js/lib/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/lib/jspdf.min.js"></script>
+		<script type="text/javascript" src="/js/lib/pdfmake.min.js"></script>
+		<script type="text/javascript" src="/js/lib/vfs_fonts.js"></script>
 
-	<script type="text/javascript" src="/js/medid/medid.js"></script>
-	{{#if card}}
-	<script type="text/javascript" src="/js/medid/card.js"></script>
-	{{/if}}
-	{{#if doc}}
-	<script type="text/javascript" src="/js/medid/document.js"></script>
-	{{/if}}
-	<script type="text/javascript" src="/js/medid/res.js"></script>
-</head>
-<body>
-	{{creator}}
-	<div class="container">
-      <div class="header clearfix">
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            {{#if user}}
-              <li role="presentation"><a href="/users/logout">Logout</a></li>
-							<li role="presentation"><a href="/">Home</a></li>
-            {{else}}
-              <li role="presentation"><a href="/users/login">Login</a></li>
-              <li role="presentation"><a href="/users/register">Register</a></li>
-							<li role="presentation"><a href="/create">Guest</a></li>
-							<li role="presentation"><a href="/">Home</a></li>
-            {{/if}}
-          </ul>
-        </nav>
-        <h3 class="text-muted">Medical ID</h3>
-      </div>
+		<script type="text/javascript" src="/js/medid/medid.js"></script>
+		{{#if card}}
+			<script type="text/javascript" src="/js/medid/card.js"></script>
+		{{/if}}
+		{{#if doc}}
+			<script type="text/javascript" src="/js/medid/document.js"></script>
+		{{/if}}
+		<script type="text/javascript" src="/js/medid/res.js"></script>
+	</head>
+	
+	<body>
+		{{creator}}
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header navbar-left">
+					<span class="navbar-brand nav-link unselectable">mID</span>
+				</div>
+				
+				<div class="navbar-right">
+					<ul class="nav navbar-nav">
+						{{#if user}}
+							<li class="nav-link" role="presentation"><a href="/users/logout">Logout</a></li>
+							<li class="nav-link" role="presentation"><a href="/">Home</a></li>
+						{{else}}
+							<li class="nav-link" role="presentation"><a href="/users/login">Login</a></li>
+							<li class="nav-link" role="presentation"><a href="/users/register">Register</a></li>
+							<li class="nav-link" role="presentation"><a href="/create">Guest</a></li>
+							<li class="nav-link" role="presentation"><a href="/">Home</a></li>
+						{{/if}}
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+		<div class="container-fluid">	
+			<div class="row">
+				<div class="hor-spacer"></div>
+			</div>		
+			<div class="row">
+				<div id="banner">
+					<div id="bannerTitle">
+						<p class="unselectable">
+							<span style="font-size: 0.5em;">Your Personal</span>
+							<br />
+							Medical ID
+						</p>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="hor-spacer"></div>
+			</div>
 
+			<div class="row">
+				<div>
+					{{#if success_msg}}
+						<div class="alert alert-success">{{success_msg}}</div>
+					{{/if}}
 
-      <div class="row">
-        <div class="col-lg-12">
-          {{#if success_msg}}
-            <div class="alert alert-success">{{success_msg}}</div>
-          {{/if}}
+					{{#if error_msg}}
+						<div class="alert alert-danger">{{error_msg}}</div>
+					{{/if}}
 
-          {{#if error_msg}}
-            <div class="alert alert-danger">{{error_msg}}</div>
-          {{/if}}
+					{{#if error}}
+						<div class="alert alert-danger">{{error}}</div>
+					{{/if}}
 
-          {{#if error}}
-            <div class="alert alert-danger">{{error}}</div>
-          {{/if}}
+					{{{body}}}
+				</div>
+			</div>
 
-          {{{body}}}
-        </div>
-
-
-      </div>
-
-      <footer class="footer">
-        <p>&copy; 2017 Medical ID</p>
-      </footer>
-
-    </div> <!-- /container -->
-</body>
+			<!--<footer class="footer">
+				<p>&copy; 2017 Medical ID</p>
+			</footer>-->
+		</div> <!-- /container -->
+	</body>
 </html>
