@@ -1,5 +1,4 @@
 define(['jquery'], function($) {
-  $('#PDFPreview').hide();
 
   var creator = {
     table: $('#fields tbody'),
@@ -21,14 +20,15 @@ define(['jquery'], function($) {
 			field = $(this).find('.medid-field').val();
 
 			if (label == "") {
-				fields.push([{text: field, colSpan: 2}, {}]);
+        fields.push({field: field});
 			} else {
-				fields.push([{text: label, bold: true}, field]);
+				fields.push({label: label, field: field})
 			}
 
-			if (label == 'Name') {
-				creator.userName = field;
-			}
+      // Thijs: We might want to get rid of this part
+      if (label == "Name") {
+        creator.userName = field;
+      }
 		});
     return fields;
 	}
@@ -36,23 +36,27 @@ define(['jquery'], function($) {
 
   // Button listeners
   $('.downloadPDF').on('click', function () {
+    // Call the function provided by the document-specific engine to download
     creator.downloadPDF("MedicalID.pdf");
   });
 
   $('.showPDF').on('click', function () {
-  	creator.getPDF(function(data) {
-  		previewFrame.src = data;
-  		$('#PDFCreate').fadeOut(function() {
-  			$('#PDFPreview').fadeIn();
+    // Call the function provided by the document-specific engine to retrieve
+
+    $('#PDFCreate').slideUp(function() {
+      previewFrame.src = "/preview_placeholder.html";
+      $('#PDFPreview').slideDown();
+      creator.getPDF(function(data) {
+        previewFrame.src = data;
   		});
   	});
   });
 
   $('.hidePDF').on('click', function () {
-  	$('#PDFPreview').fadeOut(function() {
-  		$('#PDFCreate').fadeIn();
+  	$('#PDFPreview').slideUp(function() {
+  		$('#PDFCreate').slideDown();
+      previewFrame.src = '';
   	});
-  	previewFrame.src = '';
   });
 
 	$('.addField').on('click', function() {

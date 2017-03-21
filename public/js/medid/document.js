@@ -1,56 +1,88 @@
-define(['jquery','medid/util','medid/creator','medid/res','pdfmake','vfs_fonts'], function($, Util, Creator) {
-	$('#PDFPreview').hide();
+define(['medid/creator', 'medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], function(Creator, Util) {
 	var MIDdocument = {};
 
-	MIDdocument.createPDF = function () {
-		var values = Creator.fields();
+	/* This object contains some style information for use in
+	 * the actual document object so it does not clutter that object.
+	 */
+	MIDdocument.documentStyle = {
+		header: {
+			fontSize: 22,
+			bold: true
+		},
+		subheader: {
+			fontSize: 17,
+			margin: [20, 0]
+		},
+		smallSubheader: {
+			fontSize: 10,
+			margin: [20, 0]
+		},
+		fields: {
+			alignment: 'justify'
+		}
+	};
 
+	MIDdocument.labelWidth = 160;
+	MIDdocument.logoSize = 100;
+
+	/* Method for creating a PDF, returning a pdfMake PDF object.
+	 */
+	MIDdocument.createPDF = function () {
+		// Get fields from Creator engine, turn them into something useful
+		var fields = MIDdocument.parseFields( Creator.fields() );
+
+		/* This is the actual final document definition
+		 * This object alone defines the creation of the PDF
+		 */
 		var doc = {
 			content: [
 				{
 					columns: [
 						[
 							{ text: 'Medical ID', style: 'header' },
-							{ text: Creator.userName, margin: [20, 0], style: 'subheader' },
-							{ text: "Generated on " + Util.formatDate(), margin: [20, 0], style: 'small' }
+							{ text: Creator.userName, style: 'subheader' },
+							{ text: "Generated on " + Util.formatDate(), style: 'smallSubheader' }
 						],
 						{
 							image: Resources.med,
-							width: 100
+							width: MIDdocument.logoSize
 						}
 					]
 				},
 
 				{
 					table: {
-						widths: [160, '*'],
-						body: values
+						widths: [MIDdocument.labelWidth, '*'],
+						body: fields
 					},
 					style: 'fields',
 					layout: 'noBorders'
 				}
 			],
 
-			styles: {
-				header: {
-					fontSize: 22,
-					bold: true
-				},
-				subheader: {
-					fontSize: 17,
-				},
-				small: {
-					fontSize: 10,
-				},
-				fields: {
-					alignment: 'justify'
-				}
-			}
+			styles: MIDdocument.documentStyle
 		};
 
 	return pdfMake.createPdf(doc);
 	}
 
+	/* Turn the fields the Creator engine provides us with into an object
+	 * that can be actually inserted into the object used for creating the PDF.
+	 */
+	MIDdocument.parseFields = function (values) {
+		var fields = [];
+		for (i = 0; i < values.length; i++) {
+			if (values[i].label) {
+				fields.push([{text: values[i].label, bold: true}, values[i].field]);
+			} else {
+				fields.push([{text: values[i].field, colSpan: 2}, {}]);
+			}
+		}
+		return fields;
+	}
+
+	/* The Creator engine needs to get 2 functions from the document-specific engine
+	 */
 	Creator.getMethod(function (callback) {
 		MIDdocument.createPDF().getDataUrl(callback);
 	});
@@ -59,112 +91,3 @@ define(['jquery','medid/util','medid/creator','medid/res','pdfmake','vfs_fonts']
 	});
 
 });
-
-/*
-$(function() {
-	previewFrame.src = '';
-	});
-
-//Adds a field HTML row in the table
-function addField() {
-	$('#fields').append("<tr><td><input class='medid-label' maxlength='15' type='text' /></td><td><input class='medid-field' maxlength='200' type='text' /></td><td><input class='removeField' type='button' value='Remove' /></td></tr>");
-	}
-
-//A listener for a click on a 'remove' button
-$(document).on('click', '.removeField', function() {
-    $(this).parent().parent().remove();
-});
-
-MedicalDocument = {};
-
-//Method to retrieve values from the form
-MedicalDocument.parseValues = function () {
-	MedicalDocument.fields = [];
-
-	var label, field;
-	$('#fields tbody').children('tr').each(function () {
-		label = $(this).find('.medid-label').val();
-		field = $(this).find('.medid-field').val();
-
-		if (label == "") {
-			MedicalDocument.fields.push([{text: field, colSpan: 2}, {}]);
-		} else {
-			MedicalDocument.fields.push([{text: label, bold: true}, field]);
-		}
-
-		if (label == 'Name') {
-			MedicalDocument.name = field;
-		}
-	});
-}
-
-
-MedicalDocument.showPDF = function () {
-	MedicalDocument.buildPDF();
-	pdfMake.createPdf(MedicalDocument.doc).getDataUrl(function(data) {
-		previewFrame.src = data;
-		$('#PDFCreate').fadeOut(function() {
-			$('#PDFPreview').fadeIn();
-			});
-		});
-}
-
-MedicalDocument.hidePDF = function () {
-	$('#PDFPreview').fadeOut(function() {
-		$('#PDFCreate').fadeIn();
-		});
-	previewFrame.src = '';
-}
-
-MedicalDocument.downloadPDF = function () {
-	pdfMake.createPdf(MedicalDocument.doc).download("MedicalID_document.pdf");
-}
-
-//Method to generate a PDF and present it to the user
-MedicalDocument.buildPDF = function () {
-	this.parseValues();
-
-	MedicalDocument.doc = {
-		content: [
-			{
-				columns: [
-					[
-						{ text: 'Medical ID', style: 'header' },
-						{ text: MedicalDocument.name, margin: [20, 0], style: 'subheader' },
-						{ text: "Generated on " + MedicalDocument.formatDate(), margin: [20, 0], style: 'small' }
-					],
-					{
-						image: Resources.med,
-						width: 100
-					}
-				]
-			},
-
-			{
-				table: {
-					widths: [160, '*'],
-					body: MedicalDocument.fields
-				},
-				style: 'fields',
-				layout: 'noBorders'
-			}
-		],
-
-		styles: {
-			header: {
-				fontSize: 22,
-				bold: true
-			},
-			subheader: {
-				fontSize: 17,
-			},
-			small: {
-				fontSize: 10,
-			},
-			fields: {
-				alignment: 'justify'
-			}
-		}
-	};
-}
-*/
