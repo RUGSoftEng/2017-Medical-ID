@@ -1,83 +1,90 @@
-<div id='PDFPreview' style='display: none'>
-	<p>
-	<input type='button' value='Download' />
-	<input type='button' value='Back' /> | To save your data for future re-use, please <a href='users/register'>sign up</a>.
-	</p>
-	<iframe style='width: 100%; height: 400px' id='previewFrame'></iframe>
+<div class="col-lg-12">
+	<div class="content-wrap">
+		<div id='PDFPreview' style='display: none'>
+			<p>
+			<input type='button' value='Download' />
+			<input type='button' value='Back' /> | To save your data for future re-use, please <a href='users/register'>sign up</a>.
+			</p>
+			<iframe style='width: 100%; height: 400px' id='previewFrame'></iframe>
+		</div>
+		<div id='PDFCreate'>
+			<h2 class="page-header">Medical ID card creator</h2>
+			<p class='justify'>This is an offline creator for a Medical ID card, intended for guest users. This means none of the entered data will be sent over the internet.
+			Click 'Create' to view how the card will look. You will have the option to return and make changes, or download the card.
+			Since you are a guest, after leaving this page you will not be able to modify your card and you will have to create it again. If you do want your progress saved, please <a href='users/register'>sign up</a>.</p>
+			<p>For the emergency contacts, you may leave the name blank. For optimal results, please do fill in all other fields.</p>
+			<table id='fields'>
+				<thead>
+					<tr><td>Label</td><td>Text</td></tr>
+				</thead>
+				<tr><td><input maxlength='15' type='text' value='Name' readonly /></td>
+				<td><input maxlength='30' type='text' class='field' id='name' /></td></tr>
+
+				<tr><td><input maxlength='15' type='text' value='Age' readonly /></td>
+				<td><input min='1' max='130' type='number' class='field' id='age' /></td></tr>
+
+				<tr><td><input maxlength='15' type='text' value='Blood type' readonly /></td>
+				<td>
+				<select class='field' id='bloodType'>
+					<option value="O-">O-</option>
+					<option value="O+">O+</option>
+					<option value="A-">A-</option>
+					<option value="A+-">A+</option>
+					<option value="B-">B-</option>
+					<option value="B+">B+</option>
+					<option value="AB-">AB-</option>
+					<option value="AB+">AB+</option>
+				</select>
+				</td></tr>
+
+				<tr><td><input maxlength='15' type='text' value='Donor' readonly /></td>
+				<td>
+				<select class='field' id='donor'>
+					<option value="yes">yes</option>
+					<option value="no">no</option>
+				</select>
+				</td></tr>
+
+				<tr><td><input maxlength='15' type='text' value='Insurance' readonly /></td>
+				<td><input maxlength='30' type='text' class='field' id='insurance' /></td></tr>
+
+				<tr><td><input maxlength='15' type='text' value='Insurance ID' readonly /></td>
+				<td><input maxlength='30' type='text' class='field' id='insuranceID' /></td></tr>
+
+				<tr><td>
+				<select class='field' id='contact1_type'>
+					<option value="Doctor" selected>Doctor</option>
+					<option value="Brother">Brother</option>
+					<option value="Sister">Sister</option>
+					<option value="Father">Father</option>
+					<option value="Mother">Mother</option>
+					<option value="SO">SO</option>
+				</select>
+				</td>
+				<td><input placeholder='first or last name' maxlength='30' type='text' class='field' id='contact1_name' /></td></tr>
+				<tr><td><input maxlength='15' type='text' value='Phone number' readonly /></td>
+				<td><input maxlength='15' type='text' class='field' id='contact1_phone' /></td></tr>
+
+				<tr><td>
+				<select class='field' id='contact2_type'>
+					<option value="Doctor">Doctor</option>
+					<option value="Brother">Brother</option>
+					<option value="Sister">Sister</option>
+					<option value="Father">Father</option>
+					<option value="Mother" selected>Mother</option>
+					<option value="SO">SO</option>
+				</select>
+				</td>
+				<td><input placeholder='first or last name' maxlength='30' type='text' class='field' id='contact2_name' /></td></tr>
+				<tr><td><input maxlength='15' type='text' value='Phone number' readonly /></td>
+				<td><input maxlength='15' type='text' class='field' id='contact2_phone' /></td></tr>
+			</table>
+			<p>
+			<input type='button' value='Create' class="showPDF"/>
+			</p>
+		</div>
+	</div>
 </div>
-<div id='PDFCreate'>
-	<h2>Medical ID card creator</h2>
-	<p class='justify'>This is an offline creator for a Medical ID card, intended for guest users. This means none of the entered data will be sent over the internet.
-	Click 'Create' to view how the card will look. You will have the option to return and make changes, or download the card.
-	Since you are a guest, after leaving this page you will not be able to modify your card and you will have to create it again. If you do want your progress saved, please <a href='users/register'>sign up</a>.</p>
-	<p>For the emergency contacts, you may leave the name blank. For optimal results, please do fill in all other fields.</p>
-	<table id='fields'>
-		<thead>
-			<tr><td>Label</td><td>Text</td></tr>
-		</thead>
-		<tr><td><input maxlength='15' type='text' value='Name' readonly /></td>
-		<td><input maxlength='30' type='text' class='field' id='name' /></td></tr>
-
-		<tr><td><input maxlength='15' type='text' value='Age' readonly /></td>
-		<td><input min='1' max='130' type='number' class='field' id='age' /></td></tr>
-
-		<tr><td><input maxlength='15' type='text' value='Blood type' readonly /></td>
-		<td>
-		<select class='field' id='bloodType'>
-			<option value="O-">O-</option>
-			<option value="O+">O+</option>
-			<option value="A-">A-</option>
-			<option value="A+-">A+</option>
-			<option value="B-">B-</option>
-			<option value="B+">B+</option>
-			<option value="AB-">AB-</option>
-			<option value="AB+">AB+</option>
-		</select>
-		</td></tr>
-
-		<tr><td><input maxlength='15' type='text' value='Donor' readonly /></td>
-		<td>
-		<select class='field' id='donor'>
-			<option value="yes">yes</option>
-			<option value="no">no</option>
-		</select>
-		</td></tr>
-
-		<tr><td><input maxlength='15' type='text' value='Insurance' readonly /></td>
-		<td><input maxlength='30' type='text' class='field' id='insurance' /></td></tr>
-
-		<tr><td><input maxlength='15' type='text' value='Insurance ID' readonly /></td>
-		<td><input maxlength='30' type='text' class='field' id='insuranceID' /></td></tr>
-
-		<tr><td>
-		<select class='field' id='contact1_type'>
-			<option value="Doctor" selected>Doctor</option>
-			<option value="Brother">Brother</option>
-			<option value="Sister">Sister</option>
-			<option value="Father">Father</option>
-			<option value="Mother">Mother</option>
-			<option value="SO">SO</option>
-		</select>
-		</td>
-		<td><input placeholder='first or last name' maxlength='30' type='text' class='field' id='contact1_name' /></td></tr>
-		<tr><td><input maxlength='15' type='text' value='Phone number' readonly /></td>
-		<td><input maxlength='15' type='text' class='field' id='contact1_phone' /></td></tr>
-
-		<tr><td>
-		<select class='field' id='contact2_type'>
-			<option value="Doctor">Doctor</option>
-			<option value="Brother">Brother</option>
-			<option value="Sister">Sister</option>
-			<option value="Father">Father</option>
-			<option value="Mother" selected>Mother</option>
-			<option value="SO">SO</option>
-		</select>
-		</td>
-		<td><input placeholder='first or last name' maxlength='30' type='text' class='field' id='contact2_name' /></td></tr>
-		<tr><td><input maxlength='15' type='text' value='Phone number' readonly /></td>
-		<td><input maxlength='15' type='text' class='field' id='contact2_phone' /></td></tr>
-	</table>
-	<p>
-	<input type='button' value='Create' />
-	</p>
-</div>
+<script>
+	require(['medid/card']);
+</script>

@@ -1,11 +1,21 @@
-{{#if user}}
-  Welcome {{user.name}}.
-{{else}}
-  <img width='250px' class="img-thumbnail" style='float: right' src='img/doctor.jpg' />
-  <p>
-    In an emergency, it's important that you're able to get the medical treatment you need urgently. It may be the case that you are own your own in a foreign country, or simply out by your self; if you need assistance, then it's important your medical details are accessible quickly.
-  </p>
-  <p>
-    With MedID, your urgent medical information will be on you at all times. If you're incapable of giving the information, someone will be able to immediately see your urgent details and get you the help you need.
-  </p>
-{{/if}}
+<div class="col-lg-8">
+	<div class="content-wrap">
+		{{#if user}}
+			<p>
+				Hi {{user.name}}!
+			</p>
+		{{/if}}
+		<p>
+			In an emergency, it's important that you're able to get the medical treatment you need urgently. It may be the case that you are own your own in a foreign country, or simply out by your self; if you need assistance, then it's important your medical details are accessible quickly.
+		</p>
+		<p>
+			With MedID, your urgent medical information will be on you at all times. If you're incapable of giving the information, someone will be able to immediately see your urgent details and get you the help you need.
+		</p>
+	</div>
+</div>
+
+<div class="col-lg-4">
+	<div class="content-wrap">
+		<img width='100%' src='img/doctor.jpg' />
+	</div>
+</div>

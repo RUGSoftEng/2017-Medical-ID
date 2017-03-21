@@ -4,10 +4,11 @@
 		<title>Medical ID</title>
 		<link rel="stylesheet" href="/css/bootstrap.css" />
 		<link rel="stylesheet" href="/css/style.css" />
+		<meta name="viewport" content="width=device-width">
 
 		<script data-main='/js/common.js' src='/js/lib/require.js'></script>
 	</head>
-	
+
 	<body>
 		{{creator}}
 		<nav class="navbar navbar-default">
@@ -15,7 +16,7 @@
 				<div class="navbar-header navbar-left">
 					<span class="navbar-brand nav-link unselectable">mID</span>
 				</div>
-				
+
 				<div class="navbar-right">
 					<ul class="nav navbar-nav">
 						{{#if user}}
@@ -31,11 +32,11 @@
 				</div>
 			</div>
 		</nav>
-		
-		<div class="container-fluid">	
+
+		<div class="container-fluid">
 			<div class="row">
 				<div class="hor-spacer"></div>
-			</div>		
+			</div>
 			<div class="row">
 				<div id="banner">
 					<div id="bannerTitle">
@@ -47,32 +48,26 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="row">
 				<div class="hor-spacer"></div>
 			</div>
 
 			<div class="row">
-				<div>
-					{{#if success_msg}}
-						<div class="alert alert-success">{{success_msg}}</div>
-					{{/if}}
+				{{#if success_msg}}
+					<div class="alert alert-success">{{success_msg}}</div>
+				{{/if}}
 
-					{{#if error_msg}}
-						<div class="alert alert-danger">{{error_msg}}</div>
-					{{/if}}
+				{{#if error_msg}}
+					<div class="alert alert-danger">{{error_msg}}</div>
+				{{/if}}
 
-					{{#if error}}
-						<div class="alert alert-danger">{{error}}</div>
-					{{/if}}
+				{{#if error}}
+					<div class="alert alert-danger">{{error}}</div>
+				{{/if}}
 
-					{{{body}}}
-				</div>
+				{{{body}}}
 			</div>
-
-			<!--<footer class="footer">
-				<p>&copy; 2017 Medical ID</p>
-			</footer>-->
-		</div> <!-- /container -->
+		</div>
 	</body>
 </html>
