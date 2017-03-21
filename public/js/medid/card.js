@@ -16,9 +16,9 @@ var MedicalDocument = {
 	}
 
 //Method to retrieve values from the form
-MedicalDocument.parseValues = function () {	
+MedicalDocument.parseValues = function () {
 	MedicalDocument.fields = {}
-	
+
 	$('.field').each(function () {
 		MedicalDocument.fields[$(this).attr('id')] = $(this).val();
 	});
@@ -72,7 +72,7 @@ MedicalDocument.buildPDF = function () {
 	MedicalDocument.parseValues();
 	var field = MedicalDocument.fields;
 	var doc=new jsPDF();
-	
+
 	doc.setFont('helvetica');
 	MedicalDocument.drawCard(doc, 10, 10, 15);
 	doc.addImage(Resources.placeholder, 12, 27, 23, 23);
@@ -89,7 +89,7 @@ MedicalDocument.buildPDF = function () {
 	//Emergency contacts
 	doc.text(40, 55, field['contact1_type'] + ": ");
 	doc.text(40, 60, field['contact2_type'] + ": ");
-	
+
 	//Data
 	doc.setFontStyle("normal");
 	doc.text(57, 30, field['name']); //Name
@@ -101,14 +101,14 @@ MedicalDocument.buildPDF = function () {
 	//Emergency contacts
 	doc.text(55, 55, field['contact1_name'] + "  " + field['contact1_phone']);
 	doc.text(55, 60, field['contact2_name'] + "  " + field['contact2_phone']);
-	
+
 	//Backside
 	MedicalDocument.drawCard(doc, 100, 10, 15);
 	doc.setFontStyle('normal');
 	doc.text(110, 40, "This is an example card.");
 	doc.text(110, 44, "The functional version of this card is reserved");
 	doc.text(110, 48, "for registered users.");
-	
+
 	//Header bars
 	doc.addImage(Resources.redLogo,'JPEG', 12,12,12,12);
 	doc.setTextColor(255,255,255);
@@ -116,6 +116,6 @@ MedicalDocument.buildPDF = function () {
 	doc.text(25, 19.5, "MEDICAL INFORMATION");
 	doc.setFontSize(14);
 	doc.text(104, 19, "SCAN FOR MORE INFORMATION");
-	
+
 	MedicalDocument.doc = doc;
 }
