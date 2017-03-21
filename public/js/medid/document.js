@@ -1,3 +1,66 @@
+define(['jquery','medid/util','medid/creator','medid/res','pdfmake','vfs_fonts'], function($, Util, Creator) {
+	$('#PDFPreview').hide();
+	var MIDdocument = {};
+
+	MIDdocument.createPDF = function () {
+		var values = Creator.fields();
+
+		var doc = {
+			content: [
+				{
+					columns: [
+						[
+							{ text: 'Medical ID', style: 'header' },
+							{ text: Creator.userName, margin: [20, 0], style: 'subheader' },
+							{ text: "Generated on " + Util.formatDate(), margin: [20, 0], style: 'small' }
+						],
+						{
+							image: Resources.med,
+							width: 100
+						}
+					]
+				},
+
+				{
+					table: {
+						widths: [160, '*'],
+						body: values
+					},
+					style: 'fields',
+					layout: 'noBorders'
+				}
+			],
+
+			styles: {
+				header: {
+					fontSize: 22,
+					bold: true
+				},
+				subheader: {
+					fontSize: 17,
+				},
+				small: {
+					fontSize: 10,
+				},
+				fields: {
+					alignment: 'justify'
+				}
+			}
+		};
+
+	return pdfMake.createPdf(doc);
+	}
+
+	Creator.getMethod(function (callback) {
+		MIDdocument.createPDF().getDataUrl(callback);
+	});
+	Creator.downloadMethod(function (name) {
+		MIDdocument.createPDF().download(name);
+	});
+
+});
+
+/*
 $(function() {
 	previewFrame.src = '';
 	});
@@ -35,17 +98,6 @@ MedicalDocument.parseValues = function () {
 	});
 }
 
-//Method to generate a nicely formatted date
-MedicalDocument.formatDate = function () {
-	var today = new Date();
-	var dd = today.getDate();
-	var mm = today.getMonth() + 1;
-	var yyyy = today.getFullYear();
-	dd = (dd < 10 ? '0' + dd : dd);
-	mm = (mm < 10 ? '0' + mm : mm);
-
-	return dd + '-' + mm + '-' + yyyy;
-	}
 
 MedicalDocument.showPDF = function () {
 	MedicalDocument.buildPDF();
@@ -115,3 +167,4 @@ MedicalDocument.buildPDF = function () {
 		}
 	};
 }
+*/

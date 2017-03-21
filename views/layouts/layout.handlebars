@@ -1,24 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>LoginApp</title>
+	<title>Medical ID</title>
 	<link rel="stylesheet" href="/css/bootstrap.css" />
 	<link rel="stylesheet" href="/css/style.css" />
 
-	<!-- ALL JS, need to find a better way to do this (RequireJS?) -->
-	<script type="text/javascript" src="/js/lib/jquery.min.js"></script>
-	<script type="text/javascript" src="/js/lib/jspdf.min.js"></script>
-	<script type="text/javascript" src="/js/lib/pdfmake.min.js"></script>
-	<script type="text/javascript" src="/js/lib/vfs_fonts.js"></script>
-
-	<script type="text/javascript" src="/js/medid/medid.js"></script>
-	{{#if card}}
-	<script type="text/javascript" src="/js/medid/card.js"></script>
-	{{/if}}
-	{{#if doc}}
-	<script type="text/javascript" src="/js/medid/document.js"></script>
-	{{/if}}
-	<script type="text/javascript" src="/js/medid/res.js"></script>
+	<script data-main='/js/common.js' src='/js/lib/require.js'></script>
 </head>
 <body>
 	{{creator}}
