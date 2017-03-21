@@ -2,12 +2,9 @@ $(function() {
 	previewFrame.src = '';
 	});
 
-
-
-
 //Adds a field HTML row in the table
 function addField() {
-	$('#fields').append("<tr><td><input class='label' maxlength='15' type='text' /></td><td><input class='field' maxlength='200' type='text' /></td><td><input class='removeField' type='button' value='Remove' /></td></tr>");
+	$('#fields').append("<tr><td><input class='medid-label' maxlength='15' type='text' /></td><td><input class='medid-field' maxlength='200' type='text' /></td><td><input class='removeField' type='button' value='Remove' /></td></tr>");
 	}
 
 //A listener for a click on a 'remove' button
@@ -18,20 +15,20 @@ $(document).on('click', '.removeField', function() {
 MedicalDocument = {};
 
 //Method to retrieve values from the form
-MedicalDocument.parseValues = function () {	
+MedicalDocument.parseValues = function () {
 	MedicalDocument.fields = [];
-	
+
 	var label, field;
 	$('#fields tbody').children('tr').each(function () {
-		label = $(this).find('.label').val();
-		field = $(this).find('.field').val();
-		
+		label = $(this).find('.medid-label').val();
+		field = $(this).find('.medid-field').val();
+
 		if (label == "") {
 			MedicalDocument.fields.push([{text: field, colSpan: 2}, {}]);
 		} else {
 			MedicalDocument.fields.push([{text: label, bold: true}, field]);
 		}
-		
+
 		if (label == 'Name') {
 			MedicalDocument.name = field;
 		}
@@ -74,7 +71,7 @@ MedicalDocument.downloadPDF = function () {
 //Method to generate a PDF and present it to the user
 MedicalDocument.buildPDF = function () {
 	this.parseValues();
-	
+
 	MedicalDocument.doc = {
 		content: [
 			{
@@ -90,7 +87,7 @@ MedicalDocument.buildPDF = function () {
 					}
 				]
 			},
-			
+
 			{
 				table: {
 					widths: [160, '*'],
@@ -100,7 +97,7 @@ MedicalDocument.buildPDF = function () {
 				layout: 'noBorders'
 			}
 		],
-		
+
 		styles: {
 			header: {
 				fontSize: 22,
