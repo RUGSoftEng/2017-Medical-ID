@@ -30,17 +30,19 @@ router.get('/document', function(req, res) {
 	if (req.user) {
 		res.json(req.user.document);
 	} else {
-		res.status(403);
-		res.send();
+		res.sendFile('json/guestDocument.json', {root: __dirname + '/../public/'});
 	}
 });
 
 router.get('/card', function(req, res) {
 	if (req.user) {
-		res.json(req.user.card);
+		if (req.user.card.length > 0) {
+			res.json(req.user.card);
+		} else {
+			res.sendFile('json/guestCard.json', {root: __dirname + '/../public/'});
+		}
 	} else {
-		res.status(403);
-		res.send();
+		res.sendFile('json/guestCard.json', {root: __dirname + '/../public/'});
 	}
 });
 
