@@ -22,8 +22,34 @@ router.post('/document', function(req, res){
 		if(err) throw err;
 	});
 	req.flash('success_msg', 'Data successfully stored');
-	console.log(req.user); // for testing
+	//console.log(req.user); // for testing
 	res.end();
+});
+
+router.get('/document', function(req, res) {
+	if (req.user) {
+		var output = [];
+		for (i = 0; i < req.user.document.length; i++) {
+			output.push({label: req.user.document[i].label, field: req.user.document[i].field});
+		}
+		res.json(output);
+	} else {
+		res.status(403);
+		res.send();
+	}
+});
+
+router.get('/card', function(req, res) {
+	if (req.user) {
+		var output = [];
+		for (i = 0; i < req.user.card.length; i++) {
+			output.push({label: req.user.card[i].label, field: req.user.card[i].field});
+		}
+		res.json(output);
+	} else {
+		res.status(403);
+		res.send();
+	}
 });
 
 module.exports = router;
