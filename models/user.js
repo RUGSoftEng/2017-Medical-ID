@@ -15,7 +15,15 @@ var UserSchema = mongoose.Schema({
 	},
 	name: {
 		type: String
-	}
+	},
+	card: [{
+		label: String,
+		field: String
+	}],
+	document: [{
+		label: String,
+		field: String
+	}]
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);
@@ -43,4 +51,9 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
     	if(err) throw err;
     	callback(null, isMatch);
 	});
+}
+
+module.exports.updateUser = function(username, update, callback){
+	var query = {username: username};
+	User.findOneAndUpdate(query, update, false, callback);
 }
