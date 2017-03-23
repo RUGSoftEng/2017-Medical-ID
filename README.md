@@ -1,5 +1,5 @@
 # 2017-Medical-ID
-htmlpreview: [VIEW](https://htmlpreview.github.io/?https://raw.githubusercontent.com/RUGSoftEng/2017-Medical-ID/develop/index.html)
+htmlpreview: [VIEW](https://medid.herokuapp.com/)
 
 ### cmd Reminders ###
 
@@ -24,3 +24,12 @@ git push --follow-tags
 **Delete tag:**  
 git tag -d tagName  
 git push --delete origin tagName
+
+**Install and run instructions:**
+```sh
+$ npm install
+```
+
+```sh
+$ npm start
+```
