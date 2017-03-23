@@ -89,5 +89,7 @@ define(['medid/creator', 'medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], fun
 	Creator.downloadMethod(function (name) {
 		MIDdocument.createPDF().download(name);
 	});
+	Creator.saveEndpoint = '/save/document';
+	Creator.init();
 
 });

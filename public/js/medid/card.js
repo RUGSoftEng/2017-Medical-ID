@@ -77,5 +77,7 @@ define(['medid/creator', 'jquery', 'jspdf', 'medid/res'], function(Creator, $, j
 	Creator.downloadMethod(function (name) {
 		MIDcard.createPDF().save(name);
 	});
+	Creator.saveEndpoint = '/save/card';
+	Creator.init();
 
 });

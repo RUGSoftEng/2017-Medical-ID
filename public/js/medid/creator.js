@@ -2,6 +2,7 @@ define(['jquery'], function($) {
 
   var creator = {
     table: $('#fields tbody'),
+    saveEndpoint: "",
     getMethod: function (getFnc) {
       this.getPDF = getFnc;
     },
@@ -35,6 +36,15 @@ define(['jquery'], function($) {
     return fields;
 	}
 
+  creator.addField = function (label, field) {
+    var field = $("<tr><td><input class='medid-label' maxlength='15' value='" + label + "' type='text' /></td><td><input class='medid-field' maxlength='200' type='text' value='" + field + "' /></td><td><input class='removeField' type='button' value='Remove' /></td></tr>");
+		this.table.append(field);
+
+		//The row can be removed again
+		field.find('.removeField').on('click', function() {
+			$(this).parent().parent().remove();
+		});
+  }
 
   // Button listeners
   $('.downloadPDF').on('click', function () {
@@ -62,32 +72,35 @@ define(['jquery'], function($) {
   });
 
 	$('.addField').on('click', function() {
-		var field = $("<tr><td><input class='medid-label' maxlength='15' type='text' /></td><td><input class='medid-field' maxlength='200' type='text' /></td><td><input class='removeField' type='button' value='Remove' /></td></tr>");
-		creator.table.append(field);
-
-		//The row can be removed again
-		field.find('.removeField').on('click', function() {
-			$(this).parent().parent().remove();
-		});
+		creator.addField("",""); // Add empty field
 	});
 
-  $('.saveCard').on('click', function() {
+  $('.save').on('click', function() {
     $.ajax({
       type: 'POST',
       data: JSON.stringify(creator.fields()),
       contentType: 'application/json',
-      url: '/save/card'
+      url: creator.saveEndpoint
     });
   });
 
-  $('.saveDoc').on('click', function() {
-    $.ajax({
-      type: 'POST',
-      data: JSON.stringify(creator.fields()),
-      contentType: 'application/json',
-      url: '/save/document'
-    });
-  });
+  /* This method must be called by the document-specific
+   * controller when it is initialized itself.
+   * This method checks for any user data.
+   */
+  creator.init = function () {
+    if (creator.saveEndpoint == "") {
+      console.log("Error: no endpoint found for saving this document!")
+    } else {
+      $.getJSON(creator.saveEndpoint, function(data) {
+        console.log(data);
+        creator.table.html("") // Empty table to insert user fields
+        for (i = 0; i < data.length; i++) {
+          creator.addField(data[i].label, data[i].field);
+        }
+      });
+    }
+  }
 
   return creator;
 });
