@@ -9,9 +9,11 @@
 		</div>
 		<div id='PDFCreate'>
 			<h2 class="page-header">Medical ID card creator</h2>
-			<p class='justify'>This is an offline creator for a Medical ID card, intended for guest users. This means none of the entered data will be sent over the internet.
-			Click 'Create' to view how the card will look. You will have the option to return and make changes, or download the card.
-			Since you are a guest, after leaving this page you will not be able to modify your card and you will have to create it again. If you do want your progress saved, please <a href='users/register'>sign up</a>.</p>
+			{{#unless user}}
+				<p class='justify'>This is an offline creator for a Medical ID card, intended for guest users. This means none of the entered data will be sent over the internet.
+				Since you are a guest, after leaving this page you will not be able to modify your card and you will have to create it again. If you do want your progress saved, please <a href='users/register'>sign up</a>.</p>
+			{{/unless}}
+			<p>Click 'Create' to view how the card will look. You will have the option to return and make changes, or download the card.</p>
 			<p>For the emergency contacts, you may leave the name blank. For optimal results, please do fill in all other fields.</p>
 			<table id='fields'>
 				<thead>
