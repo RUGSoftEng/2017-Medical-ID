@@ -72,11 +72,21 @@ define(['jquery'], function($) {
 	});
 
   $('.saveCard').on('click', function() {
-    $.post("/save/card", {'card[]': creator.fields()});
+    $.ajax({
+      type: 'POST',
+      data: JSON.stringify(creator.fields()),
+      contentType: 'application/json',
+      url: '/save/card'
+    });
   });
 
   $('.saveDoc').on('click', function() {
-    $.post("/save/document", JSON.stringify({'document': creator.fields()}));
+    $.ajax({
+      type: 'POST',
+      data: JSON.stringify(creator.fields()),
+      contentType: 'application/json',
+      url: '/save/document'
+    });
   });
 
   return creator;
