@@ -19,7 +19,7 @@ router.get('/login', function(req, res){
 router.post('/register', function(req, res){
 	var name = req.body.name;
 	var email = req.body.email;
-	var username = req.body.username;
+	var username = req.body.username.toLowerCase();
 	var password = req.body.password;
 	var password2 = req.body.password2;
 
@@ -37,6 +37,9 @@ router.post('/register', function(req, res){
 		res.render('register',{
 			errors:errors
 		});
+	} else if(username) {
+		req.flash('error_msg', 'The chosen username is already taken.');
+		res.redirect('/users/register');
 	} else {
 		var newUser = new User({
 			name: name,
@@ -60,7 +63,7 @@ router.post('/register', function(req, res){
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-   User.getUserByUsername(username, function(err, user){
+   User.getUserByUsername(username.toLowerCase(), function(err, user){
    	if(err) throw err;
    	if(!user){
    		return done(null, false, {message: 'Unknown User'});
