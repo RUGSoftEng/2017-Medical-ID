@@ -7,7 +7,7 @@ html {
 }
 
 .unselectable {
-	-webkit-user-select: none; /* Chrome/Safari */        
+	-webkit-user-select: none; /* Chrome/Safari */
 	-moz-user-select: none; /* Firefox */
 	-ms-user-select: none; /* IE10+ */
 	/* Rules below not implemented in browsers yet */
@@ -109,4 +109,8 @@ body {
 
 .page-header {
 	margin-top: 0;
+}
+
+#creatorFormLoading {
+  margin-left: 200px;
 }
