@@ -12,7 +12,7 @@ router.post('/card', function(req, res){
 	});
 	// req.flash('success_msg', 'Data successfully stored');
 	// console.log(req.user); // for testing
-	res.end();
+	res.json({status: "success"});
 });
 
 router.post('/document', function(req, res){
@@ -22,7 +22,7 @@ router.post('/document', function(req, res){
 		if(err) throw err;
 	});
 	// req.flash('success_msg', 'Data successfully stored');
-	console.log(req.user); // for testing
+	// console.log(req.user); // for testing
 	res.json({status: "success"});
 });
 
