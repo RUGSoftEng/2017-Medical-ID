@@ -32,7 +32,7 @@ define(['medid/creator', 'jquery', 'jspdf', 'medid/res'], function(Creator, $, j
 		for (i = 0; i < fields.length; i++) {
 			if (fields[i].label == 'Donor' || fields[i].label == 'Blood type') {
 				// We place the short fields 'donor' and 'blood type' in the corner
-				if (leftCounter <= 2) { // Max capacity
+				if (leftCounter < 2) { // Max capacity
 					doc.setFontStyle("bold");
 					doc.text(leftStartPos[0], leftStartPos[1] + lineHeight * leftCounter, fields[i].label + ": ");
 					doc.setFontStyle("normal");
@@ -42,7 +42,7 @@ define(['medid/creator', 'jquery', 'jspdf', 'medid/res'], function(Creator, $, j
 			}
 			else {
 				// Place remaining lines on the main part of the card
-				if (leftCounter <= 7) { // Max capacity
+				if (rightCounter < 7) { // Max capacity
 					doc.setFontStyle("bold");
 					doc.text(rightStartPos[0], rightStartPos[1] + lineHeight * rightCounter, fields[i].label + ": ");
 					doc.setFontStyle("normal");
@@ -51,28 +51,6 @@ define(['medid/creator', 'jquery', 'jspdf', 'medid/res'], function(Creator, $, j
 				rightCounter++;
 			}
 		}
-
-		/*
-		doc.setFontStyle("bold");
-		doc.text(40, 30, "Name: ");
-		doc.text(40, 35, "Age: ");
-		doc.text(40, 40, "Insurance: ");
-		doc.text(40, 50, "Emergency contacts: ");
-		doc.text(12, 55, "Blood type: ");
-		doc.text(12, 60, "Donor: ");
-		// Emergency contacts
-		doc.setFontStyle("italic");
-
-		// Data
-		doc.setFontStyle("normal");
-		doc.text(57, 30, fields['Name']); //Name
-		doc.text(57, 35, fields['Age']); //Age
-		doc.text(57, 40, fields['Insurance']); //Insurance
-		doc.text(57, 45, "ID: " + fields['Insurance ID']); //Insurance ID
-		doc.text(31, 55, fields['Blood type']); //Blood type
-		doc.text(31, 60, fields['Donor']); //Donor
-		// Emergency contacts
-		*/
 
 		// Back side
 		MIDcard.drawCard(doc, 100, 10, 15);
@@ -91,15 +69,6 @@ define(['medid/creator', 'jquery', 'jspdf', 'medid/res'], function(Creator, $, j
 
 		return doc;
 	}
-
-	/*
-	MIDcard.parseFields = function (values) {
-		var fields = {};
-		for (i = 0; i < values.length; i++) {
-			fields[values[i].label] = values[i].field;
-		}
-		return fields;
-	}*/
 
 	Creator.getMethod(function (callback) {
 		callback(MIDcard.createPDF().output('datauristring')); //getDataUrl(callback);

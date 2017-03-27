@@ -3,7 +3,7 @@
 		<div id='PDFPreview' style='display: none'>
 			<p>
 			<input type='button' value='Download' class='downloadPDF' />
-			<input type='button' value='Back' class='hidePDF' /> | To save your data for future re-use, please <a href='/users/register'>sign up</a>.
+			<input type='button' value='Back' class='hidePDF' />{{#unless user}} | To save your data for future re-use, please <a href='users/register'>sign up</a>.{{/unless}}
 			</p>
 			<iframe style='width: 100%; height: 400px' id='previewFrame'></iframe>
 		</div>
