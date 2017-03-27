@@ -11,8 +11,8 @@ router.post('/card', function(req, res){
 		if(err) throw err;
 	});
 	// req.flash('success_msg', 'Data successfully stored');
-	// console.log(req.user); // for testing
-	res.json({status: "success"});
+	console.log(req.user); // for testing
+	res.end();
 });
 
 router.post('/document', function(req, res){
@@ -22,13 +22,12 @@ router.post('/document', function(req, res){
 		if(err) throw err;
 	});
 	// req.flash('success_msg', 'Data successfully stored');
-	// console.log(req.user); // for testing
-	res.json({status: "success"});
+	console.log(req.user); // for testing
+	res.end();
 });
 
 router.get('/document', function(req, res) {
 	if (req.user) {
-		console.log(req.user.document);
 		res.json(req.user.document);
 	} else {
 		res.sendFile('json/guestDocument.json', {root: __dirname + '/../public/'});
