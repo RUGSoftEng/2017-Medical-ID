@@ -18,16 +18,13 @@ define(['jquery'], function($) {
 
 		var label, field;
 		creator.table.children('tr').each(function () {
-			label = $(this).find('.medid-label').val();
-			field = $(this).find('.medid-field').val();
+      label = $(this).find('.medid-label');
+      field = $(this).find('.medid-field');
+      //labelEditable = label.is('[readonly]');
+      //fieldEditable = field.is('[readonly]');
 
-			//if (label == "") {
-      //  fields.push({field: field});
-			//} else {
-			//	fields.push({label: label, field: field})
-			//}
-
-      fields.push({label: label, field: field});
+      fields.push({label: label.val(), field: field.val()});
+      //fields.push({label: label.val(), field: field.val(), labelEditable: labelEditable, fieldEditable: fieldEditable});
 
       // Thijs: We might want to get rid of this part
       if (label == "Name") {
@@ -37,8 +34,12 @@ define(['jquery'], function($) {
     return fields;
 	}
 
-  creator.addField = function (label, field) {
-    var field = $("<tr><td><input class='medid-label' maxlength='15' value='" + label + "' type='text' /></td><td><input class='medid-field' maxlength='200' type='text' value='" + field + "' /></td><td><input class='removeField' type='button' value='Remove' /></td></tr>");
+  creator.addField = function (label, field, labelEditable, fieldEditable) {
+    inputLabel = "<input class='medid-label' maxlength='15' value='" + label + "' type='text' " + (labelEditable == false ? 'readonly' : '') + " />";
+    inputField = "<input class='medid-field' maxlength='200' type='text' value='" + field + "' " + (fieldEditable == false ? 'readonly' : '') + " />";
+    removeField = "<input class='removeField' type='button' value='Remove' />";
+
+    field = $("<tr><td>" + inputLabel + "</td><td>" + inputField + "</td><td>" + removeField + "</td></tr>");
 		this.table.append(field);
 
 		//The row can be removed again
@@ -84,7 +85,13 @@ define(['jquery'], function($) {
   });
 
 	$('.addField').on('click', function() {
-		creator.addField("",""); // Add empty field
+    /* Add a field, possibly with preset label or field */
+		creator.addField(
+      $(this).attr('data-label') || "",
+      $(this).attr('data-field') || "",
+      !($(this).attr('data-label-editable') == 'false'),
+      !($(this).attr('data-field-editable') == 'false')
+      );
 	});
 
   $('.save').on('click', function() {
