@@ -15,20 +15,24 @@
 			{{/unless}}
 			<p>Click 'Create' to view how the card will look. You will have the option to return and make changes, or download the card.</p>
 			<p>For the emergency contacts, you may leave the name blank. For optimal results, please do fill in all other fields.</p>
-			<table id='fields'>
-				<thead>
-					<tr><td>Label</td><td>Text</td></tr>
-				</thead>
-				<tbody>
+			<img src='/img/loading.gif' id='creatorFormLoading' /><br />
+			<div id='creatorForm' style='display: none' >
+				<table id='fields'>
+					<thead>
+						<tr><td>Label</td><td>Text</td></tr>
+					</thead>
+					<tbody>
 
-				</tbody>
-			</table>
-			<p>
-			<input type='button' value='Create' class="showPDF"/>
-			{{#if user}}
-				<input type='button' value='Save' class="save"/>
-			{{/if}}
-			</p>
+					</tbody>
+				</table>
+				<p>
+				<input type='button' value='Create' class="showPDF"/>
+				{{#if user}}
+					<input type='button' value='Save' class="save"/>
+				{{/if}}
+				<span id='message'></span>
+				</p>
+			</div>
 		</div>
 	</div>
 </div>
