@@ -8,8 +8,7 @@ define(['jquery'], function($) {
     },
     downloadMethod: function (downloadFnc) {
       this.downloadPDF = downloadFnc;
-    },
-    message: $('#message')
+    }
   }
 
   // Retrieval method for the field data
@@ -47,17 +46,6 @@ define(['jquery'], function($) {
 		});
   }
 
-  creator.flashSaveSuccess = function () {
-    creator.message.hide();
-    creator.message.text("Data successfully stored");
-    creator.message.fadeIn();
-    setTimeout(function () {
-      creator.message.fadeOut(function () {
-        creator.message.val("");
-      });
-    }, 1000);
-  }
-
   // Button listeners
   $('.downloadPDF').on('click', function () {
     // Call the function provided by the document-specific engine to download
@@ -92,16 +80,9 @@ define(['jquery'], function($) {
       type: 'POST',
       data: JSON.stringify(creator.fields()),
       contentType: 'application/json',
-      url: creator.saveEndpoint,
-      success: function(data) {
-        if (data.status == "success") {
-          creator.flashSaveSuccess();
-        }
-      }
+      url: creator.saveEndpoint
     });
   });
-
-
 
   /* This method must be called by the document-specific
    * controller when it is initialized itself.
@@ -112,13 +93,11 @@ define(['jquery'], function($) {
       console.log("Error: no endpoint found for saving this document!")
     } else {
       $.getJSON(creator.saveEndpoint, function(data) {
+        console.log(data);
+        creator.table.html("") // Empty table to insert user fields
         for (i = 0; i < data.length; i++) {
           creator.addField(data[i].label, data[i].field);
         }
-        /* Only show the form once it is loaded */
-        $('#creatorFormLoading').fadeOut(function () {
-          $('#creatorForm').slideDown();
-        });
       });
     }
   }
