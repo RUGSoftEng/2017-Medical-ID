@@ -1,0 +1,17 @@
+<div class="col-lg-12">
+	<div class="content-wrap">
+		{{#if displayUser}}
+			<h2 class="page-header">{{displayUser.name}}</h2>
+			<table style="font-size: 1.25em;">
+				{{#each displayUser.document}}
+					<tr>
+						<td style="padding-right: 10px;">{{this.label}}: </td>
+						<td>{{this.field}}</td>
+					</tr>
+				{{/each}}
+			</table>
+		{{else}}
+			No user found!
+		{{/if}}
+	</div>
+</div>
