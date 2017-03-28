@@ -2,6 +2,7 @@ define(['jquery'], function($) {
 
   var creator = {
     table: $('#fields tbody'),
+    userName: "",
     saveEndpoint: "",
     getMethod: function (getFnc) {
       this.getPDF = getFnc;
@@ -18,32 +19,45 @@ define(['jquery'], function($) {
 
 		var label, field;
 		creator.table.children('tr').each(function () {
-			label = $(this).find('.medid-label').val();
-			field = $(this).find('.medid-field').val();
+      label = $(this).find('.medid-label');
+      field = $(this).find('.medid-field');
+      //labelEditable = label.is('[readonly]');
+      //fieldEditable = field.is('[readonly]');
 
-			//if (label == "") {
-      //  fields.push({field: field});
-			//} else {
-			//	fields.push({label: label, field: field})
-			//}
-
-      fields.push({label: label, field: field});
+      fields.push({label: label.val(), field: field.val()});
+      //fields.push({label: label.val(), field: field.val(), labelEditable: labelEditable, fieldEditable: fieldEditable});
 
       // Thijs: We might want to get rid of this part
-      if (label == "Name") {
-        creator.userName = field;
+      if (label.val() == "Name" && creator.userName == "") {
+        creator.userName = field.val();
       }
 		});
     return fields;
 	}
 
-  creator.addField = function (label, field) {
-    var field = $("<tr><td><input class='medid-label' maxlength='15' value='" + label + "' type='text' /></td><td><input class='medid-field' maxlength='200' type='text' value='" + field + "' /></td><td><input class='removeField' type='button' value='Remove' /></td></tr>");
+  creator.addField = function (label, field, labelEditable, fieldEditable) {
+    inputLabel = "<input class='medid-label' maxlength='15' value='" + label + "' type='text' " + (labelEditable == false ? 'readonly' : '') + " />";
+    inputField = "<input class='medid-field' maxlength='57' type='text' value='" + field + "' " + (fieldEditable == false ? 'readonly' : '') + " />";
+    removeField = "<input class='removeField' type='button' value='Remove' />";
+    moveUp = "<span class='glyphicon glyphicon-arrow-up clickable moveUp'></span>";
+    moveDown = "<span class='glyphicon glyphicon-arrow-down clickable moveDown'></span>";
+
+    field = $("<tr><td>" + inputLabel + "</td><td>" + inputField + "</td><td>" + removeField + "</td><td>" + moveUp + moveDown + "</td></tr>");
 		this.table.append(field);
 
 		//The row can be removed again
 		field.find('.removeField').on('click', function() {
 			$(this).parent().parent().remove();
+		});
+
+    field.find('.moveUp').on('click', function() {
+			row = $(this).parent().parent();
+      row.prev().before(row);
+		});
+
+    field.find('.moveDown').on('click', function() {
+      row = $(this).parent().parent();;
+      row.before(row.next());
 		});
   }
 
@@ -84,7 +98,13 @@ define(['jquery'], function($) {
   });
 
 	$('.addField').on('click', function() {
-		creator.addField("",""); // Add empty field
+    /* Add a field, possibly with preset label or field */
+		creator.addField(
+      $(this).attr('data-label') || "",
+      $(this).attr('data-field') || "",
+      !($(this).attr('data-label-editable') == 'false'),
+      !($(this).attr('data-field-editable') == 'false')
+      );
 	});
 
   $('.save').on('click', function() {
@@ -118,8 +138,15 @@ define(['jquery'], function($) {
         /* Only show the form once it is loaded */
         $('#creatorFormLoading').fadeOut(function () {
           $('#creatorForm').slideDown();
+          $('.longloadErr').remove();
         });
       });
+      setTimeout(function() {
+        console.log("Timeout");
+        if ($('#creatorFormLoading').is(":visible")) {
+          $('#creatorFormLoading').after("<p class='longloadErr' id='error_msg'>Things seem to take a bit long. Try refreshing.</p>");
+        }
+      }, 5000);
     }
   }
 

@@ -74,7 +74,7 @@ define(['medid/creator', 'medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], fun
 		for (i = 0; i < values.length; i++) {
 			if (values[i].label) {
 				fields.push([{text: values[i].label, bold: true}, values[i].field]);
-			} else {
+			} else if (values[i].field) {
 				fields.push([{text: values[i].field, colSpan: 2}, {}]);
 			}
 		}
