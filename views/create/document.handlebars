@@ -33,6 +33,9 @@
 					{{/if}}
 					<span id='message' style='color: green'></span>
 				</p>
+				{{#if user}}
+					<a href="/profile?id={{user.id}}">View your personal profile!</a>
+				{{/if}}
 			</div>
 		</div>
 	</div>
