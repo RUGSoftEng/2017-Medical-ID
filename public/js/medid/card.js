@@ -30,6 +30,8 @@ define(['medid/creator', 'jquery', 'jspdf', 'medid/res'], function(Creator, $, j
 		var leftStartPos = [12,55], rightStartPos = [40,30];
 		var lineHeight = 5, leftLabelWidth = 19, rightLabelWidth = 21;
 		for (i = 0; i < fields.length; i++) {
+			fields[i].label = fields[i].label.substring(0, 11);
+			fields[i].field = fields[i].field.substring(0, 19);
 			if (fields[i].label == 'Donor' || fields[i].label == 'Blood type') {
 				// We place the short fields 'donor' and 'blood type' in the corner
 				if (leftCounter < 2) { // Max capacity

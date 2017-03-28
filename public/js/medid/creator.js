@@ -37,7 +37,7 @@ define(['jquery'], function($) {
 
   creator.addField = function (label, field, labelEditable, fieldEditable) {
     inputLabel = "<input class='medid-label' maxlength='15' value='" + label + "' type='text' " + (labelEditable == false ? 'readonly' : '') + " />";
-    inputField = "<input class='medid-field' maxlength='200' type='text' value='" + field + "' " + (fieldEditable == false ? 'readonly' : '') + " />";
+    inputField = "<input class='medid-field' maxlength='57' type='text' value='" + field + "' " + (fieldEditable == false ? 'readonly' : '') + " />";
     removeField = "<input class='removeField' type='button' value='Remove' />";
     moveUp = "<span class='glyphicon glyphicon-arrow-up clickable moveUp'></span>";
     moveDown = "<span class='glyphicon glyphicon-arrow-down clickable moveDown'></span>";
