@@ -127,10 +127,9 @@ body {
 	color: green;
 }
 
-@media (max-width: 768px) {
+/* MEDIA QUERIES */
+@media (max-width: 820px) {
   body {
 	  margin: 0;
   }
 }
-
-
