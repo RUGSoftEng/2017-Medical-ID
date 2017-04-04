@@ -110,7 +110,8 @@ body {
 }
 
 #creatorFormLoading {
-  margin-left: 200px;
+	margin: 0 auto;
+	display: block;
 }
 
 .addField {

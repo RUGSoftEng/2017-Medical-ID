@@ -1,17 +1,29 @@
-<div class="col-lg-12">
+<div class="col-xs-12">
+	<div class="content-wrap" style="text-align: center">
+		<h2 class="page-header" style="margin: 0;">{{displayUser.name}}</h2>
+	</div>
+</div>
+<div class="col-sm-12 col-md-8">
 	<div class="content-wrap">
 		{{#if displayUser}}
-			<h2 class="page-header">{{displayUser.name}}</h2>
-			<table class="profile-display-table">
+			<!--<table class="profile-display-table">-->
 				{{#each displayUser.document}}
-					<tr>
+					<span style="font-weight: 700;">{{this.label}}</span><br />
+					{{this.field}}<br />
+					<br />
+					<!--<tr>
 						<td style="padding-right: 10px;">{{this.label}}: </td>
 						<td height="30">{{this.field}}</td>
-					</tr>
+					</tr>-->
 				{{/each}}
-			</table>
+			<!--</table>-->
 		{{else}}
 			No user found!
 		{{/if}}
+	</div>
+</div>
+<div class="col-sm-12 col-md-4">
+	<div class="content-wrap">
+		<img width='100%' src='img/doctor.jpg' />
 	</div>
 </div>
