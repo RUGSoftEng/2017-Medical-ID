@@ -32,28 +32,6 @@ html {
 	background-color: black;
 }
 
-#banner {
-	width: 100%;
-	background: url(../img/back.jpg);
-	background-color: #14234F;
-	background-size: 100% 100%;
-	display: inline-block;
-	vertical-align: top;
-}
-
-#bannerTitle {
-	float: left;
-    font-size: 3em;
-    font-weight: bold;
-    color: white;
-    margin-left: 5%;
-}
-
-#bannerTitle p {
-	display: block;
-    margin: 1em 0;
-}
-
 .content-wrap {
 	padding: 15px 0;
 	word-wrap: break-word;
@@ -78,6 +56,16 @@ html {
 	text-decoration: none;
 }
 
+.img-rounded {
+	width: 100%;
+	max-width: 300px;
+	min-width: 150px;
+}
+
+.profile-display-table {
+	font-size: 1.25em;
+}
+
 /* CHANGES TO BOOTSTRAP DEFAULT */
 
 body {
@@ -92,7 +80,7 @@ body {
 
 .navbar {
 	border-radius: 0;
-	border: none;
+	border-color: #1a1a1a;
 	background-color: #333;
 	margin: 0;
 }
@@ -104,6 +92,15 @@ body {
 .navbar-brand {
 	color: white !important;
 	font-size: 1.25em;
+}
+
+.jumbotron {
+	color: white;
+	border-radius: 0 !important;
+	font-size: 3em;
+	font-weight: 700;
+	margin: 0;
+	background: url('../img/back.jpg') 0 0/100% 100% no-repeat;
 }
 
 .page-header {
@@ -129,21 +126,16 @@ body {
 	color: green;
 }
 
-.img-rounded {
-	width: 90%;
-	max-width: 450px;
-}
-
-.profile-display-table {
-	font-size: 1.25em;
-}
-
 /* MEDIA QUERIES */
 @media (max-width: 500px) {
+	.jumbotron {
+		background: #1c2e60;
+	}
+
 	.bigButtonCell {
 		width: 90%;
 	}
-	
+
 	.profile-display-table {
 		font-size: 1em;
 		width: 100%;

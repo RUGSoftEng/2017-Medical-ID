@@ -80,15 +80,11 @@ define(['jquery'], function($) {
 
   $('.showPDF').on('click', function () {
     // Call the function provided by the document-specific engine to retrieve
-
+	previewFrame.src = "/preview_placeholder.html";
     $('#PDFCreate').slideUp(function() {
       $('#PDFPreview').slideDown();
       creator.getPDF(function(data) {
-		  if(data){
-			  previewFrame.src = data;
-		  } else {
-			  previewFrame.src = "/preview_placeholder.html";
-		  }
+		  previewFrame.src = data;
   	  });
   	});
   });
