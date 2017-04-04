@@ -115,7 +115,7 @@ body {
   margin-left: 200px;
 }
 
-.addField {
+.addField, .addImage {
 	cursor: pointer;
 }
 
@@ -127,4 +127,13 @@ body {
 
 #message {
 	color: green;
+}
+
+#error {
+	color: red;
+}
+
+.previewImg {
+	max-height: 100px;
+	max-width: 100px;
 }

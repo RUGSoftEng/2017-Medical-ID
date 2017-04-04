@@ -10,7 +10,10 @@ define(['jquery'], function($) {
     downloadMethod: function (downloadFnc) {
       this.downloadPDF = downloadFnc;
     },
-    message: $('#message')
+    message: $('#message'),
+    error: $('#error'),
+    imageMax: 500000,
+    imageMaxString: "500Kb"
   }
 
   // Retrieval method for the field data
@@ -27,7 +30,7 @@ define(['jquery'], function($) {
       fields.push({label: label.val(), field: field.val()});
       //fields.push({label: label.val(), field: field.val(), labelEditable: labelEditable, fieldEditable: fieldEditable});
 
-      // Thijs: We might want to get rid of this part
+      // We might want to get rid of this part
       if (label.val() == "Name" && creator.userName == "") {
         creator.userName = field.val();
       }
@@ -35,9 +38,9 @@ define(['jquery'], function($) {
     return fields;
 	}
 
-  creator.addField = function (label, field, labelEditable, fieldEditable) {
-    inputLabel = "<input class='medid-label' maxlength='15' value='" + label + "' type='text' " + (labelEditable == false ? 'readonly' : '') + " />";
-    inputField = "<input class='medid-field' maxlength='57' type='text' value='" + field + "' " + (fieldEditable == false ? 'readonly' : '') + " />";
+  creator.addField = function (label, field, labelEditable, fieldEditable, labelSize, fieldSize) {
+    inputLabel = "<input class='medid-label' maxlength='" + labelSize + "' value='" + label + "' type='text' " + (labelEditable == false ? 'readonly' : '') + " />";
+    inputField = "<input class='medid-field' maxlength='" + fieldSize + "' type='text' value='" + field + "' " + (fieldEditable == false ? 'readonly' : '') + " />";
     removeField = "<input class='removeField' type='button' value='Remove' />";
     moveUp = "<span class='glyphicon glyphicon-arrow-up clickable moveUp'></span>";
     moveDown = "<span class='glyphicon glyphicon-arrow-down clickable moveDown'></span>";
@@ -61,13 +64,61 @@ define(['jquery'], function($) {
 		});
   }
 
-  creator.flashSaveSuccess = function () {
+  creator.imageField = function (data) {
+    if (this.table.children('tr').first().attr('id') == 'image') {
+      if (data && data != "") {
+          this.table.children[0].find('img').attr('src', data);
+      }
+    } else {
+      removeField = "<input class='removeField' type='button' value='Remove' />";
+      inputField = "<input class='medid-field' type='hidden' />";
+      field = $('<tr id="image"><td><input class="medid-label" value="Image" readonly /></td><td><img class="previewImg" /><input id="upload" name="file" type="file" />' + inputField + '</td><td>' + removeField + '</td></tr>');
+      this.table.prepend(field);
+
+      creator.previewImg = field.find('img');
+
+      // The row can be removed again
+  		field.find('.removeField').on('click', function() {
+  			$(this).parent().parent().remove();
+  		});
+
+      field.find('#upload').on('change', function() {
+        var file = this.files[0];
+        if (file.size < creator.imageMax) {
+          reader = new FileReader();
+          reader.onload = function(e) {
+            data = e.target.result;
+            field.find('.medid-field').val(data);
+            creator.previewImg.attr('src', data);
+          };
+          reader.readAsDataURL(file);
+        } else {
+          creator.showError("Error: image to large (maximum is " + creator.imageMaxString + ")!");
+          $(this).val(null);
+        }
+      });
+    }
+  }
+
+  /* Might want to reduce these two functions to one */
+  creator.showMessage = function (text) {
     creator.message.hide();
-    creator.message.text("Data successfully stored");
+    creator.message.text(text);
     creator.message.fadeIn();
     setTimeout(function () {
       creator.message.fadeOut(function () {
         creator.message.val("");
+      });
+    }, 1000);
+  }
+
+  creator.showError = function (text) {
+    creator.error.hide();
+    creator.error.text(text);
+    creator.error.fadeIn();
+    setTimeout(function () {
+      creator.error.fadeOut(function () {
+        creator.error.val("");
       });
     }, 1000);
   }
@@ -79,8 +130,10 @@ define(['jquery'], function($) {
   });
 
   $('.showPDF').on('click', function () {
-    // Call the function provided by the document-specific engine to retrieve
-
+    if (creator.previewImg) {
+      creator.imageHeight = creator.previewImg.height();
+      creator.imageWidth = creator.previewImg.width();
+    }
     $('#PDFCreate').slideUp(function() {
       previewFrame.src = "/preview_placeholder.html";
       $('#PDFPreview').slideDown();
@@ -103,19 +156,26 @@ define(['jquery'], function($) {
       $(this).attr('data-label') || "",
       $(this).attr('data-field') || "",
       !($(this).attr('data-label-editable') == 'false'),
-      !($(this).attr('data-field-editable') == 'false')
+      !($(this).attr('data-field-editable') == 'false'),
+      $(this).attr('data-label-size') || 15,
+      $(this).attr('data-field-size') || 57
       );
 	});
+
+  $('.addImage').on('click', function() {
+    creator.imageField();
+  });
 
   $('.save').on('click', function() {
     $.ajax({
       type: 'POST',
       data: JSON.stringify(creator.fields()),
       contentType: 'application/json',
+      enctype: 'multipart/form-data',
       url: creator.saveEndpoint,
       success: function(data) {
         if (data.status == "success") {
-          creator.flashSaveSuccess();
+          creator.showMessage("Data succesfully stored.");
         }
       }
     });
@@ -133,7 +193,11 @@ define(['jquery'], function($) {
     } else {
       $.getJSON(creator.saveEndpoint, function(data) {
         for (i = 0; i < data.length; i++) {
-          creator.addField(data[i].label, data[i].field);
+          if (data[i].label == "Image") {
+            creator.imageField(data[i].field);
+          } else {
+            creator.addField(data[i].label, data[i].field);
+          }
         }
         /* Only show the form once it is loaded */
         $('#creatorFormLoading').fadeOut(function () {
@@ -142,7 +206,6 @@ define(['jquery'], function($) {
         });
       });
       setTimeout(function() {
-        console.log("Timeout");
         if ($('#creatorFormLoading').is(":visible")) {
           $('#creatorFormLoading').after("<p class='longloadErr' id='error_msg'>Things seem to take a bit long. Try refreshing.</p>");
         }
