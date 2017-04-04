@@ -2,11 +2,11 @@
 	<div class="content-wrap">
 		{{#if displayUser}}
 			<h2 class="page-header">{{displayUser.name}}</h2>
-			<table style="font-size: 1.25em;">
+			<table class="profile-display-table">
 				{{#each displayUser.document}}
 					<tr>
 						<td style="padding-right: 10px;">{{this.label}}: </td>
-						<td>{{this.field}}</td>
+						<td height="30">{{this.field}}</td>
 					</tr>
 				{{/each}}
 			</table>

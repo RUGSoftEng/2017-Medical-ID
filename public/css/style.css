@@ -127,8 +127,28 @@ body {
 	color: green;
 }
 
+.img-rounded {
+	width: 90%;
+	max-width: 450px;
+}
+
+.profile-display-table {
+	font-size: 1.25em;
+}
+
 /* MEDIA QUERIES */
-@media (max-width: 820px) {
+@media (max-width: 500px) {
+	.bigButtonCell {
+		width: 90%;
+	}
+	
+	.profile-display-table {
+		font-size: 1em;
+		width: 100%;
+	}
+}
+
+@media (max-width: 767px) {
   body {
 	  margin: 0;
   }
