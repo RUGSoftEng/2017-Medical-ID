@@ -4,6 +4,7 @@
 
 html {
 	background-color: #050914;
+	font-size: 16px;
 }
 
 .unselectable {
@@ -50,10 +51,7 @@ html {
 
 #bannerTitle p {
 	display: block;
-    -webkit-margin-before: 1em;
-    -webkit-margin-after: 1em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
+    margin: 1em 0;
 }
 
 .content-wrap {
@@ -127,4 +125,11 @@ body {
 
 #message {
 	color: green;
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 820px) {
+  body {
+	  margin: 0;
+  }
 }
