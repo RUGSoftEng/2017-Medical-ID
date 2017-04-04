@@ -27,7 +27,11 @@ define(['jquery'], function($) {
       //labelEditable = label.is('[readonly]');
       //fieldEditable = field.is('[readonly]');
 
-      fields.push({label: label.val(), field: field.val()});
+      if (label.val() == 'Image' && $(this).attr('id') != 'image') {
+        //Don't add it as it is not an actual image
+      } else {
+        fields.push({label: label.val(), field: field.val()});
+      }
       //fields.push({label: label.val(), field: field.val(), labelEditable: labelEditable, fieldEditable: fieldEditable});
 
       // We might want to get rid of this part
@@ -65,14 +69,16 @@ define(['jquery'], function($) {
   }
 
   creator.imageField = function (data) {
-    if (this.table.children('tr').first().attr('id') == 'image') {
+    firstField = this.table.children('tr').first();
+    if (firstField.attr('id') == 'image') {
       if (data && data != "") {
-          this.table.children[0].find('img').attr('src', data);
+          firstField.find('img').attr('src', data);
+          firstField.find('.medid-field').attr('value', data);
       }
     } else {
       removeField = "<input class='removeField' type='button' value='Remove' />";
-      inputField = "<input class='medid-field' type='hidden' />";
-      field = $('<tr id="image"><td><input class="medid-label" value="Image" readonly /></td><td><img class="previewImg" /><input id="upload" name="file" type="file" />' + inputField + '</td><td>' + removeField + '</td></tr>');
+      inputField = "<input class='medid-field' type='hidden' value='" + (data || "") + "' />";
+      field = $('<tr id="image"><td><input class="medid-label" value="Image" readonly /></td><td><img class="previewImg" src="' + (data || "") + '" /><input id="upload" name="file" type="file" />' + inputField + '</td><td>' + removeField + '</td></tr>');
       this.table.prepend(field);
 
       creator.previewImg = field.find('img');
