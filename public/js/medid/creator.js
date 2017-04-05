@@ -140,12 +140,13 @@ define(['jquery'], function($) {
       creator.imageHeight = creator.previewImg.height();
       creator.imageWidth = creator.previewImg.width();
     }
+    // Call the function provided by the document-specific engine to retrieve
+	previewFrame.src = "/preview_placeholder.html";
     $('#PDFCreate').slideUp(function() {
-      previewFrame.src = "/preview_placeholder.html";
       $('#PDFPreview').slideDown();
       creator.getPDF(function(data) {
-        previewFrame.src = data;
-  		});
+		  previewFrame.src = data;
+  	  });
   	});
   });
 

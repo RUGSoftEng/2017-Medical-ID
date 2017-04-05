@@ -4,22 +4,19 @@
 		<title>Medical ID</title>
 		<link rel="stylesheet" href="/css/bootstrap.css" />
 		<link rel="stylesheet" href="/css/style.css" />
-		<meta name="viewport" content="width=device-width">
-
 		<script data-main='/js/common.js' src='/js/lib/require.js'></script>
-		<script src='/js/lib/jquery.min.js'></script>
-		<script src='/js/lib/bootstrap.min.js'></script>
+		<meta name="viewport" content="width=device-width">
 	</head>
 
 	<body>
 		{{creator}}
 		<nav class="navbar navbar-default">
 			<div class="navbar-header">
-				<span class="navbar-brand nav-link">mID</span>
+				<span class="navbar-brand nav-link unselectable">mID</span>
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
-					<span class="icon-bar"></span> 
+					<span class="icon-bar"></span>
 				</button>
 			</div>
 
@@ -43,14 +40,12 @@
 				<div class="hor-spacer"></div>
 			</div>
 			<div class="row">
-				<div id="banner">
-					<div id="bannerTitle">
-						<p class="unselectable">
-							<span style="font-size: 0.5em;">Your Personal</span>
-							<br />
-							Medical ID
-						</p>
-					</div>
+				<div class="jumbotron">
+					<span class="unselectable">
+						<span style="font-size: 0.5em;">Your Personal</span>
+						<br />
+						Medical ID
+					</span>
 				</div>
 			</div>
 
@@ -74,5 +69,7 @@
 				{{{body}}}
 			</div>
 		</div>
+		<script src='/js/lib/jquery.min.js'></script>
+		<script src='/js/lib/bootstrap.min.js'></script>
 	</body>
 </html>
