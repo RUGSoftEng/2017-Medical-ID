@@ -1,6 +1,16 @@
 define(function() {
+
+  /**
+   * Utilities module to hold methods that may be useful all around.
+   * Currently contains only one method.
+   * @exports util
+   */
   var util = {};
 
+  /**
+   * Method to generate a nicely formatted date string.
+   * @returns {string} The date formatted according to the dd-mm-yyy format.
+   */
   util.formatDate = function () {
   	var today = new Date();
   	var dd = today.getDate();
