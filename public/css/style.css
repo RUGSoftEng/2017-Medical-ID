@@ -4,7 +4,6 @@
 
 html {
 	background-color: #050914;
-	font-size: 16px;
 }
 
 .unselectable {
@@ -128,6 +127,10 @@ body {
 
 /* MEDIA QUERIES */
 @media (max-width: 500px) {
+	body {
+		font-size: 12px;
+	}
+	
 	.jumbotron {
 		background: #1c2e60;
 	}
@@ -143,6 +146,7 @@ body {
 }
 
 @media (max-width: 767px) {
+	
   body {
 	  margin: 0;
   }
