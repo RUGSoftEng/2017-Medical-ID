@@ -25,8 +25,7 @@ define(['medid/creator', 'medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], fun
 	MIDdocument.labelWidth = 160;
 	MIDdocument.logoSize = 100;
 
-	/* Method for creating a PDF, returning a pdfMake PDF object.
-	 */
+	/* Method for creating a PDF, returning a pdfMake PDF object. */
 	MIDdocument.createPDF = function () {
 		// Get fields from Creator engine, turn them into something useful
 		var fields = MIDdocument.parseFields( Creator.fields() );
@@ -62,13 +61,11 @@ define(['medid/creator', 'medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], fun
 
 			styles: MIDdocument.documentStyle
 		};
-
 	return pdfMake.createPdf(doc);
 	}
 
 	/* Turn the fields the Creator engine provides us with into an object
-	 * that can be actually inserted into the object used for creating the PDF.
-	 */
+	 * that can be actually inserted into the object used for creating the PDF. */
 	MIDdocument.parseFields = function (values) {
 		var fields = [];
 		for (i = 0; i < values.length; i++) {
@@ -81,8 +78,7 @@ define(['medid/creator', 'medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], fun
 		return fields;
 	}
 
-	/* The Creator engine needs to get 2 functions from the document-specific engine
-	 */
+	/* The Creator engine needs to get 2 functions from the document-specific engine */
 	Creator.getMethod(function (callback) {
 		MIDdocument.createPDF().getDataUrl(callback);
 	});

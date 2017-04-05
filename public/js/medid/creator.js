@@ -80,13 +80,12 @@ define(['jquery'], function($) {
 
   $('.showPDF').on('click', function () {
     // Call the function provided by the document-specific engine to retrieve
-
+	previewFrame.src = "/preview_placeholder.html";
     $('#PDFCreate').slideUp(function() {
-      previewFrame.src = "/preview_placeholder.html";
       $('#PDFPreview').slideDown();
       creator.getPDF(function(data) {
-        previewFrame.src = data;
-  		});
+		  previewFrame.src = data;
+  	  });
   	});
   });
 
@@ -142,7 +141,6 @@ define(['jquery'], function($) {
         });
       });
       setTimeout(function() {
-        console.log("Timeout");
         if ($('#creatorFormLoading').is(":visible")) {
           $('#creatorFormLoading').after("<p class='longloadErr' id='error_msg'>Things seem to take a bit long. Try refreshing.</p>");
         }
