@@ -111,7 +111,7 @@ body {
 	display: block;
 }
 
-.addField {
+.addField, .addImage {
 	cursor: pointer;
 }
 
@@ -124,6 +124,14 @@ body {
 #message {
 	color: green;
 }
+
+#error {
+	color: red;
+}
+
+.previewImg {
+	max-height: 100px;
+	max-width: 100px;
 
 /* MEDIA QUERIES */
 @media (max-width: 500px) {

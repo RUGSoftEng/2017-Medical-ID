@@ -1,5 +1,8 @@
 # 2017-Medical-ID
-htmlpreview: [VIEW](https://medid.herokuapp.com/)
+
+Running project: [VIEW](https://medid.herokuapp.com/)
+
+Client-side documentation: [VIEW](https://htmlpreview.github.io/?https://raw.githubusercontent.com/RUGSoftEng/2017-Medical-ID/develop/doc/index.html)
 
 ### cmd Reminders ###
 
