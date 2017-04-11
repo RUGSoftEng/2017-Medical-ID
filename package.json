@@ -9,6 +9,7 @@
   },
   "author": "Medical ID development team",
   "license": "ISC",
+  "repository": "https://github.com/RUGSoftEng/2017-Medical-ID",
   "dependencies": {
     "bcryptjs": "*",
     "body-parser": "*",
@@ -24,6 +25,7 @@
     "passport": "*",
     "passport-http": "*",
     "passport-local": "*",
-    "qrcode-js": "0.0.2"
+    "qrcode-js": "0.0.2",
+    "sharp": "^0.17.3"
   }
 }
