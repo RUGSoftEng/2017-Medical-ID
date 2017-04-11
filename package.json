@@ -16,6 +16,7 @@
     "connect-flash": "*",
     "cookie-parser": "^1.4.1",
     "express": "*",
+    "express-force-https": "^1.0.0",
     "express-handlebars": "*",
     "express-messages": "*",
     "express-session": "*",
