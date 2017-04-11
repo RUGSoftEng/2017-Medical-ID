@@ -10,6 +10,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
+var forceHttps = require('express-force-https');
 
 mongoose.connect('mongodb://root:toor@med-shard-00-00-mgwxu.mongodb.net:27017,med-shard-00-01-mgwxu.mongodb.net:27017,med-shard-00-02-mgwxu.mongodb.net:27017/loginapp?ssl=true&replicaSet=med-shard-0&authSource=admin');
 //mongoose.connect('mongodb://localhost/loginapp');
@@ -44,6 +45,9 @@ app.use(session({
     saveUninitialized: true,
     resave: true
 }));
+
+// Force HTTPS when not running on localhost
+app.use(forceHttps);
 
 // Passport init
 app.use(passport.initialize());
