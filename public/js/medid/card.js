@@ -101,7 +101,7 @@ define(['medid/creator', 'jspdf', 'jquery', 'medid/res'], function(Creator, jsPD
 		// Retrieving QR code from server
 		$.get('/save/qr', function(qrcode) {
 			console.log(qrcode);
-			doc.addImage(qrcode, 'PNG', 123, 25, 38, 38);
+			doc.addImage(qrcode, 'JPEG', 123, 25, 38, 38);
 			callback(doc);
 		})
 	}

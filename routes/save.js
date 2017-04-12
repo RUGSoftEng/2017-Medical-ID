@@ -57,8 +57,8 @@ router.get('/qr', function(req, res) {
 		url = baseURL + '/users/register';
 	}
 	dataString = qrcode.toBase64(url, 4);
-	image = sharp(Buffer.from(dataString, 'base64')).png().toBuffer(function(err, data, info) {
-		res.send('data:image/png;base64,' + data.toString('base64'));
+	image = sharp(Buffer.from(dataString, 'base64')).jpeg().toBuffer(function(err, data, info) {
+		res.send('data:image/jpeg;base64,' + data.toString('base64'));
 	});
 });
 
