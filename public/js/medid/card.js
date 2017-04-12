@@ -1,4 +1,4 @@
-define(['medid/creator', 'jspdf', 'medid/res'], function(Creator, jsPDF) {
+define(['medid/creator', 'jspdf', 'jquery', 'medid/res'], function(Creator, jsPDF, $) {
 
 	/**
 	 * The card module implements card creation functionality upon the creator.js module.
@@ -33,9 +33,9 @@ define(['medid/creator', 'jspdf', 'medid/res'], function(Creator, jsPDF) {
 	/**
 	 * Method to generate the Medical ID card PDF.
 	 * Uses the fields() method of the creator module as input data.
-	 * @return {jsPDF} The document object of the generated card.
+	 * @param {method} callback - Callback to return the jsPDF document object.
 	 */
-	MIDcard.createPDF = function () {
+	MIDcard.createPDF = function (callback) {
 
 		var fields = Creator.fields();
 		var doc = new jsPDF();
@@ -89,10 +89,6 @@ define(['medid/creator', 'jspdf', 'medid/res'], function(Creator, jsPDF) {
 
 		// Back side
 		MIDcard.drawCard(doc, 100, 10, 15);
-		doc.setFontStyle('normal');
-		doc.text(110, 40, "This is an example card.");
-		doc.text(110, 44, "The functional version of this card is reserved");
-		doc.text(110, 48, "for registered users.");
 
 		// Header bars
 		doc.addImage(Resources.redLogo,'JPEG', 12,12,12,12);
@@ -102,14 +98,23 @@ define(['medid/creator', 'jspdf', 'medid/res'], function(Creator, jsPDF) {
 		doc.setFontSize(14);
 		doc.text(104, 19, "SCAN FOR MORE INFORMATION");
 
-		return doc;
+		// Retrieving QR code from server
+		$.get('/save/qr', function(qrcode) {
+			console.log(qrcode);
+			doc.addImage(qrcode, 'JPEG', 123, 25, 38, 38);
+			callback(doc);
+		})
 	}
 
 	Creator.getMethod(function (callback) {
-		callback(MIDcard.createPDF().output('datauristring')); //getDataUrl(callback);
+		MIDcard.createPDF(function(doc) {
+			callback(doc.output('datauristring'));
+		});
 	});
 	Creator.downloadMethod(function (name) {
-		MIDcard.createPDF().save(name);
+		MIDcard.createPDF(function(doc) {
+			doc.save(name);
+		});
 	});
 	Creator.saveEndpoint = '/save/card';
 	Creator.init();
