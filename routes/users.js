@@ -20,7 +20,7 @@ router.get('/login', function(req, res){
 // Register User
 router.post("/register", function(req,res){
 	var name = req.body.name;
-	var email = req.body.email;
+	var email = req.body.email.toLowerCase();
 	var username = req.body.username.toLowerCase();
 	var password = req.body.password;
 	var password2 = req.body.password2;
@@ -51,10 +51,10 @@ router.post("/register", function(req,res){
 				res.redirect('/users/register');
 			} else{
 				var seed = crypto.randomBytes(32).toString('hex');//hex can be changed to base64
-				username = crypto.createHash('sha256').update(username).digest('hex');
+				//username = crypto.createHash('sha256').update(username).digest('hex');
 				var newUser = new User({
 					name: encrypt(name, seed),
-					email: encrypt(email, seed),
+					email: email,
 					username: username,
 					password: password,
 					seed: seed,
@@ -76,7 +76,7 @@ router.post("/register", function(req,res){
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-   username = crypto.createHash('sha256').update(username.toLowerCase()).digest('hex');
+   //username = crypto.createHash('sha256').update(username.toLowerCase()).digest('hex');
    User.getUserByUsername(username, function(err, user){
    	if(err) throw err;
    	if(!user){

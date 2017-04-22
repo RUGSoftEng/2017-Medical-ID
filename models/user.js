@@ -13,6 +13,12 @@ var UserSchema = mongoose.Schema({
 	seed: {
 		type: String
 	},
+	resetPasswordToken: {
+		type: String
+	},
+	resetPasswordExpires: {
+		type: Date
+	},
 	email: {
 		type: String
 	},
