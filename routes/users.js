@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var crypto = require('crypto');
+var algorithm = 'aes256';
 
 var User = require('../models/user');
 
@@ -41,18 +43,21 @@ router.post("/register", function(req,res){
 
 			if(user){
 				if(user.username === username){
-					req.flash('error_msg', 'Username is already in use');
+					req.flash('error_msg', 'Username is already in use ');
 				}
 				if(user.email === email) {
 					req.flash('error_msg', 'Email address is already in use');
 				}
 				res.redirect('/users/register');
 			} else{
+				var seed = crypto.randomBytes(32).toString('hex');//hex can be changed to base64
+				username = crypto.createHash('sha256').update(username).digest('hex');
 				var newUser = new User({
-					name: name,
-					email: email,
+					name: encrypt(name, seed),
+					email: encrypt(email, seed),
 					username: username,
 					password: password,
+					seed: seed,
 					card: [],
 					document: []
 				});
@@ -71,7 +76,8 @@ router.post("/register", function(req,res){
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-   User.getUserByUsername(username.toLowerCase(), function(err, user){
+   username = crypto.createHash('sha256').update(username.toLowerCase()).digest('hex');
+   User.getUserByUsername(username, function(err, user){
    	if(err) throw err;
    	if(!user){
    		return done(null, false, {message: 'Unknown User'});
@@ -111,5 +117,17 @@ router.get('/logout', function(req, res){
 
 	res.redirect('/users/login');
 });
+
+function encrypt(text, key){
+  var cipher = crypto.createCipher(algorithm, key)
+  var encrypted = cipher.update(text,'utf8','hex') + cipher.final('hex');
+  return encrypted;
+}
+ 
+function decrypt(text, key){
+  var decipher = crypto.createDecipher(algorithm, key)
+  var decrypted = decipher.update(text,'hex','utf8') + decipher.final('utf8');
+  return decrypted;
+}
 
 module.exports = router;

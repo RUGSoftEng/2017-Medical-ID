@@ -10,6 +10,9 @@ var UserSchema = mongoose.Schema({
 	password: {
 		type: String
 	},
+	seed: {
+		type: String
+	},
 	email: {
 		type: String
 	},
