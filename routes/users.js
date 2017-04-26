@@ -16,7 +16,7 @@ router.get('/login', function(req, res){
 });
 
 // Register User
-router.post('/register', function(req, res){
+router.post("/register", function(req,res){
 	var name = req.body.name;
 	var email = req.body.email;
 	var username = req.body.username.toLowerCase();
@@ -34,30 +34,38 @@ router.post('/register', function(req, res){
 	var errors = req.validationErrors();
 
 	if(errors){
-		res.render('register',{
-			errors:errors
-		});
-	} else if(username) {
-		req.flash('error_msg', 'The chosen username is already taken.');
-		res.redirect('/users/register');
-	} else {
-		var newUser = new User({
-			name: name,
-			email:email,
-			username: username,
-			password: password,
-			card: [],
-			document: []
-		});
-
-		User.createUser(newUser, function(err, user){
+		res.render('register',{ errors: errors });
+	} else{
+		User.checkExists(username, email, function(err,user){
 			if(err) throw err;
-			console.log(user);
+
+			if(user){
+				if(user.username === username){
+					req.flash('error_msg', 'Username is already in use');
+				}
+				if(user.email === email) {
+					req.flash('error_msg', 'Email address is already in use');
+				}
+				res.redirect('/users/register');
+			} else{
+				var newUser = new User({
+					name: name,
+					email: email,
+					username: username,
+					password: password,
+					card: [],
+					document: []
+				});
+
+				User.createUser(newUser, function(err, user){
+					if(err) throw err;
+					console.log(user);
+				});
+
+				req.flash('success_msg', 'You are registered and can now login');
+				res.redirect('/users/login');
+			}
 		});
-
-		req.flash('success_msg', 'You are registered and can now login');
-
-		res.redirect('/users/login');
 	}
 });
 

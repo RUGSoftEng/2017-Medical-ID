@@ -7,7 +7,7 @@ html {
 }
 
 .unselectable {
-	-webkit-user-select: none; /* Chrome/Safari */        
+	-webkit-user-select: none; /* Chrome/Safari */
 	-moz-user-select: none; /* Firefox */
 	-ms-user-select: none; /* IE10+ */
 	/* Rules below not implemented in browsers yet */
@@ -31,33 +31,9 @@ html {
 	background-color: black;
 }
 
-#banner {
-	width: 100%;
-	background: url(../img/back.jpg);
-	background-color: #14234F;
-	background-size: 100% 100%;
-	display: inline-block;
-	vertical-align: top;
-}
-
-#bannerTitle {
-	float: left;
-    font-size: 3em;
-    font-weight: bold;
-    color: white;
-    margin-left: 5%;
-}
-
-#bannerTitle p {
-	display: block;
-    -webkit-margin-before: 1em;
-    -webkit-margin-after: 1em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
-}
-
 .content-wrap {
 	padding: 15px 0;
+	word-wrap: break-word;
 }
 
 .bigButtonCell {
@@ -79,6 +55,16 @@ html {
 	text-decoration: none;
 }
 
+.img-rounded {
+	width: 100%;
+	max-width: 300px;
+	min-width: 150px;
+}
+
+.profile-display-table {
+	font-size: 1.25em;
+}
+
 /* CHANGES TO BOOTSTRAP DEFAULT */
 
 body {
@@ -93,7 +79,7 @@ body {
 
 .navbar {
 	border-radius: 0;
-	border: none;
+	border-color: #1a1a1a;
 	background-color: #333;
 	margin: 0;
 }
@@ -107,6 +93,75 @@ body {
 	font-size: 1.25em;
 }
 
+.jumbotron {
+	color: white;
+	border-radius: 0 !important;
+	font-size: 3em;
+	font-weight: 700;
+	margin: 0;
+	background: url('../img/back.jpg') 0 0/100% 100% no-repeat;
+}
+
 .page-header {
 	margin-top: 0;
+}
+
+#creatorFormLoading {
+	margin: 0 auto;
+	display: block;
+}
+
+.addField, .addImage {
+	cursor: pointer;
+}
+
+.clickable {
+	cursor: pointer;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+#message {
+	color: green;
+}
+
+#error {
+	color: red;
+}
+
+.previewImg {
+	max-height: 100px;
+	max-width: 100px;
+}
+
+#profile-profpic {
+	max-width: 300px;
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 500px) {
+	body {
+		font-size: 16px;
+	}
+
+	.jumbotron {
+		background: #1c2e60;
+	}
+
+	.bigButtonCell {
+		width: 90%;
+	}
+
+	.profile-display-table {
+		font-size: 1em;
+		width: 100%;
+	}
+}
+
+@media (max-width: 767px) {
+  body {
+	  margin: 0;
+  }
+
+
 }

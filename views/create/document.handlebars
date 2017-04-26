@@ -3,7 +3,7 @@
 		<div id='PDFPreview' style='display: none'>
 			<p>
 			<input type='button' value='Download' class='downloadPDF' />
-			<input type='button' value='Back' class='hidePDF' /> | To save your data for future re-use, please <a href='/users/register'>sign up</a>.
+			<input type='button' value='Back' class='hidePDF' />{{#unless user}} | To save your data for future re-use, please <a href='users/register'>sign up</a>.{{/unless}}
 			</p>
 			<iframe style='width: 100%; height: 400px' id='previewFrame'></iframe>
 		</div>
@@ -15,19 +15,28 @@
 			{{/unless}}
 			<p>Click 'Create' to view how the document will look. You will have the option to return and make changes, or download the document.</p>
 			<p>To create a field without a label, keep the label blank. Be concise in the labels, the maximum length for labels is 15 characters. The maximum length for text is 200 characters.</p>
-			<table id='fields'>
-				<thead>
-					<tr><td>Label</td><td>Text</td></tr>
-				</thead>
-				<tbody>
+			<img src='/img/loading.gif' id='creatorFormLoading' /><br />
+			<div id='creatorForm' style='display: none;' >
+				<table id='fields'>
+					<thead>
+						<tr><td>Label</td><td>Text</td></tr>
+					</thead>
+					<tbody>
 
-				</tbody>
-			</table><br />
-			<input type='button' value='Add field' class='addField' />
-			<input type='button' value='Create' class='showPDF'  />
-			{{#if user}}
-				<input type='button' value='Save' class="save"/>
-			{{/if}}
+					</tbody>
+				</table><br />
+				<p>
+					<input type='button' value='Add field' class='addField' />
+					<input type='button' value='Create' class='showPDF'  />
+					{{#if user}}
+						<input type='button' value='Save' class="save"/>
+					{{/if}}
+					<span id='message'></span>
+				</p>
+				{{#if user}}
+					<a href="/profile?id={{user.id}}">View your personal profile!</a>
+				{{/if}}
+			</div>
 		</div>
 	</div>
 </div>

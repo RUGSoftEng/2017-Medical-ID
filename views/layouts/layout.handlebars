@@ -4,33 +4,35 @@
 		<title>Medical ID</title>
 		<link rel="stylesheet" href="/css/bootstrap.css" />
 		<link rel="stylesheet" href="/css/style.css" />
-		<meta name="viewport" content="width=device-width">
-
+		<script src='/js/lib/tether.min.js'></script>
 		<script data-main='/js/common.js' src='/js/lib/require.js'></script>
+		<meta name="viewport" content="width=device-width">
 	</head>
 
 	<body>
 		{{creator}}
 		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<div class="navbar-header navbar-left">
-					<span class="navbar-brand nav-link unselectable">mID</span>
-				</div>
+			<div class="navbar-header">
+				<span class="navbar-brand nav-link unselectable">mID</span>
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
 
-				<div class="navbar-right">
-					<ul class="nav navbar-nav">
-						{{#if user}}
-							<li class="nav-link" role="presentation"><a href="/create">Create</a></li>
-							<li class="nav-link" role="presentation"><a href="/users/logout">Logout</a></li>
-							<li class="nav-link" role="presentation"><a href="/">Home</a></li>
-						{{else}}
-							<li class="nav-link" role="presentation"><a href="/users/login">Login</a></li>
-							<li class="nav-link" role="presentation"><a href="/users/register">Register</a></li>
-							<li class="nav-link" role="presentation"><a href="/create">Guest</a></li>
-							<li class="nav-link" role="presentation"><a href="/">Home</a></li>
-						{{/if}}
-					</ul>
-				</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav navbar-right">
+					<li class="nav-link" role="presentation"><a href="/">Home</a></li>
+					{{#if user}}
+						<li class="nav-link" role="presentation"><a href="/create">Create</a></li>
+						<li class="nav-link" role="presentation"><a href="/users/logout">Logout</a></li>
+					{{else}}
+						<li class="nav-link" role="presentation"><a href="/create">Guest</a></li>
+						<li class="nav-link" role="presentation"><a href="/users/login">Login</a></li>
+						<li class="nav-link" role="presentation"><a href="/users/register">Register</a></li>
+					{{/if}}
+				</ul>
 			</div>
 		</nav>
 
@@ -39,14 +41,12 @@
 				<div class="hor-spacer"></div>
 			</div>
 			<div class="row">
-				<div id="banner">
-					<div id="bannerTitle">
-						<p class="unselectable">
-							<span style="font-size: 0.5em;">Your Personal</span>
-							<br />
-							Medical ID
-						</p>
-					</div>
+				<div class="jumbotron">
+					<span class="unselectable">
+						<span style="font-size: 0.5em;">Your Personal</span>
+						<br />
+						Medical ID
+					</span>
 				</div>
 			</div>
 
@@ -70,5 +70,7 @@
 				{{{body}}}
 			</div>
 		</div>
+		<script src='/js/lib/jquery.min.js'></script>
+		<script src='/js/lib/bootstrap.min.js'></script>
 	</body>
 </html>

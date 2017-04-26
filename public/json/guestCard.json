@@ -1,4 +1,5 @@
 [
+  {"label": "Image", "field": ""},
   {"label": "Name", "field": ""},
   {"label": "Age", "field": ""},
   {"label": "Blood type", "field": ""},

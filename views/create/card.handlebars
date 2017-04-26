@@ -3,7 +3,7 @@
 		<div id='PDFPreview' style='display: none'>
 			<p>
 			<input type='button' value='Download' class='downloadPDF' />
-			<input type='button' value='Back' class='hidePDF' /> | To save your data for future re-use, please <a href='users/register'>sign up</a>.
+			<input type='button' value='Back' class='hidePDF' />{{#unless user}} | To save your data for future re-use, please <a href='users/register'>sign up</a>.{{/unless}}
 			</p>
 			<iframe style='width: 100%; height: 400px' id='previewFrame'></iframe>
 		</div>
@@ -14,21 +14,44 @@
 				Since you are a guest, after leaving this page you will not be able to modify your card and you will have to create it again. If you do want your progress saved, please <a href='users/register'>sign up</a>.</p>
 			{{/unless}}
 			<p>Click 'Create' to view how the card will look. You will have the option to return and make changes, or download the card.</p>
-			<p>For the emergency contacts, you may leave the name blank. For optimal results, please do fill in all other fields.</p>
-			<table id='fields'>
-				<thead>
-					<tr><td>Label</td><td>Text</td></tr>
-				</thead>
-				<tbody>
+			<p>The card has room for 7 fields, not including 'blood type' and 'donor'. Entering too many fields will make the bottom fields not appear on the card.</p>
+			<img src='/img/loading.gif' id='creatorFormLoading' /><br />
+			<div id='creatorForm' style='display: none' >
+				<table id='fields'>
+					<thead>
+						<tr><td>Label</td><td>Text</td></tr>
+					</thead>
+					<tbody>
 
-				</tbody>
-			</table>
-			<p>
-			<input type='button' value='Create' class="showPDF"/>
-			{{#if user}}
-				<input type='button' value='Save' class="save"/>
-			{{/if}}
-			</p>
+					</tbody>
+				</table>
+				<table class='table table-sm'>
+					<col width="100"><col>
+					<tr>
+						<td>
+							Add field:
+						</td>
+						<td>
+							<a class='addImage'>Image</a> |
+							<a class='addField' data-label='Name' data-label-editable='false' data-label-size='13' data-field-size='19'>Name</a> |
+							<a class='addField' data-label='Nationality' data-label-editable='false' data-label-size='13' data-field-size='19'>Nationality</a> |
+							<a class='addField' data-label='Blood type' data-label-editable='false' data-label-size='13' data-field-size='19'>Blood type</a> |
+							<a class='addField' data-label='Donor' data-field='yes' data-label-editable='false' data-label-size='13' data-field-size='19'>Donor</a> |
+							<a class='addField' data-label='Insurance' data-label-editable='false' data-label-size='13' data-field-size='19'>Insurance</a> |
+							<a class='addField' data-label='Insurance ID' data-label-editable='false' data-label-size='13' data-field-size='19'>Insurance ID</a><br />
+							<a class='addField' data-label-size='13' data-field-size='19'><b>Custom</b></a>
+						</td>
+					</tr>
+				</table>
+				<p>
+				<input type='button' value='Create' class="showPDF"/>
+				{{#if user}}
+					<input type='button' value='Save' class="save"/>
+				{{/if}}
+				<span id='message'></span>
+				<span id='error'></span>
+				</p>
+			</div>
 		</div>
 	</div>
 </div>

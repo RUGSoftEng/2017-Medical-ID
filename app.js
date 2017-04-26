@@ -10,6 +10,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
+var forceHttps = require('express-force-https');
 
 mongoose.connect('mongodb://root:toor@med-shard-00-00-mgwxu.mongodb.net:27017,med-shard-00-01-mgwxu.mongodb.net:27017,med-shard-00-02-mgwxu.mongodb.net:27017/loginapp?ssl=true&replicaSet=med-shard-0&authSource=admin');
 //mongoose.connect('mongodb://localhost/loginapp');
@@ -19,6 +20,8 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var create = require('./routes/create');
 var save = require('./routes/save');
+var profile = require('./routes/profile');
+
 
 // Init App
 var app = express();
@@ -29,7 +32,7 @@ app.engine('handlebars', exphbs({defaultLayout:'layout'}));
 app.set('view engine', 'handlebars');
 
 // BodyParser Middleware
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '1mb'}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
@@ -42,6 +45,9 @@ app.use(session({
     saveUninitialized: true,
     resave: true
 }));
+
+// Force HTTPS when not running on localhost
+app.use(forceHttps);
 
 // Passport init
 app.use(passport.initialize());
@@ -83,6 +89,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/create', create);
 app.use('/save', save);
+app.use('/profile', profile);
 
 
 // Set Port
