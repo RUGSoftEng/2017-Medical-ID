@@ -1,167 +1,30 @@
-/* OUR CSS */
-
-@import url('https://fonts.googleapis.com/css?family=Varela+Round');
-
-html {
-	background-color: #050914;
+html,body {
+    font-size: 14px;
+    background-color: hsl(221, 61%, 90%);
 }
 
-.unselectable {
-	-webkit-user-select: none; /* Chrome/Safari */
-	-moz-user-select: none; /* Firefox */
-	-ms-user-select: none; /* IE10+ */
-	/* Rules below not implemented in browsers yet */
-	-o-user-select: none;
-	user-select: none;
-	cursor: default;
-}
-
-.nav-link a {
-	font-size: 1.25em;
-	color: white !important;
-}
-
-.nav-link:hover {
-	background-color: #1a1a1a;
-}
-
-.hor-spacer{
-	width: 100%;
-	height: 2px;
-	background-color: black;
-}
-
-.content-wrap {
-	padding: 15px 0;
-	word-wrap: break-word;
+.header {
+    padding-bottom: 1rem;
+    border-bottom: thin solid black;
 }
 
 .bigButtonCell {
-	background-color: #14234F;
-	color: white;
-	font-size: 2em;
-	border-radius: 15px;
-	text-decoration: none;
-	margin: 10px;
-	padding: 10px;
-}
-
-.bigButtonCell:hover {
-	background-color: #0a1229;
+    background-color: hsl(221, 61%, 50%);
+    width: 75%;
+    margin: 0 auto;
+    padding: 15px 0;
+    border-radius: 15px;
+    border: thin solid hsl(221, 61%, 25%);
 }
 
 .bigButtonCell a {
-	color: white;
-	text-decoration: none;
+    text-decoration: none;
+    color: white;
+    font-size: 2em;
 }
 
-.img-rounded {
-	width: 100%;
-	max-width: 300px;
-	min-width: 150px;
-}
-
-.profile-display-table {
-	font-size: 1.25em;
-}
-
-/* CHANGES TO BOOTSTRAP DEFAULT */
-
-body {
-	font-size: 16px;
-	font-family: 'Varela Round', sans-serif;
-	background-color: rgb(207, 236, 252);
-	min-height: 100vh;
-	width: auto;
-	margin: 0 10%;
-	line-height: normal;
-}
-
-.navbar {
-	border-radius: 0;
-	border-color: #1a1a1a;
-	background-color: #333;
-	margin: 0;
-}
-
-.navbar-default {
-	color: white !important;
-}
-
-.navbar-brand {
-	color: white !important;
-	font-size: 1.25em;
-}
-
-.jumbotron {
-	color: white;
-	border-radius: 0 !important;
-	font-size: 3em;
-	font-weight: 700;
-	margin: 0;
-	background: url('../img/back.jpg') 0 0/100% 100% no-repeat;
-}
-
-.page-header {
-	margin-top: 0;
-}
-
-#creatorFormLoading {
-	margin: 0 auto;
-	display: block;
-}
-
-.addField, .addImage {
-	cursor: pointer;
-}
-
-.clickable {
-	cursor: pointer;
-	margin-left: 5px;
-	margin-right: 5px;
-}
-
-#message {
-	color: green;
-}
-
-#error {
-	color: red;
-}
-
-.previewImg {
-	max-height: 100px;
-	max-width: 100px;
-}
-
-#profile-profpic {
-	max-width: 300px;
-}
-
-/* MEDIA QUERIES */
-@media (max-width: 500px) {
-	body {
-		font-size: 16px;
-	}
-
-	.jumbotron {
-		background: #1c2e60;
-	}
-
-	.bigButtonCell {
-		width: 90%;
-	}
-
-	.profile-display-table {
-		font-size: 1em;
-		width: 100%;
-	}
-}
-
-@media (max-width: 767px) {
-  body {
-	  margin: 0;
-  }
-
-
+@media (max-width: 575px) {
+    html {
+        font-size: 14px;
+    }
 }
