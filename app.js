@@ -21,6 +21,7 @@ var users = require('./routes/users');
 var create = require('./routes/create');
 var save = require('./routes/save');
 var profile = require('./routes/profile');
+var forgot = require('./routes/forgot');
 
 
 // Init App
@@ -90,6 +91,7 @@ app.use('/users', users);
 app.use('/create', create);
 app.use('/save', save);
 app.use('/profile', profile);
+app.use('/forgot', forgot);
 
 
 // Set Port
