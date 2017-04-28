@@ -1,45 +1,47 @@
-<div class="col-lg-12 p-3">
-	<div class="content-wrap">
-		<div id='PDFPreview' style='display: none'>
-			<p>
-			<input type='button' value='Download' class='downloadPDF' />
-			<input type='button' value='Back' class='hidePDF' />{{#unless user}} | To save your data for future re-use, please <a href='users/register'>sign up</a>.{{/unless}}
-			</p>
-			<iframe style='width: 100%; height: 400px' id='previewFrame'></iframe>
-		</div>
-		<div id='PDFCreate'>
-			<h2 class="page-header">Medical ID document creator</h2>
-			{{#unless user}}
-				<p class='justify'>This is an offline creator for a Medical ID document, intended for guest users. This means none of the entered data will be sent over the internet.
-				Since you are a guest, after leaving this page you will not be able to modify your document and you will have to create it again. If you do want your progress saved, please <a href='/users/register'>sign up</a>.</p>
-			{{/unless}}
-			<p>Click 'Create' to view how the document will look. You will have the option to return and make changes, or download the document.</p>
-			<p>To create a field without a label, keep the label blank. Be concise in the labels, the maximum length for labels is 15 characters. The maximum length for text is 200 characters.</p>
-			<img src='/img/loading.gif' id='creatorFormLoading' /><br />
-			<div id='creatorForm' style='display: none;' >
-				<table id='fields'>
-					<thead>
-						<tr><td>Label</td><td>Text</td></tr>
-					</thead>
-					<tbody>
+<div class="row">
+    <div class="col-lg-12 p-3">
+        <div class="content-wrap">
+            <div id='PDFPreview' style='display: none'>
+                <p>
+                <input type='button' value='Download' class='downloadPDF' />
+                <input type='button' value='Back' class='hidePDF' />{{#unless user}} | To save your data for future re-use, please <a href='users/register'>sign up</a>.{{/unless}}
+                </p>
+                <iframe style='width: 100%; height: 400px' id='previewFrame'></iframe>
+            </div>
+            <div id='PDFCreate'>
+                <h2 class="page-header">Medical ID document creator</h2>
+                {{#unless user}}
+                    <p class='justify'>This is an offline creator for a Medical ID document, intended for guest users. This means none of the entered data will be sent over the internet.
+                    Since you are a guest, after leaving this page you will not be able to modify your document and you will have to create it again. If you do want your progress saved, please <a href='/users/register'>sign up</a>.</p>
+                {{/unless}}
+                <p>Click 'Create' to view how the document will look. You will have the option to return and make changes, or download the document.</p>
+                <p>To create a field without a label, keep the label blank. Be concise in the labels, the maximum length for labels is 15 characters. The maximum length for text is 200 characters.</p>
+                <img src='/img/loading.gif' id='creatorFormLoading' /><br />
+                <div id='creatorForm' style='display: none;' >
+                    <table id='fields'>
+                        <thead>
+                            <tr><td>Label</td><td>Text</td></tr>
+                        </thead>
+                        <tbody>
 
-					</tbody>
-				</table><br />
-				<p>
-					<input type='button' value='Add field' class='addField' />
-					<input type='button' value='Create' class='showPDF'  />
-					{{#if user}}
-						<input type='button' value='Save' class="save"/>
-					{{/if}}
-					<span id='message'></span>
-				</p>
-				{{#if user}}
-					<a href="/profile?id={{user.id}}">View your personal profile!</a>
-				{{/if}}
-			</div>
-		</div>
-	</div>
+                        </tbody>
+                    </table><br />
+                    <p>
+                        <input type='button' value='Add field' class='addField' />
+                        <input type='button' value='Create' class='showPDF'  />
+                        {{#if user}}
+                            <input type='button' value='Save' class="save"/>
+                        {{/if}}
+                        <span id='message'></span>
+                    </p>
+                    {{#if user}}
+                        <a href="/profile?id={{user.id}}">View your personal profile!</a>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        require(['medid/document']);
+    </script>
 </div>
-<script>
-	require(['medid/document']);
-</script>

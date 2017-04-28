@@ -1,12 +1,35 @@
-<div class="col-md-8 p-3">
-    <p>
-        In an emergency, it's important that you're able to get the medical treatment you need urgently. It may be the case that you are own your own in a foreign country, or simply out by your self; if you need assistance, then it's important your medical details are accessible quickly.
-    </p>
-    <p>
-        With MedID, your urgent medical information will be on you at all times. If you're incapable of giving the information, someone will be able to immediately see your urgent details and get you the help you need.
-    </p>
-</div>
+<div class="row flex-md-row-reverse">
+<!--<div class="col-md-8 p-3">
+        <p>
+            In an emergency, it's important that you're able to get the medical treatment you need urgently. It may be the case that you are own your own in a foreign country, or simply out by your self; if you need assistance, then it's important your medical details are accessible quickly.
+        </p>
+        <p>
+            With MedID, your urgent medical information will be on you at all times. If you're incapable of giving the information, someone will be able to immediately see your urgent details and get you the help you need.
+        </p>
+    </div>
 
-<div class="col-md-4 p-3">
-	<img width='99%' src='img/doctor.jpg' />
+    <div class="col-md-4 p-3">
+        <img width='99%' src='img/doctor.jpg' />
+    </div>-->
+    <div class="col-md-6 p-3 main-page-col">
+        <div style="padding: 15px; background-color: hsl(221, 61%, 80%); border-radius: 15px;">
+            <h2 class="header">Find User</h2><br />
+            <form method="get" action="/profile">
+                <div class="form-group row">
+                    <label class="col-2 col-form-label">Code</label>
+                    <div class="col-10">
+                        <input type="text" class="form-control" placeholder="Code" name="id">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-6 p-3 main-page-col main-page-col-l">
+        <div class="bigButtonCell text-center">
+            <a href='/create'>
+                Create
+            </a>
+        </div>
+    </div>
 </div>

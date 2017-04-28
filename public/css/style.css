@@ -1,6 +1,7 @@
 html,body {
     font-size: 14px;
     background-color: hsl(221, 61%, 90%);
+    min-height: 100vh;
 }
 
 .header {
@@ -23,8 +24,19 @@ html,body {
     font-size: 2em;
 }
 
-@media (max-width: 575px) {
-    html {
-        font-size: 14px;
+.main-page-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(50vh - 24.5px);
+}
+
+.main-page-col-l {
+    background-color: hsl(221, 61%, 80%);
+}
+
+@media (min-width: 768px) {
+    .main-page-col {
+        height: calc(100vh - 49px);
     }
 }
