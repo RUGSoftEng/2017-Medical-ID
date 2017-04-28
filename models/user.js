@@ -13,6 +13,9 @@ var UserSchema = mongoose.Schema({
 	seed: {
 		type: String
 	},
+	code: {
+		type: String
+	},
 	resetPasswordToken: {
 		type: String
 	},

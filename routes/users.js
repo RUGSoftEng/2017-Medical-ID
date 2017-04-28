@@ -50,7 +50,8 @@ router.post("/register", function(req,res){
 				}
 				res.redirect('/users/register');
 			} else{
-				var seed = crypto.randomBytes(32).toString('hex');//hex can be changed to base64
+				var seed = crypto.randomBytes(32).toString('hex');
+				var code = crypto.randomBytes(9).toString('base64');
 				//username = crypto.createHash('sha256').update(username).digest('hex');
 				var newUser = new User({
 					name: encrypt(name, seed),
@@ -58,6 +59,7 @@ router.post("/register", function(req,res){
 					username: username,
 					password: password,
 					seed: seed,
+					code: code,
 					card: [],
 					document: []
 				});
