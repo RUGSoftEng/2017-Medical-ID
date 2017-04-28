@@ -1,12 +1,8 @@
+/* OUR CSS */
 html,body {
     font-size: 14px;
     background-color: hsl(221, 61%, 90%);
     min-height: 100vh;
-}
-
-.header {
-    padding-bottom: 1rem;
-    border-bottom: thin solid black;
 }
 
 .bigButtonCell {
@@ -28,6 +24,7 @@ html,body {
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 210px;
     height: calc(50vh - 24.5px);
 }
 
@@ -35,6 +32,19 @@ html,body {
     background-color: hsl(221, 61%, 80%);
 }
 
+/* DEFAULT BOOTSTRAP CHANGES */
+.header {
+    padding-bottom: 1rem;
+    border-bottom: thin solid black;
+}
+
+/* HELPER CLASSES */
+.unselectable {
+	user-select: none;
+    cursor: default;
+}
+
+/* MEDIA QUERIES */
 @media (min-width: 768px) {
     .main-page-col {
         height: calc(100vh - 49px);
