@@ -7,15 +7,22 @@ router.get('/', function(req,res){
 	var id = req.query.id;
 	if(id){
 		User.getUserById(id, function(err,user){
-			if(err){
-				res.send(err);
-			}
-			
-			res.render('profile',{
-				displayUser: user
-			});
+			if(!user){
+                req.flash('error_msg', 'No user found');
+                res.redirect('/');
+            } else if(err){
+                req.flash('error_msg', 'Error encountered, please try again');
+                res.redirect('/');
+			} else{
+                res.render('profile',{
+				    displayUser: user
+                });   
+            }
 		});
-	}
+	} else {
+        req.flash('error_msg', 'Please enter a code');
+        res.redirect('/');
+    }
 });
 
 module.exports = router;

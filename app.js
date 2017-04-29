@@ -48,7 +48,7 @@ app.use(session({
 }));
 
 // Force HTTPS when not running on localhost
-app.use(forceHttps);
+//app.use(forceHttps);
 
 // Passport init
 app.use(passport.initialize());
