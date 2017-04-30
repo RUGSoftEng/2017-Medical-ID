@@ -107,8 +107,8 @@ define(['jquery'], function($) {
     inputLabel = "<input class='medid-label' maxlength='" + labelSize + "' value='" + label + "' type='text' " + (labelEditable == false ? 'readonly' : '') + " />";
     inputField = "<input class='medid-field' maxlength='" + fieldSize + "' type='text' value='" + field + "' " + (fieldEditable == false ? 'readonly' : '') + " />";
     removeField = "<input class='removeField' type='button' value='Remove' />";
-    moveUp = "<span class='glyphicon glyphicon-arrow-up clickable moveUp'></span>";
-    moveDown = "<span class='glyphicon glyphicon-arrow-down clickable moveDown'></span>";
+    moveUp = "<span class='clickable moveUp'><img src='/img/up.png'></img></span>";
+    moveDown = "<span class='clickable moveDown'><img src='/img/down.png'></img></span>";
 
     field = $("<tr><td>" + inputLabel + "</td><td>" + inputField + "</td><td>" + removeField + "</td><td>" + moveUp + moveDown + "</td></tr>");
 		this.table.append(field);

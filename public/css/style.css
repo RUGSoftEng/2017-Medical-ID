@@ -60,6 +60,11 @@ html,body {
 	max-width: 100px;
 }
 
+.moveUp img, .moveDown img{
+	width: 15px;
+	height: 15px;
+}
+
 /* DEFAULT BOOTSTRAP CHANGES */
 .header {
     padding-bottom: 1rem;
