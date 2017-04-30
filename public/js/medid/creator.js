@@ -255,7 +255,7 @@ define(['jquery'], function($) {
       url: creator.saveEndpoint,
       success: function(data) {
         if (data.status == "success") {
-          creator.showMessage("Data succesfully stored.");
+          creator.showMessage("Data successfully stored.");
         }
       }
     });
