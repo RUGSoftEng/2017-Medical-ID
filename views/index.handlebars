@@ -9,7 +9,7 @@
                 <div class="form-group row">
                     <label class="col-2 col-form-label">Code</label>
                     <div class="col-10">
-                        <input type="text" class="form-control" placeholder="Code" name="id">
+                        <input type="text" class="form-control hyphenCode" maxlength="15" placeholder="XXX-XXX-XXX-XXX" name="id">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-default">Submit</button>
@@ -24,3 +24,6 @@
         </div>
     </div>
 </div>
+<script>
+    require(['medid/hyphenator']);
+</script>
