@@ -16,12 +16,16 @@ router.get('/', function(req,res){
 			} else{
                 res.render('profile',{
 				    displayUser: user
-                });   
+                });
             }
 		});
 	} else {
-        req.flash('error_msg', 'Please enter a code');
-        res.redirect('/');
+				if (!req.user) {
+					req.flash('error_msg', 'Please enter a code');
+	        res.redirect('/');
+				} else {
+					res.render('create/profile')
+				}
     }
 });
 

@@ -15,7 +15,7 @@ define(['jquery'], function($) {
      * The TBODY element containing all the field rows of the creator form.
      * @member {Object}
      */
-    table: $('#fields tbody'),
+    list: $('#fields'),
     /**
      * Used to possibly store the user's name to use explicitly.
      * @member {string}
@@ -72,7 +72,7 @@ define(['jquery'], function($) {
 		var fields = [];
 
 		var label, field;
-		creator.table.children('tr').each(function () {
+		creator.list.children('div.fieldBox').each(function () {
       label = $(this).find('.medid-label');
       field = $(this).find('.medid-field');
       //labelEditable = label.is('[readonly]');
@@ -104,27 +104,33 @@ define(['jquery'], function($) {
    * @param {number} [fieldSize] - Maximum size of the field in number of characters.
    */
   creator.addField = function (label, field, labelEditable, fieldEditable, labelSize, fieldSize) {
-    inputLabel = "<input class='medid-label' maxlength='" + labelSize + "' value='" + label + "' type='text' " + (labelEditable == false ? 'readonly' : '') + " />";
-    inputField = "<input class='medid-field' maxlength='" + fieldSize + "' type='text' value='" + field + "' " + (fieldEditable == false ? 'readonly' : '') + " />";
-    removeField = "<input class='removeField' type='button' value='Remove' />";
+    //inputLabel = "<div class='input-group col-md-4'><span class='input-group-addon'>label</span><input class='medid-label form-control' maxlength='" + labelSize + "' value='" + label + "' type='text' " + (labelEditable == false ? 'readonly' : '') + " /></div>";
+    //inputField = "<div class='input-group col-md-4'><span class='input-group-addon'>field</span><input class='medid-field form-control' maxlength='" + fieldSize + "' type='text' value='" + field + "' " + (fieldEditable == false ? 'readonly' : '') + " /></div>";
+    inputLabel = "<input class='medid-label form-control' maxlength='" + labelSize + "' value='" + label + "' type='text' " + (labelEditable == false ? 'readonly' : '') + " /></span>";
+    inputField = "<span class='input-group-addon'>:</span><input class='medid-field form-control' maxlength='" + fieldSize + "' type='text' value='" + field + "' " + (fieldEditable == false ? 'readonly' : '') + " /></span>";
+    removeField = "<button class='removeField btn btn-danger'><img src='/img/bin.png' height='15px' /></button>";
     moveUp = "<span class='clickable moveUp'><img src='/img/up.png'></img></span>";
     moveDown = "<span class='clickable moveDown'><img src='/img/down.png'></img></span>";
+    toggle = "<div class='toggle' data-toggle='buttons'><label class='btn btn-success'><input type='radio' name='options' id='option1' autocomplete='off'>in profile</label><label class='btn btn-warning active'><input type='radio' name='options' id='option2' autocomplete='off'>not in profile</label></div>"
+    //operations = "<div class='col-4'>" + toggle + "</div><div class='col-4'>" + removeField + "</div><div class='col-4' style='text-align: right; padding: 10px;'>" + moveUp + moveDown + "</div></div>";
+    operations = "<div class='row'>" + toggle + removeField + "<div style='text-align: right; padding: 10px;'>" + moveUp + moveDown + "</div></div>";
 
-    field = $("<tr><td>" + inputLabel + "</td><td>" + inputField + "</td><td>" + removeField + "</td><td>" + moveUp + moveDown + "</td></tr>");
-		this.table.append(field);
+    field = $("<div class='fieldBox card'><div class='card-block row'><div class='col-md-6'><div class='input-group'>" + inputLabel + inputField + "</div></div><div class='col-md-6'>" + operations + "</div></div></div>");
+		this.list.append(field);
 
 		//The row can be removed again
 		field.find('.removeField').on('click', function() {
-			$(this).parent().parent().remove();
+			$(this).parent().parent().parent().parent().remove();
 		});
 
     field.find('.moveUp').on('click', function() {
-			row = $(this).parent().parent();
+			row = $(this).parent().parent().parent().parent().parent();
+      console.log(row);
       row.prev().before(row);
 		});
 
     field.find('.moveDown').on('click', function() {
-      row = $(this).parent().parent();;
+      row = $(this).parent().parent().parent().parent().parent();
       row.before(row.next());
 		});
   }
@@ -202,6 +208,13 @@ define(['jquery'], function($) {
     }, 1000);
   }
 
+  creator.colorCardFields = function() {
+    console.log(creator.cardNum);
+    creator.list.children().css("background", "#ABC");
+    creator.list.children().slice(0,creator.cardNum ).css("background", "#ACA");
+    //console.log($(":lt(" + creator.cardNum + ")", creator.list));
+    //$(":lt(" + creator.cardNum + ")", creator.list).css('background', "#ACA");
+  }
 
   $('.downloadPDF').on('click', function () {
     // Call the function provided by the document-specific engine to download
@@ -261,6 +274,11 @@ define(['jquery'], function($) {
     });
   });
 
+  $('#inputCardNum').on('change', function() {
+    creator.cardNum = $(this).val();
+    creator.colorCardFields();
+  });
+
 
 
   /**
@@ -271,6 +289,7 @@ define(['jquery'], function($) {
     if (creator.saveEndpoint == "") {
       console.log("Error: no endpoint found for saving this document!")
     } else {
+      creator.cardNum = $('#inputCardNum').val();
       $.getJSON(creator.saveEndpoint, function(data) {
         for (i = 0; i < data.length; i++) {
           if (data[i].label == "Image") {
@@ -279,6 +298,7 @@ define(['jquery'], function($) {
             creator.addField(data[i].label, data[i].field);
           }
         }
+        creator.colorCardFields();
         /* Only show the form once it is loaded */
         $('#creatorFormLoading').fadeOut(function () {
           $('#creatorForm').slideDown();

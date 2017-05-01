@@ -43,8 +43,8 @@ html,body {
 
 .clickable {
 	cursor: pointer;
-	margin-left: 5px;
-	margin-right: 5px;
+	margin-left: 0px;
+	margin-right: 0px;
 }
 
 #message {
@@ -65,6 +65,31 @@ html,body {
 	height: 15px;
 }
 
+.fieldBox {
+  margin: 5px;
+  background-color: #ABC;
+}
+
+.card-block {
+  margin: 0px;
+  padding: 0px;
+}
+
+.fieldBox .input-group, .fieldBox .btn, .fieldBox img {
+  margin: 5px;
+}
+
+.fieldBox label.btn {
+  width: 120px;
+  margin-left: 20px;
+}
+
+.removeField {
+  cursor: pointer;
+  padding: 2px;
+  width: 40px;
+}
+
 /* DEFAULT BOOTSTRAP CHANGES */
 .header {
     padding-bottom: 1rem;
@@ -82,4 +107,27 @@ html,body {
     .main-page-col {
         height: calc(100vh - 49px);
     }
+}
+
+/* Toggle */
+.toggle > label {
+  cursor: pointer;
+}
+
+.btn.active {
+	display: none;
+}
+
+.btn span:nth-of-type(1)  {
+	display: none;
+}
+.btn span:last-child  {
+	display: block;
+}
+
+.btn.active  span:nth-of-type(1)  {
+	display: block;
+}
+.btn.active span:last-child  {
+	display: none;
 }
