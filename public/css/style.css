@@ -97,6 +97,19 @@ html,body {
 }
 
 /* HELPER CLASSES */
+[class^="icon-"], [class*=" icon-"] {
+    height: 24px;
+    width: 24px;
+    display: inline-block; 
+    fill: currentColor; 
+}
+
+.icon-bin {
+    height: 15px;
+    width: 15px;
+    fill: black;
+}
+
 .unselectable {
 	user-select: none;
     cursor: default;
