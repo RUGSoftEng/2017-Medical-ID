@@ -8,7 +8,7 @@ define(function() {
 
   /**
    * Method to return the string with hyphens denoting codons.
-   * @returns {string} The date with hypens.
+   * @returns {string} The string with hypens.
    */
   hyphenator.insertHyphen = function(string) {
 		if (string.length > 3) {
