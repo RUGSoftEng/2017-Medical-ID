@@ -1,4 +1,4 @@
-define(['jquery'], function($) {
+define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocument) {
 
   /**
    * The creator module power both document creators.
@@ -75,15 +75,13 @@ define(['jquery'], function($) {
 		creator.list.children('div.fieldBox').each(function () {
       label = $(this).find('.medid-label');
       field = $(this).find('.medid-field');
-      //labelEditable = label.is('[readonly]');
-      //fieldEditable = field.is('[readonly]');
+      inprofile = $(this).find('.toggle').find('.btn-success').is(':visible');
 
       if (label.val() == 'Image' && $(this).attr('id') != 'image') {
         //Don't add it as it is not an actual image
       } else {
-        fields.push({label: label.val(), field: field.val()});
+        fields.push({label: label.val(), field: field.val(), inprofile: inprofile});
       }
-      //fields.push({label: label.val(), field: field.val(), labelEditable: labelEditable, fieldEditable: fieldEditable});
 
       // We might want to get rid of this part
       if (label.val() == "Name" && creator.userName == "") {
@@ -111,7 +109,7 @@ define(['jquery'], function($) {
     removeField = "<button class='removeField btn btn-danger'><img src='/img/bin.png' height='15px' /></button>";
     moveUp = "<span class='clickable moveUp'><img src='/img/up.png'></img></span>";
     moveDown = "<span class='clickable moveDown'><img src='/img/down.png'></img></span>";
-    toggle = "<div class='toggle' data-toggle='buttons'><label class='btn btn-success'><input type='radio' name='options' id='option1' autocomplete='off'>in profile</label><label class='btn btn-warning active'><input type='radio' name='options' id='option2' autocomplete='off'>not in profile</label></div>"
+    toggle = "<div class='toggle' data-toggle='buttons'><label class='btn btn-success'><input type='radio' autocomplete='off'>used</label><label class='btn btn-warning active'><input type='radio' autocomplete='off'>not used</label></div>"
     //operations = "<div class='col-4'>" + toggle + "</div><div class='col-4'>" + removeField + "</div><div class='col-4' style='text-align: right; padding: 10px;'>" + moveUp + moveDown + "</div></div>";
     operations = "<div class='row'>" + toggle + removeField + "<div style='text-align: right; padding: 10px;'>" + moveUp + moveDown + "</div></div>";
 
@@ -121,18 +119,21 @@ define(['jquery'], function($) {
 		//The row can be removed again
 		field.find('.removeField').on('click', function() {
 			$(this).parent().parent().parent().parent().remove();
+      creator.colorCardFields();
 		});
 
     field.find('.moveUp').on('click', function() {
 			row = $(this).parent().parent().parent().parent().parent();
-      console.log(row);
       row.prev().before(row);
+      creator.colorCardFields();
 		});
 
     field.find('.moveDown').on('click', function() {
       row = $(this).parent().parent().parent().parent().parent();
       row.before(row.next());
+      creator.colorCardFields();
 		});
+    creator.colorCardFields();
   }
 
   /**
@@ -209,11 +210,8 @@ define(['jquery'], function($) {
   }
 
   creator.colorCardFields = function() {
-    console.log(creator.cardNum);
     creator.list.children().css("background", "#ABC");
     creator.list.children().slice(0,creator.cardNum ).css("background", "#ACA");
-    //console.log($(":lt(" + creator.cardNum + ")", creator.list));
-    //$(":lt(" + creator.cardNum + ")", creator.list).css('background', "#ACA");
   }
 
   $('.downloadPDF').on('click', function () {
@@ -272,6 +270,18 @@ define(['jquery'], function($) {
         }
       }
     });
+  });
+
+  $('.createCard').on('click', function() {
+    MIDcard.get(creator, function(doc) {
+      window.open(doc);
+    })
+  });
+
+  $('.createDoc').on('click', function() {
+    MIDdocument.get(creator, function(doc) {
+      window.open(doc);
+    })
   });
 
   $('#inputCardNum').on('change', function() {

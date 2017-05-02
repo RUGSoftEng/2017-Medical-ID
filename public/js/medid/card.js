@@ -1,11 +1,10 @@
-define(['medid/creator', 'jspdf', 'jquery', 'medid/res'], function(Creator, jsPDF, $) {
+define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
 
 	/**
 	 * The card module implements card creation functionality upon the creator.js module.
 	 * Its main functionality lies in the createPDF method, which generates the Medical ID card PDF.
 	 *
 	 * @exports MIDcard
-	 * @requires creator
 	 * @requires jquery
 	 * @requires jsPDF
 	 */
@@ -35,9 +34,11 @@ define(['medid/creator', 'jspdf', 'jquery', 'medid/res'], function(Creator, jsPD
 	 * Uses the fields() method of the creator module as input data.
 	 * @param {method} callback - Callback to return the jsPDF document object.
 	 */
-	MIDcard.createPDF = function (callback) {
+	MIDcard.createPDF = function (creator, callback) {
 
-		var fields = Creator.fields();
+		console.log(creator);
+
+		var fields = creator.fields();
 		var doc = new jsPDF();
 
 		doc.setFont('helvetica');
@@ -52,7 +53,7 @@ define(['medid/creator', 'jspdf', 'jquery', 'medid/res'], function(Creator, jsPD
 		var leftCounter = 0, rightCounter = 0;
 		var leftStartPos = [12,55], rightStartPos = [38,30];
 		var lineHeight = 5, leftLabelWidth = 19, rightLabelWidth = 21;
-		for (i = 0; i < fields.length; i++) {
+		for (i = 0; i < fields.length && i < creator.cardNum; i++) {
 			if (fields[i].label == "Image") {
 				image = fields[i].field;
 			} else {
@@ -82,7 +83,7 @@ define(['medid/creator', 'jspdf', 'jquery', 'medid/res'], function(Creator, jsPD
 		}
 
 		if (image) {
-			doc.addImage(image , 13, 28, Creator.imageWidth/4.5, Creator.imageHeight/4.5);
+			doc.addImage(image , 13, 28, creator.imageWidth/4.5, creator.imageHeight/4.5);
 		} else {
 			doc.addImage(Resources.placeholder , 11, 26, 23, 23);
 		}
@@ -106,18 +107,17 @@ define(['medid/creator', 'jspdf', 'jquery', 'medid/res'], function(Creator, jsPD
 		})
 	}
 
-	Creator.getMethod(function (callback) {
-		MIDcard.createPDF(function(doc) {
+	MIDcard.get = function (creator, callback) {
+		MIDcard.createPDF(creator, function(doc) {
 			callback(doc.output('datauristring'));
 		});
-	});
-	Creator.downloadMethod(function (name) {
-		MIDcard.createPDF(function(doc) {
+	}
+
+	MIDcard.download = function (creator, name) {
+		MIDcard.createPDF(creator, function(doc) {
 			doc.save(name);
 		});
-	});
-	Creator.saveEndpoint = '/save/card';
-	Creator.init();
+	}
 
 	return MIDcard;
 

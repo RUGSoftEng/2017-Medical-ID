@@ -20,12 +20,8 @@ router.get('/', function(req,res){
             }
 		});
 	} else {
-				if (!req.user) {
-					req.flash('error_msg', 'Please enter a code');
-	        res.redirect('/');
-				} else {
-					res.render('create/profile')
-				}
+			req.flash('error_msg', 'Please enter a code');
+	    res.redirect('/');
     }
 });
 

@@ -49,9 +49,9 @@ define(['medid/creator', 'medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], fun
 	 * Uses the fields() method of the creator module as input data.
 	 * @returns {Object} The object of the generated document.
 	 */
-	MIDdocument.createPDF = function () {
+	MIDdocument.createPDF = function (creator) {
 		// Get fields from Creator engine, turn them into something useful
-		var fields = MIDdocument.parseFields( Creator.fields() );
+		var fields = MIDdocument.parseFields( creator.fields() );
 
 		/* This is the actual final document definition
 		 * This object alone defines the creation of the PDF
@@ -62,7 +62,7 @@ define(['medid/creator', 'medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], fun
 					columns: [
 						[
 							{ text: 'Medical ID', style: 'header' },
-							{ text: Creator.userName, style: 'subheader' },
+							{ text: creator.userName, style: 'subheader' },
 							{ text: "Generated on " + Util.formatDate(), style: 'smallSubheader' }
 						],
 						{
@@ -97,24 +97,25 @@ define(['medid/creator', 'medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], fun
 	MIDdocument.parseFields = function (values) {
 		var fields = [];
 		for (i = 0; i < values.length; i++) {
-			if (values[i].label) {
-				fields.push([{text: values[i].label, bold: true}, values[i].field]);
-			} else if (values[i].field) {
-				fields.push([{text: values[i].field, colSpan: 2}, {}]);
+			if (values[i].inprofile) {
+				if (values[i].label) {
+					fields.push([{text: values[i].label, bold: true}, values[i].field]);
+				} else if (values[i].field) {
+					fields.push([{text: values[i].field, colSpan: 2}, {}]);
+				}
 			}
 		}
 		return fields;
 	}
 
 	// The Creator engine needs to get 2 functions from the document-specific engine
-	Creator.getMethod(function (callback) {
-		MIDdocument.createPDF().getDataUrl(callback);
-	});
-	Creator.downloadMethod(function (name) {
-		MIDdocument.createPDF().download(name);
-	});
-	Creator.saveEndpoint = '/save/document';
-	Creator.init();
+	MIDdocument.get = function (creator, callback) {
+		MIDdocument.createPDF(creator).getDataUrl(callback);
+	}
+
+	MIDdocument.download = function (name) {
+		MIDdocument.createPDF(creator).download(name);
+	}
 
 	return MIDdocument;
 
