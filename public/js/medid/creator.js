@@ -3,8 +3,8 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
   /**
    * The creator module power both document creators.
    * It handles all logic behind the form, including retrieval of data.
-   * To actually be able to generate documents, the creator must be fed two methods: one to generate and one to download the pdf.
-   * These methods can use the fields() method of the creator for input data.
+   * To actually be able to generate documents, the creator needs additional modules corresponding to those documents.
+   * These modules can use the fields() method of the creator for input data.
    * The creator also needs to be provided with an endpoint for data persistency.
    * Finally, creator.init() must be called to start the creator form, filling it with pre-set data.
    * @exports creator
@@ -45,18 +45,6 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     error: $('#error'),
 
     /**
-     * Limit for pictures to be uploaded in bytes.
-     * @member {number}
-     */
-    imageMax: 500000,
-
-    /**
-     * Limit for pictures to be uploaded in words.
-     * @member {string}
-     */
-    imageMaxString: "500Kb",
-
-    /**
      * The amount of rows selected for the card. Ranges from 1 to 7.
      * @member {number}
      */
@@ -76,11 +64,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
       field = $(this).find('.medid-field');
       inprofile = $(this).find('.toggle').find('.btn-success').is(':visible');
 
-      if (label.val() == 'Image' && $(this).attr('id') != 'image') {
-        //Don't add it as it is not an actual image
-      } else {
-        fields.push({label: label.val(), field: field.val(), inprofile: inprofile});
-      }
+      fields.push({label: label.val(), field: field.val(), inprofile: inprofile});
 
       // We might want to get rid of this part
       if (label.val() == "Name" && creator.userName == "") {
@@ -118,6 +102,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
       creator.colorCardFields();
 		});
 
+    // The row can be moved
     field.find('.moveUp').on('click', function() {
 			row = $(this).parent().parent().parent().parent().parent();
       row.prev().before(row);
@@ -129,50 +114,9 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
       row.before(row.next());
       creator.colorCardFields();
 		});
+
+    // Updating coloring may be necesarry
     creator.colorCardFields();
-  }
-
-  /**
-   * Method to add an image input field to the form.
-   * If the image input field is already there, set the image to the data variable.
-   * @param {string} [data] - Data URI representing the (pre-set) picture.
-   */
-  creator.imageField = function (data) {
-    firstField = this.table.children('tr').first();
-    if (firstField.attr('id') == 'image') {
-      if (data && data != "") {
-          firstField.find('img').attr('src', data);
-          firstField.find('.medid-field').attr('value', data);
-      }
-    } else {
-      removeField = "<input class='removeField' type='button' value='Remove' />";
-      inputField = "<input class='medid-field' type='hidden' value='" + (data || "") + "' />";
-      field = $('<tr id="image"><td><input class="medid-label" value="Image" readonly /></td><td><img class="previewImg" src="' + (data || "") + '" /><input id="upload" name="file" type="file" />' + inputField + '</td><td>' + removeField + '</td></tr>');
-      this.table.prepend(field);
-
-      creator.previewImg = field.find('img');
-
-      // The row can be removed again
-  		field.find('.removeField').on('click', function() {
-  			$(this).parent().parent().remove();
-  		});
-
-      field.find('#upload').on('change', function() {
-        var file = this.files[0];
-        if (file.size < creator.imageMax) {
-          reader = new FileReader();
-          reader.onload = function(e) {
-            data = e.target.result;
-            field.find('.medid-field').val(data);
-            creator.previewImg.attr('src', data);
-          };
-          reader.readAsDataURL(file);
-        } else {
-          creator.showError("Error: image to large (maximum is " + creator.imageMaxString + ")!");
-          $(this).val(null);
-        }
-      });
-    }
   }
 
   /**
@@ -216,33 +160,6 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
 
   // LISTENERS
 
-  $('.downloadPDF').on('click', function () {
-    // Call the function provided by the document-specific engine to download
-    creator.downloadPDF("MedicalID.pdf");
-  });
-
-  $('.showPDF').on('click', function () {
-    if (creator.previewImg) {
-      creator.imageHeight = creator.previewImg.height();
-      creator.imageWidth = creator.previewImg.width();
-    }
-    // Call the function provided by the document-specific engine to retrieve
-  	previewFrame.src = "/preview_placeholder.html";
-    $('#PDFCreate').slideUp(function() {
-      $('#PDFPreview').slideDown();
-      creator.getPDF(function(data) {
-		  previewFrame.src = data;
-  	  });
-  	});
-  });
-
-  $('.hidePDF').on('click', function () {
-  	$('#PDFPreview').slideUp(function() {
-  		$('#PDFCreate').slideDown();
-      previewFrame.src = '';
-  	});
-  });
-
 	$('.addField').on('click', function() {
     /* Add a field, possibly with preset label or field */
 		creator.addField(
@@ -254,10 +171,6 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
       $(this).attr('data-field-size') || 57
       );
 	});
-
-  $('.addImage').on('click', function() {
-    creator.imageField();
-  });
 
   $('.save').on('click', function() {
     $.ajax({
@@ -302,13 +215,6 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     } else {
       creator.cardNum = $('#inputCardNum').val();
       $.getJSON(creator.saveEndpoint, function(data) {
-        for (i = 0; i < data.length; i++) {
-          if (data[i].label == "Image") {
-            creator.imageField(data[i].field);
-          } else {
-            creator.addField(data[i].label, data[i].field);
-          }
-        }
         creator.colorCardFields();
         /* Only show the form once it is loaded */
         $('#creatorFormLoading').fadeOut(function () {
