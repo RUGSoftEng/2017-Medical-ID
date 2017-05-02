@@ -91,7 +91,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     moveUp = "<span class='clickable moveUp'><svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-up'></use></svg></span>";
     moveDown = "<span class='clickable moveDown'><svg class='icon-arrow-down'><use xlink:href='/img/icons.svg#icon-arrow-down'></use></svg></span>";
     toggle = "<div class='toggle' data-toggle='buttons'><label class='btn btn-success'><input type='radio' autocomplete='off'>used</label><label class='btn btn-warning active'><input type='radio' autocomplete='off'>not used</label></div>"
-    operations = "<div class='row'>" + toggle + removeField + "<div style='text-align: right; padding: 10px;'>" + moveUp + moveDown + "</div></div>";
+    operations = "<div class='row'>" + toggle + removeField + "<div class='move-wrapper'>" + moveUp + moveDown + "</div></div>";
 
     field = $("<div class='fieldBox card'><div class='card-block row'><div class='col-md-6'><div class='input-group'>" + inputLabel + inputField + "</div></div><div class='col-md-6'>" + operations + "</div></div></div>");
 		this.list.append(field);
