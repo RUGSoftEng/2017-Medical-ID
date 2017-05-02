@@ -1,57 +1,58 @@
 <div class="row">
-    <div class="col-lg-12 p-3">
-        <div class="content-wrap">
-            <div id='PDFCreate'>
-                <h2 class="page-header">Create</h2>
-
-                <div class="card">
-                  <div class="card-header">
-                    <h4>Settings</h4>
-                  </div>
-                  <div class="card-block">
-                      <ul class="form-group list-group list-group-flush">
-                        <li class="list-group-item">
-                          <label for="uploadPicture">Your profile picture</label>
-                          <div class='input-group'>
-                            <span class='input-group-addon'><img width='100px' height='100px' src="img/placeholder.png" /></span>
-                            <input class='form-control' id='uploadPicture' type="file" name="pic" accept="image/*">
-                          </div>
-                        </li>
-                        <li class="list-group-item">
-                          <label for="inputEmail">Amount of fields on your card</label>
-                          <input type="number" class="form-control" id="inputCardNum" value="7" max="7" min="1">
-                          <small>The top fields will appear on the card.</small>
-                        </li>
-                      </ul>
-                  </div>
-                  <div class="card-footer">
-                    <button class="btn btn-primary">Update</button>
-                  </div>
-                </div>
-
-                <img src='/img/loading.gif' id='creatorFormLoading' /><br />
-                <div class="card" id='creatorForm' style='display: none;' >
-                  <div class="card-header">
-                    <h4>Your fields</h4>
-                  </div>
-                  <div class="card-block">
-                    <div id='fields'>
-
-                    </div>
-                  </div>
-                  <div class="card-footer">
-                    <p>
-                        <input type='button' value='Add field' class='addField btn btn-primary' />
-                        <input type='button' value='Create card' class="createCard btn btn-primary"/>
-                        <input type='button' value='Create document' class="createDoc btn btn-primary"/>
-                        <span id='message'></span>
-                    </p>
-                    <p>To save your settings, please <a href='/users/register'>register</a> as a user.</p>
-                  </div>
-                </div>
-
+    <div class="col-12 p-3">
+        <h2 class="page-header">Profile</h2>
+    </div>
+    <div class="col-12 col-lg-4 pl-3 pr-3 pb-3">
+        <form>
+            <div class="card">
+              <div class="card-header">
+                <h4>Settings</h4>
+              </div>
+              <div class="card-block">
+                  <ul class="form-group list-group list-group-flush">
+                    <li class="list-group-item">
+                      <label for="uploadPicture">Your profile picture</label>
+                      <div class='input-group'>
+                        <span class='input-group-addon'><img width='100px' height='100px' src="img/placeholder.png" /></span>
+                        <input class='form-control' id='uploadPicture' type="file" name="pic" accept="image/*">
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <label for="inputEmail">Amount of fields on your card</label>
+                      <input type="number" class="form-control" id="inputCardNum" value="7" max="7" min="1">
+                      <small>The top fields will appear on the card.</small>
+                    </li>
+                  </ul>
+              </div>
+              <div class="card-footer">
+                <button class="btn btn-primary">Update</button>
+              </div>
             </div>
-        </div>
+        </form>
+    </div>
+    <div class="col-12 col-lg-8 pl-3 pr-3 pb-3">
+		<div id='PDFCreate'>
+            <img src='/img/loading.gif' id='creatorFormLoading' />
+            <div class="card" id='creatorForm' style='display: none;' >
+              <div class="card-header">
+                <h4>Your fields</h4>
+              </div>
+              <div class="card-block">
+                <div id='fields'>
+
+                </div>
+              </div>
+              <div class="card-footer">
+                <p>
+                    <input type='button' value='Add field' class='addField btn btn-primary' />
+                    <input type='button' value='Create card' class="createCard btn btn-primary"/>
+                    <input type='button' value='Create document' class="createDoc btn btn-primary"/>
+                    <span id='message'></span>
+                </p>
+                <p>To save your settings, please <a href='/users/register'>register</a> as a user.</p>
+              </div>
+            </div>
+		</div>
     </div>
 </div>
 <script>

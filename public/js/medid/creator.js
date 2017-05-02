@@ -215,6 +215,9 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     } else {
       creator.cardNum = $('#inputCardNum').val();
       $.getJSON(creator.saveEndpoint, function(data) {
+		for (i = 0; i < data.length; i++) {
+          creator.addField(data[i].label, data[i].field);
+        }
         creator.colorCardFields();
         /* Only show the form once it is loaded */
         $('#creatorFormLoading').fadeOut(function () {
