@@ -1,13 +1,13 @@
-define(['medid/creator', 'medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], function(Creator, Util) {
+define(['medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], function(Util) {
 
 	/**
 	 * The document module implements document creation functionality upon the creator.js module.
 	 * Its main functionality lies in the createPDF method, which generates the Medical ID document PDF.
 	 *
 	 * @exports MIDdocument
-	 * @requires creator
 	 * @requires util
 	 * @requires pdfMake
+	 * @required res
 	 */
 	var MIDdocument = {};
 
@@ -47,6 +47,7 @@ define(['medid/creator', 'medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], fun
 	/**
 	 * Method to generate the Medical ID document PDF.
 	 * Uses the fields() method of the creator module as input data.
+	 * @param {Creator} creator - The creator object calling the method, needed for input.
 	 * @returns {Object} The object of the generated document.
 	 */
 	MIDdocument.createPDF = function (creator) {
@@ -93,6 +94,7 @@ define(['medid/creator', 'medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], fun
 	 * @param {Array} values - The values provided by the Creator engine.
 	 * @param {string} values[].label - The label of the field.
 	 * @param {string} values[].field - The text of the field.
+	 * @param {boolean} values[].inprofile - Boolean denoting whether the field is to be included.
 	 */
 	MIDdocument.parseFields = function (values) {
 		var fields = [];
@@ -108,12 +110,21 @@ define(['medid/creator', 'medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], fun
 		return fields;
 	}
 
-	// The Creator engine needs to get 2 functions from the document-specific engine
+	/**
+	 * Wrapper method to simply get the document PDF as base64.
+	 * @param {Creator} creator - The creator object to use.
+	 * @param {method} callback - Callback method to return the PDF data.
+	 */
 	MIDdocument.get = function (creator, callback) {
 		MIDdocument.createPDF(creator).getDataUrl(callback);
 	}
 
-	MIDdocument.download = function (name) {
+	/**
+	 * Wrapper method to instruct the browser to download the generated document PDF.
+	 * @param {Creator} creator - The creator object to use.
+	 * @param {String} name - The document name for the document PDF.
+	 */
+	MIDdocument.download = function (creator, name) {
 		MIDdocument.createPDF(creator).download(name);
 	}
 

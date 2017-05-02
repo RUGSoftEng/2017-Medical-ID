@@ -9,59 +9,58 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
    * Finally, creator.init() must be called to start the creator form, filling it with pre-set data.
    * @exports creator
    * @requires jQuery
+   * @requires card
+   * @requires document
    */
   var creator = {
+
     /**
-     * The TBODY element containing all the field rows of the creator form.
+     * The DIV element containing all the fields of the creator form.
      * @member {Object}
      */
     list: $('#fields'),
+
     /**
      * Used to possibly store the user's name to use explicitly.
      * @member {string}
      */
     userName: "",
+
     /**
      * Server endpoint URL for saving the saved data to using POST requests.
      * @member {string}
      */
     saveEndpoint: "",
-    /**
-     * Method to feed the method for creating PDF's.
-     * @param {method} getFnc - The method to call for downloading the PDF of the specific document.
-     * The method is passed a callback to return the PDF data URI to the creator engine.
-     */
-    getMethod: function (getFnc) {
-      this.getPDF = getFnc;
-    },
-    /**
-     * Method to feed the method for downloading PDF's.
-     * @param {method} downloadFnc - The method to call for downloading the PDF of the specific document.
-     * The method is passed 1 parameter on using, which is the desired file name.
-     */
-    downloadMethod: function (downloadFnc) {
-      this.downloadPDF = downloadFnc;
-    },
+
     /**
      * The element to display messages in.
      * @member {Object}
      */
     message: $('#message'),
+
     /**
-     * The errors to display messages in.
+     * The errors to display error messages in.
      * @member {Object}
      */
     error: $('#error'),
+
     /**
      * Limit for pictures to be uploaded in bytes.
      * @member {number}
      */
     imageMax: 500000,
+
     /**
      * Limit for pictures to be uploaded in words.
      * @member {string}
      */
-    imageMaxString: "500Kb"
+    imageMaxString: "500Kb",
+
+    /**
+     * The amount of rows selected for the card. Ranges from 1 to 7.
+     * @member {number}
+     */
+    cardNum: null
   }
 
   /**
@@ -102,15 +101,12 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
    * @param {number} [fieldSize] - Maximum size of the field in number of characters.
    */
   creator.addField = function (label, field, labelEditable, fieldEditable, labelSize, fieldSize) {
-    //inputLabel = "<div class='input-group col-md-4'><span class='input-group-addon'>label</span><input class='medid-label form-control' maxlength='" + labelSize + "' value='" + label + "' type='text' " + (labelEditable == false ? 'readonly' : '') + " /></div>";
-    //inputField = "<div class='input-group col-md-4'><span class='input-group-addon'>field</span><input class='medid-field form-control' maxlength='" + fieldSize + "' type='text' value='" + field + "' " + (fieldEditable == false ? 'readonly' : '') + " /></div>";
     inputLabel = "<input class='medid-label form-control' maxlength='" + labelSize + "' value='" + label + "' type='text' " + (labelEditable == false ? 'readonly' : '') + " /></span>";
     inputField = "<span class='input-group-addon'>:</span><input class='medid-field form-control' maxlength='" + fieldSize + "' type='text' value='" + field + "' " + (fieldEditable == false ? 'readonly' : '') + " /></span>";
     removeField = "<button class='removeField btn btn-danger'><img src='/img/bin.png' height='15px' /></button>";
     moveUp = "<span class='clickable moveUp'><img src='/img/up.png'></img></span>";
     moveDown = "<span class='clickable moveDown'><img src='/img/down.png'></img></span>";
     toggle = "<div class='toggle' data-toggle='buttons'><label class='btn btn-success'><input type='radio' autocomplete='off'>used</label><label class='btn btn-warning active'><input type='radio' autocomplete='off'>not used</label></div>"
-    //operations = "<div class='col-4'>" + toggle + "</div><div class='col-4'>" + removeField + "</div><div class='col-4' style='text-align: right; padding: 10px;'>" + moveUp + moveDown + "</div></div>";
     operations = "<div class='row'>" + toggle + removeField + "<div style='text-align: right; padding: 10px;'>" + moveUp + moveDown + "</div></div>";
 
     field = $("<div class='fieldBox card'><div class='card-block row'><div class='col-md-6'><div class='input-group'>" + inputLabel + inputField + "</div></div><div class='col-md-6'>" + operations + "</div></div></div>");
@@ -209,10 +205,16 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     }, 1000);
   }
 
+  /**
+   * Update the coloring of the fields to be shown on the card according to the set amount of rows.
+   * This amount of rows is read from the cardNum variable, and has to be updated seperately from input.
+   */
   creator.colorCardFields = function() {
     creator.list.children().css("background", "#ABC");
     creator.list.children().slice(0,creator.cardNum ).css("background", "#ACA");
   }
+
+  // LISTENERS
 
   $('.downloadPDF').on('click', function () {
     // Call the function provided by the document-specific engine to download
@@ -292,8 +294,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
 
 
   /**
-   * This method must be called by the document-specific controller when it is initialized itself.
-   * This method checks for any user data and puts it into the pre-set form.
+   * Starts the creator engine and its form.
    */
   creator.init = function () {
     if (creator.saveEndpoint == "") {

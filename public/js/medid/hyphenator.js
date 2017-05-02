@@ -18,6 +18,7 @@ define(function() {
 		}
 	}
 
+  // Listener
   $('.hyphenCode').on('input', function () {
 		var text = $(this).val().replace(/[^0-9a-zA-Z]/gi, '');
 		text = hypenator.insertHyphen(text);

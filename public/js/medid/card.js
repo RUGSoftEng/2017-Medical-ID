@@ -7,6 +7,7 @@ define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
 	 * @exports MIDcard
 	 * @requires jquery
 	 * @requires jsPDF
+	 * @required res
 	 */
 	var MIDcard = {};
 
@@ -32,6 +33,7 @@ define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
 	/**
 	 * Method to generate the Medical ID card PDF.
 	 * Uses the fields() method of the creator module as input data.
+	 * @param {Creator} creator - The creator object calling the method, needed for input.
 	 * @param {method} callback - Callback to return the jsPDF document object.
 	 */
 	MIDcard.createPDF = function (creator, callback) {
@@ -107,12 +109,22 @@ define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
 		})
 	}
 
+	/**
+	 * Wrapper method to simply get the card PDF as base64.
+	 * @param {Creator} creator - The creator object to use.
+	 * @param {method} callback - Callback method to return the PDF data.
+	 */
 	MIDcard.get = function (creator, callback) {
 		MIDcard.createPDF(creator, function(doc) {
 			callback(doc.output('datauristring'));
 		});
 	}
 
+	/**
+	 * Wrapper method to instruct the browser to download the generated card PDF.
+	 * @param {Creator} creator - The creator object to use.
+	 * @param {String} name - The document name for the card PDF.
+	 */
 	MIDcard.download = function (creator, name) {
 		MIDcard.createPDF(creator, function(doc) {
 			doc.save(name);
