@@ -60,11 +60,6 @@ html,body {
 	max-width: 100px;
 }
 
-.moveUp img, .moveDown img{
-	width: 15px;
-	height: 15px;
-}
-
 .fieldBox {
   margin: 5px;
   background-color: #ABC;
@@ -88,6 +83,21 @@ html,body {
   cursor: pointer;
   padding: 2px;
   width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.move-wrapper {
+    text-align: right;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.moveUp, .moveDown {
+    display: flex;
+    align-items: center;
 }
 
 /* DEFAULT BOOTSTRAP CHANGES */
@@ -97,6 +107,19 @@ html,body {
 }
 
 /* HELPER CLASSES */
+[class^="icon-"], [class*=" icon-"] {
+    height: 18px;
+    width: 18px;
+    display: inline-block; 
+    fill: currentColor; 
+}
+
+.icon-bin {
+    height: 12px;
+    width: 12px;
+    fill: black;
+}
+
 .unselectable {
 	user-select: none;
     cursor: default;
