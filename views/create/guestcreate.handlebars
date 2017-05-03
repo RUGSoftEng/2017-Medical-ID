@@ -3,32 +3,28 @@
         <h2 class="page-header header">Profile</h2>
     </div>
     <div class="col-12 col-lg-4 pl-3 pr-3 pb-3">
-        <form>
-            <div class="card">
-              <div class="card-header">
-                <h4>Settings</h4>
-              </div>
-              <div class="card-block">
-                  <ul class="form-group list-group list-group-flush">
-                    <li class="list-group-item">
-                      <label for="uploadPicture">Your profile picture</label>
-                      <div class='input-group'>
-                        <span class='input-group-addon'><img width='100px' height='100px' src="img/placeholder.png" /></span>
-                        <input class='form-control' id='uploadPicture' type="file" name="pic" accept="image/*">
-                      </div>
-                    </li>
-                    <li class="list-group-item">
-                      <label for="inputEmail">Amount of fields on your card</label>
-                      <input type="number" class="form-control" id="inputCardNum" value="7" max="7" min="1">
-                      <small>The top fields will appear on the card.</small>
-                    </li>
-                  </ul>
-              </div>
-              <div class="card-footer">
-                <button class="btn btn-primary">Update</button>
-              </div>
-            </div>
-        </form>
+        <div class="card">
+          <div class="card-header">
+            <h4>Settings</h4>
+          </div>
+          <div class="card-block">
+              <ul class="form-group list-group list-group-flush">
+                <li class="list-group-item">
+                  <label for="uploadPicture">Your profile picture</label>
+                  <div class='input-group'>
+                    <span class='input-group-addon'><img id='picturePreview' src="img/placeholder.png" /></span>
+                    <input class='form-control' id='uploadPicture' type="file" name="pic" accept="image/*">
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <label for="inputEmail">Amount of fields on your card</label>
+                  <input type="number" class="form-control" id="inputCardNum" value="7" max="7" min="1">
+                  <small>The top fields will appear on the card.</small>
+                </li>
+              </ul>
+          </div>
+          <div class="card-footer"></div>
+        </div>
     </div>
     <div class="col-12 col-lg-8 pl-3 pr-3 pb-3">
 		<div id='PDFCreate'>

@@ -37,6 +37,11 @@ html,body {
 	display: block;
 }
 
+#picturePreview {
+  max-height: 100px;
+  max-width: 100px;
+}
+
 .addField, .addImage {
 	cursor: pointer;
 }
@@ -110,8 +115,8 @@ html,body {
 [class^="icon-"], [class*=" icon-"] {
     height: 18px;
     width: 18px;
-    display: inline-block; 
-    fill: currentColor; 
+    display: inline-block;
+    fill: currentColor;
 }
 
 .icon-bin {
