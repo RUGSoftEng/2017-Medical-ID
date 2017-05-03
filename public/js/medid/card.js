@@ -38,8 +38,6 @@ define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
 	 */
 	MIDcard.createPDF = function (creator, callback) {
 
-		console.log(creator);
-
 		var fields = creator.fields();
 		var doc = new jsPDF();
 
@@ -51,7 +49,6 @@ define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
 		//Labels
 		doc.setFontSize(9);
 
-		var image;
 		var leftCounter = 0, rightCounter = 0;
 		var leftStartPos = [12,55], rightStartPos = [38,30];
 		var lineHeight = 5, leftLabelWidth = 19, rightLabelWidth = 21;
@@ -84,8 +81,8 @@ define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
 			}
 		}
 
-		if (image) {
-			doc.addImage(image , 13, 28, creator.imageWidth/4.5, creator.imageHeight/4.5);
+		if (creator.image) {
+			doc.addImage(creator.image , 13, 28, 100/4.5, 100/4.5);
 		} else {
 			doc.addImage(Resources.placeholder , 11, 26, 23, 23);
 		}
@@ -103,7 +100,6 @@ define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
 
 		// Retrieving QR code from server
 		$.get('/save/qr', function(qrcode) {
-			console.log(qrcode);
 			doc.addImage(qrcode, 'JPEG', 123, 25, 38, 38);
 			callback(doc);
 		})

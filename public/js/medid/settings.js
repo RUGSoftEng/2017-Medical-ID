@@ -132,7 +132,7 @@ define(['jquery'], function($) {
         data = e.target.result;
         settings.values.picture = data;
         settings.picturePreview.attr('src', settings.values.picture);
-      };
+      }
       reader.readAsDataURL(file);
     } else {
       settings.showError("Error: image too large (maximum is " + settings.imageMaxString + ")!");

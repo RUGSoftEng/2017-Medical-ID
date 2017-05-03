@@ -48,11 +48,24 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
      * The amount of rows selected for the card. Ranges from 1 to 7.
      * @member {number}
      */
-    cardNum: null
+    cardNum: null,
+
+    /**
+     * The picture object to retrieve (via the src attribute) the profile picture from.
+     * @member {Object}
+     */
+    picture: null,
+
+    /**
+     * The image data of the profile picture.
+     * @member {String}
+     */
+    image: null
   }
 
   /**
    * Retrieval method for the field data.
+   * Also retrieves the picture.
    * @returns {Array} An array of tuples with label and field values.
    */
 	creator.fields = function () {
@@ -71,6 +84,11 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
         creator.userName = field.val();
       }
 		});
+
+    if (creator.picture.attr('src') != 'img/placeholder.png') {
+      creator.image = creator.picture.attr('src');
+    }
+
     return fields;
 	}
 
@@ -117,6 +135,28 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
 
     // Updating coloring may be necesarry
     creator.colorCardFields();
+  }
+
+  /**
+   * Bind a Settings object to the creator.
+   * @param {Settings} settings - The settings object.
+   */
+  creator.settings = function (settings) {
+    creator.cardNum = settings.cardNumInput.val();
+    creator.picture = settings.picturePreview;
+    if (creator.picture.attr('src') != 'img/placeholder.png') {
+      creator.image = creator.picture.attr('src');
+    }
+
+    // Listeners
+    creator.picture.on('change', function() {
+      console.log("Picture changed!");
+    });
+
+    settings.cardNumInput.on('change', function() {
+      creator.cardNum = $(this).val();
+      creator.colorCardFields();
+    });
   }
 
   /**
@@ -199,12 +239,6 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     })
   });
 
-  $('#inputCardNum').on('change', function() {
-    creator.cardNum = $(this).val();
-    creator.colorCardFields();
-  });
-
-
 
   /**
    * Starts the creator engine and its form.
@@ -213,9 +247,8 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     if (creator.saveEndpoint == "") {
       console.log("Error: no endpoint found for saving this document!")
     } else {
-      creator.cardNum = $('#inputCardNum').val();
       $.getJSON(creator.saveEndpoint, function(data) {
-		for (i = 0; i < data.length; i++) {
+		    for (i = 0; i < data.length; i++) {
           creator.addField(data[i].label, data[i].field);
         }
         creator.colorCardFields();
