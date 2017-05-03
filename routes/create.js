@@ -9,6 +9,10 @@ router.get('/', function(req, res){
 	}
 });
 
+router.post('/settings', function(req, res) {
+	res.json({status: "success"});
+});
+
 /*
 router.get('/card', function(req, res){
 	res.locals.card = true;
