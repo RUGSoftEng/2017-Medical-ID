@@ -2,9 +2,18 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function(req, res){
-	res.render('create/create');
+	if (req.user) {
+		res.render('create/create');
+	} else {
+		res.render('create/guestcreate');
+	}
 });
 
+router.post('/settings', function(req, res) {
+	res.json({status: "success"});
+});
+
+/*
 router.get('/card', function(req, res){
 	res.locals.card = true;
 	res.render('create/card');
@@ -13,6 +22,6 @@ router.get('/card', function(req, res){
 router.get('/document', function(req, res){
 	res.locals.doc = true;
 	res.render('create/document');
-});
+});*/
 
 module.exports = router;
