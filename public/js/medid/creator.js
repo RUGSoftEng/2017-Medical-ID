@@ -60,7 +60,19 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
      * The image data of the profile picture.
      * @member {String}
      */
-    image: null
+    image: null,
+
+    /**
+     * The base width of the profile picture as it relates to the height (imageHeight).
+     * @member {number}
+     */
+    imageWidth: 0,
+
+    /**
+     * The base height of the profile picture as it relates to the width (imageWidth).
+     * @member {number}
+     */
+    imageHeight: 0
   }
 
   /**
@@ -87,6 +99,8 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
 
     if (creator.picture.attr('src') != 'img/placeholder.png') {
       creator.image = creator.picture.attr('src');
+      creator.imageWidth = creator.picture.width();
+      creator.imageHeight = creator.picture.height();
     }
 
     return fields;
