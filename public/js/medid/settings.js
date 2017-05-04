@@ -104,6 +104,7 @@ define(['jquery'], function($) {
 
   /**
    * Method to show an error message.
+   * To be overridden by a bound creator module.
    * @param {String} message - Message to show
    */
   settings.showError = function(message) {
@@ -112,6 +113,7 @@ define(['jquery'], function($) {
 
   /**
    * Method to show a message.
+   * To be overridden by a bound creator module.
    * @param {String} message - Message to show
    */
   settings.showMessage = function(message) {

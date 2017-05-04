@@ -162,6 +162,9 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
       creator.image = creator.picture.attr('src');
     }
 
+    settings.showError = creator.showError;
+    settings.showMessage = creator.showMessage;
+
     // Listeners
     creator.picture.on('change', function() {
       console.log("Picture changed!");
@@ -174,33 +177,33 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
   }
 
   /**
-   * Display a message for 1 second in the message object.
+   * Display a message for 3 seconds in the message object.
    * @param {string} text - Message text.
    */
   creator.showMessage = function (text) {
     creator.message.hide();
     creator.message.text(text);
-    creator.message.fadeIn();
+    creator.message.slideDown();
     setTimeout(function () {
-      creator.message.fadeOut(function () {
+      creator.message.slideUp(function () {
         creator.message.val("");
       });
-    }, 1000);
+    }, 3000);
   }
 
   /**
-   * Display an error for 1 second in the error object.
+   * Display an error for 3 seconds in the error object.
    * @param {string} text - Error text.
    */
   creator.showError = function (text) {
     creator.error.hide();
     creator.error.text(text);
-    creator.error.fadeIn();
+    creator.error.slideDown();
     setTimeout(function () {
-      creator.error.fadeOut(function () {
+      creator.error.slideUp(function () {
         creator.error.val("");
       });
-    }, 1000);
+    }, 3000);
   }
 
   /**

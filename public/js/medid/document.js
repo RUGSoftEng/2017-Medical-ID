@@ -54,6 +54,13 @@ define(['medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], function(Util) {
 		// Get fields from Creator engine, turn them into something useful
 		var fields = MIDdocument.parseFields( creator.fields() );
 
+		var picture;
+		if (creator.image) {
+			picture = {image: creator.image, width: creator.imageWidth, height: creator.imageHeight}
+		} else {
+			picture = {image: Resources.med, width: 100}
+		}
+
 		/* This is the actual final document definition
 		 * This object alone defines the creation of the PDF
 		 */
@@ -66,10 +73,7 @@ define(['medid/util', 'medid/res', 'pdfmake', 'vfs_fonts'], function(Util) {
 							{ text: creator.userName, style: 'subheader' },
 							{ text: "Generated on " + Util.formatDate(), style: 'smallSubheader' }
 						],
-						{
-							image: Resources.med,
-							width: MIDdocument.logoSize
-						}
+						picture
 					]
 				},
 
