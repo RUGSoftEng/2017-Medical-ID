@@ -1,24 +1,126 @@
-<div class="row">
-    <div class="col-md-8 p-3">
-        <h2 class="mb-3 header">Account Login</h2>
-        <form method="post" action="/users/login">
-            <div class="form-group row">
-                <label class="col-12 col-sm-2 col-form-label">Username</label>
-                <div class="col-12 col-sm-10">
-                    <input type="text" class="form-control" placeholder="Username" name="username">
+<!DOCTYPE html>
+<html lang="en">
+    <head> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Website CSS style -->
+        <link href="../css/bootstrap.css" rel="stylesheet">
+
+        <!-- Website Font style -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../css/style.css">
+    </head>
+    <body>
+        <div class="top-content">
+            <div class="inner-bg">
+
+
+                <div class="container">
+                    <div class="row">
+<!-- login -->  
+                        <div class="col-sm-5">
+                            
+                            <div class="form-box">
+                                <div class="form-top">
+                                    <div class="form-top-left">
+                                        <h3>Login</h3>
+                                    </div>
+                                </div>
+
+                                <div class="form-bottom">
+                                    <form role="form" action="/users/login" method="post" class="login-form">
+                                        <div class="form-group">
+                                        <label for="username" class="cols-sm-2 control-label">Username</label>
+                                        <div class="cols-sm-10">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                                                    <input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="password" class="cols-sm-2 control-label">Password</label>
+                                            <div class="cols-sm-10">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                                    <input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+                                                </div>
+                                                <a href="{{req.headers.host}}/forgot" class="btn btn-link pull-right">Forgot Password?</a>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Sign in</button>
+                                    </form>
+                                </div>
+                            </div>
+                       
+                            
+                        </div>
+                        
+ <!-- register -->
+                        <div class="col-sm-1 middle-border"></div>
+                        <div class="col-sm-1"></div>
+                            
+                        <div class="col-sm-5">
+                        <h3>Register</h3>
+                    <form role="form" action="/users/register" method="post" class="login-form">
+                        
+                        <div class="form-group">
+                            <label for="name" class="cols-sm-2 control-label">Your Name</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="username" class="cols-sm-2 control-label">Username</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="cols-sm-2 control-label">Password</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                    <input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                    <input type="password" class="form-control" name="password2" id="password2"  placeholder="Confirm your Password"/>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+                    </form>                                                
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
-            <div class="form-group row">
-                <label class="col-12 col-sm-2 col-form-label">Password</label>
-                <div class="col-12 col-sm-10">
-                    <input type="password" class="form-control" placeholder="Password" name="password">
-                </div>
-                <a href="{{req.headers.host}}/forgot" class="btn btn-link pull-right">Forgot Password?</a>
-            </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>
-    </div>
-    <div class="col-md-4 p-3">
-        <img width='100%' src='../img/doctor.jpg' />
-    </div>
-</div>
+            
+        </div>
+
+    </body>
+</html>

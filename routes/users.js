@@ -7,11 +7,6 @@ var algorithm = 'aes256';
 
 var User = require('../models/user');
 
-// Register
-router.get('/register', function(req, res){
-	res.render('register');
-});
-
 // Login
 router.get('/login', function(req, res){
 	res.render('login');
@@ -36,7 +31,7 @@ router.post("/register", function(req,res){
 	var errors = req.validationErrors();
 
 	if(errors){
-		res.render('register',{ errors: errors });
+		res.render('login',{ errors: errors });
 	} else{
 		User.checkExists(username, email, function(err,user){
 			if(err) throw err;
@@ -48,7 +43,7 @@ router.post("/register", function(req,res){
 				if(user.email === email) {
 					req.flash('error_msg', 'Email address is already in use');
 				}
-				res.redirect('/users/register');
+				res.redirect('/users/login');
 			} else{
 				var seed = crypto.randomBytes(32).toString('hex');
 				var code = crypto.randomBytes(9).toString('base64');
@@ -114,9 +109,7 @@ router.post('/login',
 
 router.get('/logout', function(req, res){
 	req.logout();
-
 	req.flash('success_msg', 'You are logged out');
-
 	res.redirect('/users/login');
 });
 
