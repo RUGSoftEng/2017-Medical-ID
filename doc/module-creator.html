@@ -40,8 +40,8 @@
         
             <div class="description">The creator module power both document creators.
 It handles all logic behind the form, including retrieval of data.
-To actually be able to generate documents, the creator must be fed two methods: one to generate and one to download the pdf.
-These methods can use the fields() method of the creator for input data.
+To actually be able to generate documents, the creator needs additional modules corresponding to those documents.
+These modules can use the fields() method of the creator for input data.
 The creator also needs to be provided with an endpoint for data persistency.
 Finally, creator.init() must be called to start the creator form, filling it with pre-set data.</div>
         
@@ -201,7 +201,7 @@ Finally, creator.init() must be called to start the creator form, filling it wit
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line63">line 63</a>
+        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line51">line 51</a>
     </li></ul></dd>
     
 
@@ -291,13 +291,85 @@ Finally, creator.init() must be called to start the creator form, filling it wit
 
         
             
-<h4 class="name" id=".imageMax"><span class="type-signature">(static) </span>imageMax<span class="type-signature"> :number</span></h4>
+<h4 class="name" id=".image"><span class="type-signature">(static) </span>image<span class="type-signature"> :String</span></h4>
 
 
 
 
 <div class="description">
-    Limit for pictures to be uploaded in bytes.
+    The image data of the profile picture.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">String</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line63">line 63</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".imageHeight"><span class="type-signature">(static) </span>imageHeight<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    The base height of the profile picture as it relates to the width (imageWidth).
 </div>
 
 
@@ -345,7 +417,7 @@ Finally, creator.init() must be called to start the creator form, filling it wit
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line51">line 51</a>
+        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line75">line 75</a>
     </li></ul></dd>
     
 
@@ -363,13 +435,13 @@ Finally, creator.init() must be called to start the creator form, filling it wit
 
         
             
-<h4 class="name" id=".imageMaxString"><span class="type-signature">(static) </span>imageMaxString<span class="type-signature"> :string</span></h4>
+<h4 class="name" id=".imageWidth"><span class="type-signature">(static) </span>imageWidth<span class="type-signature"> :number</span></h4>
 
 
 
 
 <div class="description">
-    Limit for pictures to be uploaded in words.
+    The base width of the profile picture as it relates to the height (imageHeight).
 </div>
 
 
@@ -378,7 +450,7 @@ Finally, creator.init() must be called to start the creator form, filling it wit
     <ul>
         <li>
             
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
         </li>
@@ -417,7 +489,7 @@ Finally, creator.init() must be called to start the creator form, filling it wit
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line57">line 57</a>
+        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -562,6 +634,78 @@ Finally, creator.init() must be called to start the creator form, filling it wit
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line39">line 39</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".picture"><span class="type-signature">(static) </span>picture<span class="type-signature"> :Object</span></h4>
+
+
+
+
+<div class="description">
+    The picture object to retrieve (via the src attribute) the profile picture from.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line57">line 57</a>
     </li></ul></dd>
     
 
@@ -1010,7 +1154,7 @@ The field comes with all necesarry buttons and the complementary listeners.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line103">line 103</a>
+        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line119">line 119</a>
     </li></ul></dd>
     
 
@@ -1093,7 +1237,7 @@ This amount of rows is read from the cardNum variable, and has to be updated sep
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line212">line 212</a>
+        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line213">line 213</a>
     </li></ul></dd>
     
 
@@ -1132,6 +1276,7 @@ This amount of rows is read from the cardNum variable, and has to be updated sep
 
 <div class="description">
     Retrieval method for the field data.
+Also retrieves the picture.
 </div>
 
 
@@ -1175,7 +1320,7 @@ This amount of rows is read from the cardNum variable, and has to be updated sep
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line70">line 70</a>
+        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line83">line 83</a>
     </li></ul></dd>
     
 
@@ -1220,150 +1365,6 @@ This amount of rows is read from the cardNum variable, and has to be updated sep
 </dl>
 
     
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".imageField"><span class="type-signature">(static) </span>imageField<span class="signature">(data<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Method to add an image input field to the form.
-If the image input field is already there, set the image to the data variable.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Data URI representing the (pre-set) picture.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line140">line 140</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1423,7 +1424,138 @@ If the image input field is already there, set the image to the data variable.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line299">line 299</a>
+        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line263">line 263</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".settings"><span class="type-signature">(static) </span>settings<span class="signature">(settings)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Bind a Settings object to the creator.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>settings</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Settings</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The settings object.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line158">line 158</a>
     </li></ul></dd>
     
 
@@ -1461,7 +1593,7 @@ If the image input field is already there, set the image to the data variable.
 
 
 <div class="description">
-    Display an error for 1 second in the error object.
+    Display an error for 3 seconds in the error object.
 </div>
 
 
@@ -1554,7 +1686,7 @@ If the image input field is already there, set the image to the data variable.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line197">line 197</a>
+        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line198">line 198</a>
     </li></ul></dd>
     
 
@@ -1592,7 +1724,7 @@ If the image input field is already there, set the image to the data variable.
 
 
 <div class="description">
-    Display a message for 1 second in the message object.
+    Display a message for 3 seconds in the message object.
 </div>
 
 
@@ -1685,7 +1817,7 @@ If the image input field is already there, set the image to the data variable.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line182">line 182</a>
+        <a href="creator.js.html">creator.js</a>, <a href="creator.js.html#line183">line 183</a>
     </li></ul></dd>
     
 
@@ -1727,13 +1859,13 @@ If the image input field is already there, set the image to the data variable.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-creator.html">creator</a></li><li><a href="module-hyphenator.html">hyphenator</a></li><li><a href="module-MIDcard.html">MIDcard</a></li><li><a href="module-MIDdocument.html">MIDdocument</a></li><li><a href="module-util.html">util</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-creator.html">creator</a></li><li><a href="module-hyphenator.html">hyphenator</a></li><li><a href="module-MIDcard.html">MIDcard</a></li><li><a href="module-MIDdocument.html">MIDdocument</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-util.html">util</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 14:59:23 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu May 04 2017 10:05:08 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>
