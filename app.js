@@ -10,9 +10,14 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
+var serverSettings = require('./serverSettings.js');
 var forceHttps = require('express-force-https');
 
-mongoose.connect('mongodb://root:toor@med-shard-00-00-mgwxu.mongodb.net:27017,med-shard-00-01-mgwxu.mongodb.net:27017,med-shard-00-02-mgwxu.mongodb.net:27017/loginapp?ssl=true&replicaSet=med-shard-0&authSource=admin');
+mongoose.connect(serverSettings.parameters.db || 'mongodb://root:toor@med-shard-00-00-mgwxu.mongodb.net:27017,med-shard-00-01-mgwxu.mongodb.net:27017,med-shard-00-02-mgwxu.mongodb.net:27017/loginapp?ssl=true&replicaSet=med-shard-0&authSource=admin');
+if (serverSettings.parameters.db) {
+	console.log("Connected to custom database '" + serverSettings.parameters.db + "'.");
+}
+
 //mongoose.connect('mongodb://localhost/loginapp');
 var db = mongoose.connection;
 
@@ -47,8 +52,12 @@ app.use(session({
     resave: true
 }));
 
-// Force HTTPS when not running on localhost
-app.use(forceHttps);
+// Force HTTPS when not connecting to localhost
+if (!serverSettings.parameters.http) {
+	app.use(forceHttps);
+} else {
+	console.log("Warning: running in (unsecure) HTTP mode.");
+}
 
 // Passport init
 app.use(passport.initialize());
@@ -98,5 +107,5 @@ app.use('/forgot', forgot);
 app.set('port', (process.env.PORT || 3000));
 
 app.listen(app.get('port'), function(){
-	console.log('Server started on port '+app.get('port'));
+	console.log("Server started on port " + app.get('port') + ".");
 });

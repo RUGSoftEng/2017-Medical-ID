@@ -107,7 +107,7 @@ passport.deserializeUser(function(id, done) {
 });
 
 router.post('/login',
-  passport.authenticate('local', {successRedirect:'/', failureRedirect:'/users/login',failureFlash: true}),
+  passport.authenticate('local', {successRedirect:'/create', failureRedirect:'/users/login',failureFlash: true}),
   function(req, res) {
     res.redirect('/');
   });
@@ -125,7 +125,7 @@ function encrypt(text, key){
   var encrypted = cipher.update(text,'utf8','hex') + cipher.final('hex');
   return encrypted;
 }
- 
+
 function decrypt(text, key){
   var decipher = crypto.createDecipher(algorithm, key)
   var decrypted = decipher.update(text,'hex','utf8') + decipher.final('utf8');

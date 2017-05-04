@@ -1,4 +1,8 @@
 [
   {"label": "Name", "field": ""},
-  {"label": "Nationality", "field": ""}
+  {"label": "Date of Birth", "field": ""},
+  {"label": "Nationality", "field": ""},
+  {"label": "Blood type", "field": ""},
+  {"label": "Donor", "field": ""},
+  {"label": "Insurance", "field": ""}
 ]
