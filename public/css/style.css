@@ -118,6 +118,25 @@ h2.page-header {
     align-items: center;
 }
 
+.loginbox {
+    border-radius: 15px;
+    background-color: hsl(221, 61%, 80%);
+}
+
+.loginblock {
+    padding-right: 25px;
+}
+
+
+.registerblock {
+    padding-left: 25px;
+}
+
+.loginwrapper{
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - 49px);
+}
 /* DEFAULT BOOTSTRAP CHANGES */
 .header {
     padding-bottom: 1rem;
@@ -147,6 +166,10 @@ h2.page-header {
 @media (min-width: 768px) {
     .main-page-col {
         height: calc(100vh - 49px);
+    }
+    
+    .loginblock {
+        border-right: 1px solid black;
     }
 }
 
