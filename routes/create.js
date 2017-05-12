@@ -3,6 +3,7 @@ var router = express.Router();
 
 router.get('/', function(req, res){
 	if (req.user) {
+        console.log(req.user);
 		res.render('create/create');
 	} else {
 		res.render('create/guestcreate');

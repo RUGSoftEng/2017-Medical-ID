@@ -7,6 +7,7 @@ var baseURL = 'https://medid.herokuapp.com';
 
 //TODO: test the data in req.body before using it
 
+/* Old routes */
 router.post('/card', function(req, res){
 	req.user.card = req.body;
 	User.updateUser(req.user.username, req.user, function(err){
@@ -45,6 +46,24 @@ router.get('/card', function(req, res) {
 		} else {
 			res.sendFile('json/guestCard.json', {root: __dirname + '/../public/'});
 		}
+	} else {
+		res.sendFile('json/guestCard.json', {root: __dirname + '/../public/'});
+	}
+});
+
+/* Current routes */
+
+router.post('/fields', function(req, res){
+	req.user.fields = req.body;
+	User.updateUser(req.user.username, req.user, function(err){
+		if(err) throw err;
+	});
+	res.json({status: "success"});
+});
+
+router.get('/fields', function(req, res) {
+	if (req.user) {
+		res.json(req.user.fields);
 	} else {
 		res.sendFile('json/guestCard.json', {root: __dirname + '/../public/'});
 	}

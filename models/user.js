@@ -28,11 +28,13 @@ var UserSchema = mongoose.Schema({
 	name: {
 		type: String
 	},
-	card: [{
-		label: String,
-		field: String
-	}],
-	document: [{
+    cardNum: {
+        type: Number
+    },
+    picture: {
+        type: String
+    },
+	fields: [{
 		label: String,
 		field: String
 	}]
