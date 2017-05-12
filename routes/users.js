@@ -45,11 +45,14 @@ router.post("/register", function(req,res){
 				}
 				res.redirect('/users/login');
 			} else{
-				var seed = crypto.randomBytes(32).toString('hex');
-				var code = crypto.randomBytes(9).toString('base64');
+				//Here we generate a random seed for encrypting, saved in user.seed. Likewise a code for the qrcode.
+				//var seed = crypto.randomBytes(32).toString('hex');
+				//var code = crypto.randomBytes(9).toString('base64');
+
 				//username = crypto.createHash('sha256').update(username).digest('hex');
+				//To ecnrypt we simply use:  name: encrypt(name, seed)
 				var newUser = new User({
-					name: encrypt(name, seed),
+					name: name,
 					email: email,
 					username: username,
 					password: password,
@@ -73,8 +76,9 @@ router.post("/register", function(req,res){
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
+   //Example of how to hash:
    //username = crypto.createHash('sha256').update(username.toLowerCase()).digest('hex');
-   User.getUserByUsername(username, function(err, user){
+   User.getUserByUsername(username.toLowerCase(), function(err, user){
    	if(err) throw err;
    	if(!user){
    		return done(null, false, {message: 'Unknown User'});
