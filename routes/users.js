@@ -9,7 +9,7 @@ var User = require('../models/user');
 
 // Login
 router.get('/login', function(req, res){
-	res.render('login');
+	res.render('login2');
 });
 
 // Register User
