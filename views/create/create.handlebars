@@ -24,13 +24,13 @@
 				<li class="list-group-item">
 				  <label for="uploadPicture">Your profile picture</label>
 				  <div class='input-group'>
-					<span class='input-group-addon'><img id='picturePreview' src="img/placeholder.png" /></span>
+					<span class='input-group-addon'><img id='picturePreview' src="{{user.picture}}" /></span>
 					<input class='form-control' id='uploadPicture' type="file" name="pic" accept="image/*">
 				  </div>
 				</li>
 				<li class="list-group-item">
 				  <label for="inputEmail">Amount of fields on your card</label>
-				  <input type="number" class="form-control" id="inputCardNum" value="7" max="7" min="1">
+				  <input type="number" class="form-control" id="inputCardNum" value="{{user.cardNum}}" max="7" min="1">
 				  <small>The top fields will appear on the card.</small>
 				</li>
 			  </ul>

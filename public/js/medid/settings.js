@@ -81,6 +81,7 @@ define(['jquery'], function($) {
     settings.values.name = settings.nameInput.val();
     settings.values.email = settings.emailInput.val();
     settings.values.cardNum = settings.cardNumInput.val();
+    settings.values.picture = settings.picturePreview.attr('src');
   }
 
   /**

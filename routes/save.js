@@ -15,7 +15,6 @@ router.post('/card', function(req, res){
 		if(err) throw err;
 	});
 	// req.flash('success_msg', 'Data successfully stored');
-	// console.log(req.user); // for testing
 	res.json({status: "success"});
 });
 
@@ -26,13 +25,11 @@ router.post('/document', function(req, res){
 		if(err) throw err;
 	});
 	// req.flash('success_msg', 'Data successfully stored');
-	// console.log(req.user); // for testing
 	res.json({status: "success"});
 });
 
 router.get('/document', function(req, res) {
 	if (req.user) {
-		console.log(req.user.document);
 		res.json(req.user.document);
 	} else {
 		res.sendFile('json/guestDocument.json', {root: __dirname + '/../public/'});
@@ -54,11 +51,16 @@ router.get('/card', function(req, res) {
 /* Current routes */
 
 router.post('/fields', function(req, res){
-	req.user.fields = req.body;
-	User.updateUser(req.user.username, req.user, function(err){
-		if(err) throw err;
-	});
-	res.json({status: "success"});
+	if (req.user) {
+		req.user.fields = req.body;
+		User.updateUser(req.user.username, req.user, function(err){
+			if(err) throw err;
+		});
+		res.json({status: "success"});
+	}
+	else {
+		res.json({status: "not authenticated"});
+	}
 });
 
 router.get('/fields', function(req, res) {
