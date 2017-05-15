@@ -61,11 +61,11 @@ router.post("/register", function(req,res){
 					cardNum: 7,
 					picture: "img/placeholder.png",
 					fields: [
-						{"label": "Name", "field": name},
-						{"label": "Date of Birth", "field": ""},
-						{"label": "Blood type", "field": ""},
-						{"label": "Donor", "field": ""},
-						{"label": "Insurance", "field": ""}
+						{"label": "Name", "field": name, "inprofile": true},
+						{"label": "Date of Birth", "field": "", "inprofile": true},
+						{"label": "Blood type", "field": "", "inprofile": true},
+						{"label": "Donor", "field": "", "inprofile": true},
+						{"label": "Insurance", "field": "", "inprofile": true}
 						]
 
 				});

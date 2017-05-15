@@ -1,8 +1,7 @@
 [
-  {"label": "Name", "field": ""},
-  {"label": "Date of Birth", "field": ""},
-  {"label": "Nationality", "field": ""},
-  {"label": "Blood type", "field": ""},
-  {"label": "Donor", "field": ""},
-  {"label": "Insurance", "field": ""}
+  {"label": "Name", "field": "", "inprofile": true},
+  {"label": "Date of Birth", "field": "", "inprofile": true},
+  {"label": "Blood type", "field": "", "inprofile": true},
+  {"label": "Donor", "field": "", "inprofile": true},
+  {"label": "Insurance", "field": "", "inprofile": true}
 ]

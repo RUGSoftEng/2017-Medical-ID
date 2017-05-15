@@ -45,6 +45,18 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     error: $('#error'),
 
     /**
+     * The maximum length of a label.
+     * @member {number}
+     */
+    labelSize: 15,
+
+    /**
+     * The maximum length of a field.
+     * @member {number}
+     */
+    fieldSize: 57,
+
+    /**
      * The amount of rows selected for the card. Ranges from 1 to 7.
      * @member {number}
      */
@@ -109,20 +121,21 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
   /**
    * Method to add a field to the form.
    * The field comes with all necesarry buttons and the complementary listeners.
-   * @param {string} [label] - Pre-set label text. Label is empty by default.
-   * @param {string} [field] - Pre-set field text. Field is empty by default.
-   * @param {boolean} [labelEditable] - Boolean stating whether the label will be editable.
-   * @param {boolean} [labelEditbale] - Boolean stating whether the field will be editable.
-   * @param {number} [labelSize] - Maximum size of the label in number of characters.
-   * @param {number} [fieldSize] - Maximum size of the field in number of characters.
+   * @param {string} label - Pre-set label text. Can be an empty string.
+   * @param {string} field - Pre-set field text. Can be an empty string.
+   * @param {boolean} inprofile - Boolean denoting whether this field has the "in profile" property.
    */
-  creator.addField = function (label, field, labelEditable, fieldEditable, labelSize, fieldSize) {
-    inputLabel = "<input class='medid-label form-control' maxlength='" + labelSize + "' value='" + label + "' type='text' " + (labelEditable == false ? 'readonly' : '') + " /></span>";
-    inputField = "<span class='input-group-addon'>:</span><input class='medid-field form-control' maxlength='" + fieldSize + "' type='text' value='" + field + "' " + (fieldEditable == false ? 'readonly' : '') + " /></span>";
+  creator.addField = function (label, field, inprofile) {
+    inputLabel = "<input class='medid-label form-control' maxlength='" + creator.labelSize + "' value='" + label + "' type='text' /></span>";
+    inputField = "<span class='input-group-addon'>:</span><input class='medid-field form-control' maxlength='" + creator.fieldSize + "' type='text' value='" + field + "' /></span>";
     removeField = "<button class='removeField btn btn-danger'><svg class='icon-bin'><use xlink:href='/img/icons.svg#icon-bin'></use></svg></button>";
     moveUp = "<span class='clickable moveUp'><svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-up'></use></svg></span>";
     moveDown = "<span class='clickable moveDown'><svg class='icon-arrow-down'><use xlink:href='/img/icons.svg#icon-arrow-down'></use></svg></span>";
-    toggle = "<div class='toggle' data-toggle='buttons'><label class='btn btn-success'><input type='radio' autocomplete='off'>used</label><label class='btn btn-warning active'><input type='radio' autocomplete='off'>not used</label></div>"
+    if (inprofile) {
+      toggle = "<div class='toggle' data-toggle='buttons'><label class='btn btn-success'><input type='radio' autocomplete='off'>used</label><label class='btn btn-warning active'><input type='radio' autocomplete='off'>not used</label></div>"
+    } else {
+      toggle = "<div class='toggle' data-toggle='buttons'><label class='btn btn-success active'><input type='radio' autocomplete='off'>used</label><label class='btn btn-warning'><input type='radio' autocomplete='off'>not used</label></div>"
+    }
     operations = "<div class='row'>" + toggle + removeField + "<div class='move-wrapper'>" + moveUp + moveDown + "</div></div>";
 
     field = $("<div class='fieldBox card'><div class='card-block row'><div class='col-md-6'><div class='input-group'>" + inputLabel + inputField + "</div></div><div class='col-md-6'>" + operations + "</div></div></div>");
@@ -266,7 +279,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     } else {
       $.getJSON(creator.saveEndpoint, function(data) {
 		    for (i = 0; i < data.length; i++) {
-          creator.addField(data[i].label, data[i].field);
+          creator.addField(data[i].label, data[i].field, data[i].inprofile);
         }
         creator.colorCardFields();
         /* Only show the form once it is loaded */

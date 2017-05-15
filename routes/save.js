@@ -67,7 +67,7 @@ router.get('/fields', function(req, res) {
 	if (req.user) {
 		res.json(req.user.fields);
 	} else {
-		res.sendFile('json/guestCard.json', {root: __dirname + '/../public/'});
+		res.sendFile('json/guestDocument.json', {root: __dirname + '/../public/'});
 	}
 });
 

@@ -1,7 +1,0 @@
-[
-  {"label": "Name", "field": ""},
-  {"label": "Date of Birth", "field": ""},
-  {"label": "Blood type", "field": ""},
-  {"label": "Donor", "field": "yes"},
-  {"label": "Insurance", "field": ""}
-]

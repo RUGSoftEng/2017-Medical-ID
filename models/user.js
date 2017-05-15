@@ -36,7 +36,8 @@ var UserSchema = mongoose.Schema({
     },
 	fields: [{
 		label: String,
-		field: String
+		field: String,
+		inprofile: Boolean
 	}]
 });
 
