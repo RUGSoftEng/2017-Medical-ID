@@ -7,6 +7,7 @@
             {{#if displayUser}}
                 <table class="table-striped table">
                     {{#each displayUser.fields}}
+                      {{#if this.inprofile}}
                         <tr>
                             <td>
                                 <span style="font-weight: 700;">{{this.label}}</span>
@@ -15,6 +16,7 @@
                                 {{this.field}}
                             </td>
                         </tr>
+                      {{/if}}
                     {{/each}}
                 </table>
             {{else}}
@@ -24,7 +26,7 @@
     </div>
     <div class="col-sm-12 col-md-5 text-center p-3">
         <div class="content-wrap">
-            <img id="profile-profpic" width='50%' src='img/placeholder.png' />
+            <img id="profile-profpic" width='50%' src='{{displayUser.picture}}' />
         </div>
     </div>
 </div>
