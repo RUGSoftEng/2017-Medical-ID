@@ -46,8 +46,8 @@ router.post("/register", function(req,res){
 				res.redirect('/users/login');
 			} else{
 				//Here we generate a random seed for encrypting, saved in user.seed. Likewise a code for the qrcode.
-				//var seed = crypto.randomBytes(32).toString('hex');
-				//var code = crypto.randomBytes(9).toString('base64');
+				var seed = crypto.randomBytes(32).toString('hex');
+				var code = crypto.randomBytes(9).toString('base64');
 
 				//username = crypto.createHash('sha256').update(username).digest('hex');
 				//To ecnrypt we simply use:  name: encrypt(name, seed)
@@ -58,13 +58,20 @@ router.post("/register", function(req,res){
 					password: password,
 					seed: seed,
 					code: code,
-					card: [],
-					document: []
+					cardNum: 7,
+					picture: "img/placeholder.png",
+					fields: [
+						{"label": "Name", "field": name, "inprofile": true},
+						{"label": "Date of Birth", "field": "", "inprofile": true},
+						{"label": "Blood type", "field": "", "inprofile": true},
+						{"label": "Donor", "field": "", "inprofile": true},
+						{"label": "Insurance", "field": "", "inprofile": true}
+						]
+
 				});
 
 				User.createUser(newUser, function(err, user){
 					if(err) throw err;
-					console.log(user);
 				});
 
 				req.flash('success_msg', 'You are registered and can now login');
