@@ -11,6 +11,7 @@ router.get('/', function(req, res){
 	res.render('forgot');
 });
 
+//Gets the submitted token, finds user with token, checks if token is valid, if valid promt to reset pw
 router.get('/reset/:token', function(req, res) {
   User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
     if (!user) {
@@ -25,15 +26,17 @@ router.get('/reset/:token', function(req, res) {
 });
 
 
-//send reset token START
+//START: Sent reset token
 router.post('/', function(req, res, next) {
   async.waterfall([
     function(done) {
       crypto.randomBytes(20, function(err, buf) {
+	//Generate our reset token	
         var token = buf.toString('hex');
         done(err, token);
       });
     },
+    //Find user with email, save token value and expiry time:
     function(token, done) {
       User.findOne({ email: req.body.email }, function(err, user) {
         if (!user) {
@@ -49,12 +52,14 @@ router.post('/', function(req, res, next) {
         });
       });
     },
+    //Logs in to gmail via nodemailer using SMTP and sends the email containing the reset token
+    //TODO: use a configuration file (added to .gitignore) and add the file to the server manually. 
     function(token, user, done) {
       var transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
             user: 'medicalid17@gmail.com',
-            pass: 'medicomedico'
+            pass: 'enterpasswordhere'
         }
         });
       var mailOptions = {
@@ -79,10 +84,11 @@ router.post('/', function(req, res, next) {
     req.flash('error_msg', 'Error');
   });
 });
-//END of reset token
+//END: send reset token
 
 
-//Set new password START
+//START: Set new password
+//Checks if token is valid, sets and hashes new password, sets token and expiry fields to null, sends a confirmation email.
 router.post('/reset/:token', function(req, res) {
   async.waterfall([
     function(done) {
@@ -116,7 +122,7 @@ router.post('/reset/:token', function(req, res) {
         service: 'Gmail',
         auth: {
             user: 'medicalid17@gmail.com',
-            pass: 'medicomedico'
+            pass: 'enterpasswordhere'
         }
         });
       var mailOptions = {
@@ -135,6 +141,6 @@ router.post('/reset/:token', function(req, res) {
     res.redirect('/');
   });
 });
-//END set new password
+//END: set new password
 
 module.exports = router;
