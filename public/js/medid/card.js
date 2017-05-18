@@ -1,4 +1,4 @@
-define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
+define(['jspdf', 'jquery', 'medid/hyphenator', 'medid/res'], function(jsPDF, $, hyphenator) {
 
 	/**
 	 * The card module implements card creation functionality upon the creator.js module.
@@ -7,6 +7,7 @@ define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
 	 * @exports MIDcard
 	 * @requires jquery
 	 * @requires jsPDF
+	 * @requires hyphenator
 	 * @required res
 	 */
 	var MIDcard = {};
@@ -95,8 +96,23 @@ define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
 		doc.text(104, 19, "SCAN FOR MORE INFORMATION");
 
 		// Retrieving QR code from server
-		$.get('/save/qr', function(qrcode) {
-			doc.addImage(qrcode, 'JPEG', 123, 25, 38, 38);
+		$.getJSON("/save/code", function(code) {
+			if (code.code) {
+				doc.addImage(code.qr, 'JPEG', 105, 25, 38, 38);
+				doc.setFontSize(8);
+				doc.setFontStyle("normal");
+				doc.setTextColor(124,124,124);
+				doc.text(145, 34, "Don't have a code scanner?");
+				doc.text(145, 38, "Go to:");
+				doc.setTextColor(0,0,0);
+				doc.setFontStyle("bold"); doc.text(150, 42, "medid.herokuapp.com"); doc.setFontStyle("normal");
+				doc.setTextColor(124,124,124);
+				doc.text(145, 46, "Enter the code:");
+				doc.setTextColor(0,0,0);
+				doc.setFontStyle("bold"); doc.text(150, 50, hyphenator.insertHyphen(code.code)); doc.setFontStyle("normal");
+			} else {
+				doc.addImage(code.qr, 'JPEG', 123, 25, 38, 38);
+			}
 			callback(doc);
 		})
 	}

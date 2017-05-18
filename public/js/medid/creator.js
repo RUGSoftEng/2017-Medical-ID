@@ -183,7 +183,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
       console.log("Picture changed!");
     });
 
-    settings.cardNumInput.on('change', function() {
+    settings.cardNumInput.on('input', function() {
       creator.cardNum = $(this).val();
       creator.colorCardFields();
     });

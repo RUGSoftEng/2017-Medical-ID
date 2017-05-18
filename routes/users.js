@@ -12,6 +12,17 @@ router.get('/login', function(req, res){
 	res.render('login');
 });
 
+router.get('/newcode', function(req, res) {
+	if (req.user) {
+		req.user.code = genCode();
+		User.updateUser(req.user.username, req.user, function(err){
+			if(err) throw err;
+			req.flash('success_msg', "Your personal code is now updated. All old references to your profile, including your cards, are now deprecated and will no longer work.");
+			res.redirect('/create');
+		});
+	}
+});
+
 // Register User
 router.post("/register", function(req,res){
 	var name = req.body.name;
@@ -47,7 +58,6 @@ router.post("/register", function(req,res){
 			} else{
 				//Here we generate a random seed for encrypting, saved in user.seed. Likewise a code for the qrcode.
 				var seed = crypto.randomBytes(32).toString('hex');
-				var code = crypto.randomBytes(9).toString('base64');
 
 				//username = crypto.createHash('sha256').update(username).digest('hex');
 				//To ecnrypt we simply use:  name: encrypt(name, seed)
@@ -57,7 +67,7 @@ router.post("/register", function(req,res){
 					username: username,
 					password: password,
 					seed: seed,
-					code: code,
+					code: genCode(),
 					cardNum: 7,
 					picture: "img/placeholder.png",
 					fields: [
@@ -123,6 +133,15 @@ router.get('/logout', function(req, res){
 	req.flash('success_msg', 'You are logged out');
 	res.redirect('/users/login');
 });
+
+function genCode() {
+	var LENGTH = 12;
+	var ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+	var result = '';
+  for (var i = LENGTH; i > 0; --i) result += ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+  return result;
+}
 
 function encrypt(text, key){
   var cipher = crypto.createCipher(algorithm, key)

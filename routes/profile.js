@@ -4,9 +4,11 @@ var router = express.Router();
 var User = require('../models/user');
 
 router.get('/', function(req,res){
-	var id = req.query.id;
-	if(id){
-		User.getUserById(id, function(err,user){
+	if (req.query.code) {
+		var code = req.query.code.replace(/[^0-9a-zA-Z]/gi, '');
+	}
+	if(code) {
+		User.getUserByCode(code, function(err,user){
 			if(!user){
                 req.flash('error_msg', 'No user found');
                 res.redirect('/');
