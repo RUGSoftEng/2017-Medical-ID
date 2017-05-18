@@ -73,7 +73,7 @@ router.get('/fields', function(req, res) {
 
 router.get('/qr', function(req, res) {
 	if (req.user) {
-		url = baseURL + '/profile?id=' + req.user.id;
+		url = baseURL + '/profile?code=' + req.user.code;
 	} else {
 		url = baseURL + '/users/register';
 	}
