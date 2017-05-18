@@ -104,11 +104,11 @@ define(['jspdf', 'jquery', 'medid/hyphenator', 'medid/res'], function(jsPDF, $, 
 				doc.setTextColor(124,124,124);
 				doc.text(145, 34, "Don't have a code scanner?");
 				doc.text(145, 38, "Go to:");
-                doc.setTextColor(0,0,0);
+				doc.setTextColor(0,0,0);
 				doc.setFontStyle("bold"); doc.text(150, 42, "medid.herokuapp.com"); doc.setFontStyle("normal");
-                doc.setTextColor(124,124,124);
+				doc.setTextColor(124,124,124);
 				doc.text(145, 46, "Enter the code:");
-                doc.setTextColor(0,0,0);
+				doc.setTextColor(0,0,0);
 				doc.setFontStyle("bold"); doc.text(150, 50, hyphenator.insertHyphen(code.code)); doc.setFontStyle("normal");
 			} else {
 				doc.addImage(code.qr, 'JPEG', 123, 25, 38, 38);
