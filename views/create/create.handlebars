@@ -23,7 +23,11 @@
 				</li>
         <li class="list-group-item">
 				  <label for="inputName">Your profile code</label>
-				  <div class="form-control">{{user.hyphenedCode}}</div>
+          <div class="input-group">
+            <div class="form-control">{{user.hyphenedCode}}</div>
+            <a href="/users/newcode" class="btn btn-danger input-group-addon">Renew</a>
+          </div>
+          <span class='small'>Renewing your code will make old references to your profile unusable!</span>
 				</li>
 				<li class="list-group-item">
 				  <label for="uploadPicture">Your profile picture</label>
@@ -63,7 +67,7 @@
 				<input type='button' value='Create card' class="createCard btn btn-primary"/>
 				<input type='button' value='Create profile as document' class="createDoc btn btn-primary"/>
 			</p>
-			<p><a href="/profile?id={{user.id}}">View your personal profile!</a></p>
+			<p><a href="/profile?code={{user.code}}">View your personal profile!</a></p>
 		  </div>
 		</div>
 	</div>
