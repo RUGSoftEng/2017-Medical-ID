@@ -47,7 +47,7 @@ router.post("/register", function(req,res){
 			} else{
 				//Here we generate a random seed for encrypting, saved in user.seed. Likewise a code for the qrcode.
 				var seed = crypto.randomBytes(32).toString('hex');
-				var code = crypto.randomBytes(9).toString('base64');
+				var code = crypto.randomBytes(9).toString('base64').replace(/\+/g, 'a').replace(/\//g, 'Q');
 
 				//username = crypto.createHash('sha256').update(username).digest('hex');
 				//To ecnrypt we simply use:  name: encrypt(name, seed)
