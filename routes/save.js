@@ -71,7 +71,7 @@ router.get('/fields', function(req, res) {
 	}
 });
 
-router.get('/qr', function(req, res) {
+router.get('/code', function(req, res) {
 	if (req.user) {
 		url = baseURL + '/profile?code=' + req.user.code;
 	} else {
@@ -79,7 +79,9 @@ router.get('/qr', function(req, res) {
 	}
 	dataString = qrcode.toBase64(url, 4);
 	image = sharp(Buffer.from(dataString, 'base64')).jpeg().toBuffer(function(err, data, info) {
-		res.send('data:image/jpeg;base64,' + data.toString('base64'));
+		var qr = 'data:image/jpeg;base64,' + data.toString('base64');
+		var code = (req.user ? req.user.code : false);
+		res.json({code: code, qr: qr})
 	});
 });
 
