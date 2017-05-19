@@ -75,7 +75,7 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
 
 // this way of updating will execute validators
 module.exports.updateUser = function(update, callback){
-	User.findById(id, function(err, user){
+	User.findById(update._id, function(err, user){
 		if (err)
 			throw err;
 
