@@ -7,11 +7,6 @@ var algorithm = 'aes256';
 
 var User = require('../models/user');
 
-// Register
-router.get('/register', function(req, res){
-	res.render('register');
-});
-
 // Login
 router.get('/login', function(req, res){
 	res.render('login');
@@ -36,7 +31,7 @@ router.post("/register", function(req,res){
 	var errors = req.validationErrors();
 
 	if(errors){
-		res.render('register',{ errors: errors });
+		res.render('login',{ errors: errors });
 	} else{
 		User.checkExists(username, email, function(err,user){
 			if(err) throw err;
@@ -48,25 +43,35 @@ router.post("/register", function(req,res){
 				if(user.email === email) {
 					req.flash('error_msg', 'Email address is already in use');
 				}
-				res.redirect('/users/register');
+				res.redirect('/users/login');
 			} else{
+				//Here we generate a random seed for encrypting, saved in user.seed. Likewise a code for the qrcode.
 				var seed = crypto.randomBytes(32).toString('hex');
 				var code = crypto.randomBytes(9).toString('base64');
+
 				//username = crypto.createHash('sha256').update(username).digest('hex');
+				//To ecnrypt we simply use:  name: encrypt(name, seed)
 				var newUser = new User({
-					name: encrypt(name, seed),
+					name: name,
 					email: email,
 					username: username,
 					password: password,
 					seed: seed,
 					code: code,
-					card: [],
-					document: []
+					cardNum: 7,
+					picture: "img/placeholder.png",
+					fields: [
+						{"label": "Name", "field": name, "inprofile": true},
+						{"label": "Date of Birth", "field": "", "inprofile": true},
+						{"label": "Blood type", "field": "", "inprofile": true},
+						{"label": "Donor", "field": "", "inprofile": true},
+						{"label": "Insurance", "field": "", "inprofile": true}
+						]
+
 				});
 
 				User.createUser(newUser, function(err, user){
 					if(err) throw err;
-					console.log(user);
 				});
 
 				req.flash('success_msg', 'You are registered and can now login');
@@ -78,8 +83,9 @@ router.post("/register", function(req,res){
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
+   //Example of how to hash:
    //username = crypto.createHash('sha256').update(username.toLowerCase()).digest('hex');
-   User.getUserByUsername(username, function(err, user){
+   User.getUserByUsername(username.toLowerCase(), function(err, user){
    	if(err) throw err;
    	if(!user){
    		return done(null, false, {message: 'Unknown User'});
@@ -107,16 +113,14 @@ passport.deserializeUser(function(id, done) {
 });
 
 router.post('/login',
-  passport.authenticate('local', {successRedirect:'/', failureRedirect:'/users/login',failureFlash: true}),
+  passport.authenticate('local', {successRedirect:'/create', failureRedirect:'/users/login',failureFlash: true}),
   function(req, res) {
     res.redirect('/');
   });
 
 router.get('/logout', function(req, res){
 	req.logout();
-
 	req.flash('success_msg', 'You are logged out');
-
 	res.redirect('/users/login');
 });
 
@@ -125,7 +129,7 @@ function encrypt(text, key){
   var encrypted = cipher.update(text,'utf8','hex') + cipher.final('hex');
   return encrypted;
 }
- 
+
 function decrypt(text, key){
   var decipher = crypto.createDecipher(algorithm, key)
   var decrypted = decipher.update(text,'hex','utf8') + decipher.final('utf8');

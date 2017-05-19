@@ -28,13 +28,16 @@ var UserSchema = mongoose.Schema({
 	name: {
 		type: String
 	},
-	card: [{
+    cardNum: {
+        type: Number
+    },
+    picture: {
+        type: String
+    },
+	fields: [{
 		label: String,
-		field: String
-	}],
-	document: [{
-		label: String,
-		field: String
+		field: String,
+		inprofile: Boolean
 	}]
 });
 

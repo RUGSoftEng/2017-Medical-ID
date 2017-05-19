@@ -1,234 +1,234 @@
-define(['jquery'], function($) {
+define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocument) {
 
   /**
    * The creator module power both document creators.
    * It handles all logic behind the form, including retrieval of data.
-   * To actually be able to generate documents, the creator must be fed two methods: one to generate and one to download the pdf.
-   * These methods can use the fields() method of the creator for input data.
+   * To actually be able to generate documents, the creator needs additional modules corresponding to those documents.
+   * These modules can use the fields() method of the creator for input data.
    * The creator also needs to be provided with an endpoint for data persistency.
    * Finally, creator.init() must be called to start the creator form, filling it with pre-set data.
    * @exports creator
    * @requires jQuery
+   * @requires card
+   * @requires document
    */
   var creator = {
+
     /**
-     * The TBODY element containing all the field rows of the creator form.
+     * The DIV element containing all the fields of the creator form.
      * @member {Object}
      */
-    table: $('#fields tbody'),
+    list: $('#fields'),
+
     /**
      * Used to possibly store the user's name to use explicitly.
      * @member {string}
      */
     userName: "",
+
     /**
      * Server endpoint URL for saving the saved data to using POST requests.
      * @member {string}
      */
     saveEndpoint: "",
-    /**
-     * Method to feed the method for creating PDF's.
-     * @param {method} getFnc - The method to call for downloading the PDF of the specific document.
-     * The method is passed a callback to return the PDF data URI to the creator engine.
-     */
-    getMethod: function (getFnc) {
-      this.getPDF = getFnc;
-    },
-    /**
-     * Method to feed the method for downloading PDF's.
-     * @param {method} downloadFnc - The method to call for downloading the PDF of the specific document.
-     * The method is passed 1 parameter on using, which is the desired file name.
-     */
-    downloadMethod: function (downloadFnc) {
-      this.downloadPDF = downloadFnc;
-    },
+
     /**
      * The element to display messages in.
      * @member {Object}
      */
     message: $('#message'),
+
     /**
-     * The errors to display messages in.
+     * The errors to display error messages in.
      * @member {Object}
      */
     error: $('#error'),
+
     /**
-     * Limit for pictures to be uploaded in bytes.
+     * The maximum length of a label.
      * @member {number}
      */
-    imageMax: 500000,
+    labelSize: 15,
+
     /**
-     * Limit for pictures to be uploaded in words.
-     * @member {string}
+     * The maximum length of a field.
+     * @member {number}
      */
-    imageMaxString: "500Kb"
+    fieldSize: 57,
+
+    /**
+     * The amount of rows selected for the card. Ranges from 1 to 7.
+     * @member {number}
+     */
+    cardNum: null,
+
+    /**
+     * The picture object to retrieve (via the src attribute) the profile picture from.
+     * @member {Object}
+     */
+    picture: null,
+
+    /**
+     * The image data of the profile picture.
+     * @member {String}
+     */
+    image: null,
+
+    /**
+     * The base width of the profile picture as it relates to the height (imageHeight).
+     * @member {number}
+     */
+    imageWidth: 0,
+
+    /**
+     * The base height of the profile picture as it relates to the width (imageWidth).
+     * @member {number}
+     */
+    imageHeight: 0
   }
 
   /**
    * Retrieval method for the field data.
+   * Also retrieves the picture.
    * @returns {Array} An array of tuples with label and field values.
    */
 	creator.fields = function () {
 		var fields = [];
 
 		var label, field;
-		creator.table.children('tr').each(function () {
+		creator.list.children('div.fieldBox').each(function () {
       label = $(this).find('.medid-label');
       field = $(this).find('.medid-field');
-      //labelEditable = label.is('[readonly]');
-      //fieldEditable = field.is('[readonly]');
+      inprofile = $(this).find('.toggle').find('.btn-success').is(':visible');
 
-      if (label.val() == 'Image' && $(this).attr('id') != 'image') {
-        //Don't add it as it is not an actual image
-      } else {
-        fields.push({label: label.val(), field: field.val()});
-      }
-      //fields.push({label: label.val(), field: field.val(), labelEditable: labelEditable, fieldEditable: fieldEditable});
+      fields.push({label: label.val(), field: field.val(), inprofile: inprofile});
 
       // We might want to get rid of this part
       if (label.val() == "Name" && creator.userName == "") {
         creator.userName = field.val();
       }
 		});
+
+    if (creator.picture.attr('src') != 'img/placeholder.png') {
+      creator.image = creator.picture.attr('src');
+      creator.imageWidth = creator.picture.width();
+      creator.imageHeight = creator.picture.height();
+    }
+
     return fields;
 	}
 
   /**
    * Method to add a field to the form.
    * The field comes with all necesarry buttons and the complementary listeners.
-   * @param {string} [label] - Pre-set label text. Label is empty by default.
-   * @param {string} [field] - Pre-set field text. Field is empty by default.
-   * @param {boolean} [labelEditable] - Boolean stating whether the label will be editable.
-   * @param {boolean} [labelEditbale] - Boolean stating whether the field will be editable.
-   * @param {number} [labelSize] - Maximum size of the label in number of characters.
-   * @param {number} [fieldSize] - Maximum size of the field in number of characters.
+   * @param {string} label - Pre-set label text. Can be an empty string.
+   * @param {string} field - Pre-set field text. Can be an empty string.
+   * @param {boolean} inprofile - Boolean denoting whether this field has the "in profile" property.
    */
-  creator.addField = function (label, field, labelEditable, fieldEditable, labelSize, fieldSize) {
-    inputLabel = "<input class='medid-label' maxlength='" + labelSize + "' value='" + label + "' type='text' " + (labelEditable == false ? 'readonly' : '') + " />";
-    inputField = "<input class='medid-field' maxlength='" + fieldSize + "' type='text' value='" + field + "' " + (fieldEditable == false ? 'readonly' : '') + " />";
-    removeField = "<input class='removeField' type='button' value='Remove' />";
-    moveUp = "<span class='clickable moveUp'><img src='/img/up.png'></img></span>";
-    moveDown = "<span class='clickable moveDown'><img src='/img/down.png'></img></span>";
+  creator.addField = function (label, field, inprofile) {
+    inputLabel = "<input class='medid-label form-control' maxlength='" + creator.labelSize + "' value='" + label + "' type='text' /></span>";
+    inputField = "<span class='input-group-addon'>:</span><input class='medid-field form-control' maxlength='" + creator.fieldSize + "' type='text' value='" + field + "' /></span>";
+    removeField = "<button class='removeField btn btn-danger'><svg class='icon-bin'><use xlink:href='/img/icons.svg#icon-bin'></use></svg></button>";
+    moveUp = "<span class='clickable moveUp'><svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-up'></use></svg></span>";
+    moveDown = "<span class='clickable moveDown'><svg class='icon-arrow-down'><use xlink:href='/img/icons.svg#icon-arrow-down'></use></svg></span>";
+    if (inprofile) {
+      toggle = "<div class='toggle' data-toggle='buttons'><label class='btn btn-success'><input type='radio' autocomplete='off'>used</label><label class='btn btn-warning active'><input type='radio' autocomplete='off'>not used</label></div>"
+    } else {
+      toggle = "<div class='toggle' data-toggle='buttons'><label class='btn btn-success active'><input type='radio' autocomplete='off'>used</label><label class='btn btn-warning'><input type='radio' autocomplete='off'>not used</label></div>"
+    }
+    operations = "<div class='row'>" + toggle + removeField + "<div class='move-wrapper'>" + moveUp + moveDown + "</div></div>";
 
-    field = $("<tr><td>" + inputLabel + "</td><td>" + inputField + "</td><td>" + removeField + "</td><td>" + moveUp + moveDown + "</td></tr>");
-		this.table.append(field);
+    field = $("<div class='fieldBox card'><div class='card-block row'><div class='col-md-6'><div class='input-group'>" + inputLabel + inputField + "</div></div><div class='col-md-6'>" + operations + "</div></div></div>");
+		this.list.append(field);
 
 		//The row can be removed again
 		field.find('.removeField').on('click', function() {
-			$(this).parent().parent().remove();
+			$(this).parent().parent().parent().parent().remove();
+      creator.colorCardFields();
 		});
 
+    // The row can be moved
     field.find('.moveUp').on('click', function() {
-			row = $(this).parent().parent();
+			row = $(this).parent().parent().parent().parent().parent();
       row.prev().before(row);
+      creator.colorCardFields();
 		});
 
     field.find('.moveDown').on('click', function() {
-      row = $(this).parent().parent();;
+      row = $(this).parent().parent().parent().parent().parent();
       row.before(row.next());
+      creator.colorCardFields();
 		});
+
+    // Updating coloring may be necesarry
+    creator.colorCardFields();
   }
 
   /**
-   * Method to add an image input field to the form.
-   * If the image input field is already there, set the image to the data variable.
-   * @param {string} [data] - Data URI representing the (pre-set) picture.
+   * Bind a Settings object to the creator.
+   * @param {Settings} settings - The settings object.
    */
-  creator.imageField = function (data) {
-    firstField = this.table.children('tr').first();
-    if (firstField.attr('id') == 'image') {
-      if (data && data != "") {
-          firstField.find('img').attr('src', data);
-          firstField.find('.medid-field').attr('value', data);
-      }
-    } else {
-      removeField = "<input class='removeField' type='button' value='Remove' />";
-      inputField = "<input class='medid-field' type='hidden' value='" + (data || "") + "' />";
-      field = $('<tr id="image"><td><input class="medid-label" value="Image" readonly /></td><td><img class="previewImg" src="' + (data || "") + '" /><input id="upload" name="file" type="file" />' + inputField + '</td><td>' + removeField + '</td></tr>');
-      this.table.prepend(field);
-
-      creator.previewImg = field.find('img');
-
-      // The row can be removed again
-  		field.find('.removeField').on('click', function() {
-  			$(this).parent().parent().remove();
-  		});
-
-      field.find('#upload').on('change', function() {
-        var file = this.files[0];
-        if (file.size < creator.imageMax) {
-          reader = new FileReader();
-          reader.onload = function(e) {
-            data = e.target.result;
-            field.find('.medid-field').val(data);
-            creator.previewImg.attr('src', data);
-          };
-          reader.readAsDataURL(file);
-        } else {
-          creator.showError("Error: image to large (maximum is " + creator.imageMaxString + ")!");
-          $(this).val(null);
-        }
-      });
+  creator.settings = function (settings) {
+    creator.cardNum = settings.cardNumInput.val();
+    creator.picture = settings.picturePreview;
+    if (creator.picture.attr('src') != 'img/placeholder.png') {
+      creator.image = creator.picture.attr('src');
     }
+
+    settings.showError = creator.showError;
+    settings.showMessage = creator.showMessage;
+
+    // Listeners
+    creator.picture.on('change', function() {
+      console.log("Picture changed!");
+    });
+
+    settings.cardNumInput.on('change', function() {
+      creator.cardNum = $(this).val();
+      creator.colorCardFields();
+    });
   }
 
   /**
-   * Display a message for 1 second in the message object.
+   * Display a message for 3 seconds in the message object.
    * @param {string} text - Message text.
    */
   creator.showMessage = function (text) {
     creator.message.hide();
     creator.message.text(text);
-    creator.message.fadeIn();
+    creator.message.slideDown();
     setTimeout(function () {
-      creator.message.fadeOut(function () {
+      creator.message.slideUp(function () {
         creator.message.val("");
       });
-    }, 1000);
+    }, 3000);
   }
 
   /**
-   * Display an error for 1 second in the error object.
+   * Display an error for 3 seconds in the error object.
    * @param {string} text - Error text.
    */
   creator.showError = function (text) {
     creator.error.hide();
     creator.error.text(text);
-    creator.error.fadeIn();
+    creator.error.slideDown();
     setTimeout(function () {
-      creator.error.fadeOut(function () {
+      creator.error.slideUp(function () {
         creator.error.val("");
       });
-    }, 1000);
+    }, 3000);
   }
 
+  /**
+   * Update the coloring of the fields to be shown on the card according to the set amount of rows.
+   * This amount of rows is read from the cardNum variable, and has to be updated seperately from input.
+   */
+  creator.colorCardFields = function() {
+    creator.list.children().css("background", "#ABC");
+    creator.list.children().slice(0,creator.cardNum ).css("background", "#ACA");
+  }
 
-  $('.downloadPDF').on('click', function () {
-    // Call the function provided by the document-specific engine to download
-    creator.downloadPDF("MedicalID.pdf");
-  });
-
-  $('.showPDF').on('click', function () {
-    if (creator.previewImg) {
-      creator.imageHeight = creator.previewImg.height();
-      creator.imageWidth = creator.previewImg.width();
-    }
-    // Call the function provided by the document-specific engine to retrieve
-  	previewFrame.src = "/preview_placeholder.html";
-    $('#PDFCreate').slideUp(function() {
-      $('#PDFPreview').slideDown();
-      creator.getPDF(function(data) {
-		  previewFrame.src = data;
-  	  });
-  	});
-  });
-
-  $('.hidePDF').on('click', function () {
-  	$('#PDFPreview').slideUp(function() {
-  		$('#PDFCreate').slideDown();
-      previewFrame.src = '';
-  	});
-  });
+  // LISTENERS
 
 	$('.addField').on('click', function() {
     /* Add a field, possibly with preset label or field */
@@ -241,10 +241,6 @@ define(['jquery'], function($) {
       $(this).attr('data-field-size') || 57
       );
 	});
-
-  $('.addImage').on('click', function() {
-    creator.imageField();
-  });
 
   $('.save').on('click', function() {
     $.ajax({
@@ -261,24 +257,31 @@ define(['jquery'], function($) {
     });
   });
 
+  $('.createCard').on('click', function() {
+    MIDcard.get(creator, function(doc) {
+      window.open(doc);
+    })
+  });
+
+  $('.createDoc').on('click', function() {
+    MIDdocument.get(creator, function(doc) {
+      window.open(doc);
+    })
+  });
 
 
   /**
-   * This method must be called by the document-specific controller when it is initialized itself.
-   * This method checks for any user data and puts it into the pre-set form.
+   * Starts the creator engine and its form.
    */
   creator.init = function () {
     if (creator.saveEndpoint == "") {
       console.log("Error: no endpoint found for saving this document!")
     } else {
       $.getJSON(creator.saveEndpoint, function(data) {
-        for (i = 0; i < data.length; i++) {
-          if (data[i].label == "Image") {
-            creator.imageField(data[i].field);
-          } else {
-            creator.addField(data[i].label, data[i].field);
-          }
+		    for (i = 0; i < data.length; i++) {
+          creator.addField(data[i].label, data[i].field, data[i].inprofile);
         }
+        creator.colorCardFields();
         /* Only show the form once it is loaded */
         $('#creatorFormLoading').fadeOut(function () {
           $('#creatorForm').slideDown();

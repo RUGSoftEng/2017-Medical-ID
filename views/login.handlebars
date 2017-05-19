@@ -1,24 +1,88 @@
-<div class="row">
-    <div class="col-md-8 p-3">
-        <h2 class="mb-3 header">Account Login</h2>
-        <form method="post" action="/users/login">
-            <div class="form-group row">
-                <label class="col-12 col-sm-2 col-form-label">Username</label>
-                <div class="col-12 col-sm-10">
-                    <input type="text" class="form-control" placeholder="Username" name="username">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-12 col-sm-2 col-form-label">Password</label>
-                <div class="col-12 col-sm-10">
-                    <input type="password" class="form-control" placeholder="Password" name="password">
-                </div>
-                <a href="{{req.headers.host}}/forgot" class="btn btn-link pull-right">Forgot Password?</a>
-            </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>
-    </div>
-    <div class="col-md-4 p-3">
-        <img width='100%' src='../img/doctor.jpg' />
-    </div>
+<div class="row loginwrapper">
+	<div class="col-8 offset-2 loginbox p-3 mt-5 mt-md-0">
+		<div class="row">
+			<div class="col-12 mb-3 mb-md-0 col-md-6 loginblock">
+				<h2 class="header mb-3">Login</h2>
+				<form role="form" action="/users/login" method="post" class="login-form">
+					<div class="form-group">
+					<label for="username" class="cols-sm-2 control-label">Username</label>
+					<div class="cols-sm-10">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+								<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="password" class="cols-sm-2 control-label">Password</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+								<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+							</div>
+							<a href="{{req.headers.host}}/forgot" class="btn btn-link pull-right">Forgot Password?</a>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary">Sign in</button>
+				</form>
+			</div>
+			<div class="col-12 col-md-6 registerblock pt-3 pt-md-0">
+				<h2 class="header mb-3">Register</h2>
+				<form role="form" action="/users/register" method="post" class="login-form">
+
+					<div class="form-group">
+						<label for="name" class="cols-sm-2 control-label">Your Name</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+								<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="email" class="cols-sm-2 control-label">Your Email</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+								<input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="username" class="cols-sm-2 control-label">Username</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+								<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="password" class="cols-sm-2 control-label">Password</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+								<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+								<input type="password" class="form-control" name="password2" id="password2"  placeholder="Confirm your Password"/>
+							</div>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+				</form>                                                
+
+			</div>
+		</div>
+	</div>
 </div>
