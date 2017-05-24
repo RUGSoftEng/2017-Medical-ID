@@ -54,8 +54,8 @@ define(['jspdf', 'jquery', 'medid/hyphenator', 'medid/res'], function(jsPDF, $, 
 		var leftStartPos = [12,55], rightStartPos = [38,30];
 		var lineHeight = 5, leftLabelWidth = 19, rightLabelWidth = 21;
 		for (i = 0; i < fields.length && i < creator.cardNum; i++) {
-			fields[i].label = fields[i].label.substring(0, 13);
-			fields[i].field = fields[i].field.substring(0, 19);
+			fields[i].label = fields[i].label.substring(0, 14);
+			fields[i].field = fields[i].field.substring(0, 20);
 			if (fields[i].label == 'Donor' || fields[i].label == 'Blood type') {
 				// We place the short fields 'donor' and 'blood type' in the corner
 				if (leftCounter < 2) { // Max capacity
