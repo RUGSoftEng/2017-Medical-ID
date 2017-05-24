@@ -48,13 +48,13 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
      * The maximum length of a label.
      * @member {number}
      */
-    labelSize: 15,
+    labelSize: 50,
 
     /**
      * The maximum length of a field.
      * @member {number}
      */
-    fieldSize: 57,
+    fieldSize: 500,
 
     /**
      * The amount of rows selected for the card. Ranges from 1 to 7.
@@ -102,13 +102,9 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
       inprofile = $(this).find('.toggle').find('.btn-success').is(':visible');
 
       fields.push({label: label.val(), field: field.val(), inprofile: inprofile});
-
-      // We might want to get rid of this part
-      if (label.val() == "Name" && creator.userName == "") {
-        creator.userName = field.val();
-      }
 		});
 
+    creator.userName = settings.nameInput.val();
     if (creator.picture.attr('src') != 'img/placeholder.png') {
       creator.image = creator.picture.attr('src');
       creator.imageWidth = creator.picture.width();
@@ -179,10 +175,6 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     settings.showMessage = creator.showMessage;
 
     // Listeners
-    creator.picture.on('change', function() {
-      console.log("Picture changed!");
-    });
-
     settings.cardNumInput.on('input', function() {
       creator.cardNum = $(this).val();
       creator.colorCardFields();
@@ -228,6 +220,24 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     creator.list.children().slice(0,creator.cardNum ).css("background", "#ACA");
   }
 
+  /**
+   * Store the field data on the server.
+   */
+  creator.saveFields = function () {
+    $.ajax({
+      type: 'POST',
+      data: JSON.stringify(creator.fields()),
+      contentType: 'application/json',
+      enctype: 'multipart/form-data',
+      url: creator.saveEndpoint,
+      success: function(data) {
+        if (data.status == "success") {
+          creator.showMessage("Data successfully stored.");
+        }
+      }
+    });
+  }
+
   // LISTENERS
 
 	$('.addField').on('click', function() {
@@ -243,27 +253,18 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
 	});
 
   $('.save').on('click', function() {
-    $.ajax({
-      type: 'POST',
-      data: JSON.stringify(creator.fields()),
-      contentType: 'application/json',
-      enctype: 'multipart/form-data',
-      url: creator.saveEndpoint,
-      success: function(data) {
-        if (data.status == "success") {
-          creator.showMessage("Data successfully stored.");
-        }
-      }
-    });
+    creator.saveFields();
   });
 
   $('.createCard').on('click', function() {
+    creator.saveFields();
     MIDcard.get(creator, function(doc) {
       window.open(doc);
     })
   });
 
   $('.createDoc').on('click', function() {
+    creator.saveFields();
     MIDdocument.get(creator, function(doc) {
       window.open(doc);
     })
