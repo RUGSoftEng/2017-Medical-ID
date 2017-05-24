@@ -51,10 +51,22 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     labelSize: 50,
 
     /**
+     * The maximum length a label on the card.
+     * @member {number}
+     */
+    cardLabelSize: 14,
+
+    /**
      * The maximum length of a field.
      * @member {number}
      */
     fieldSize: 500,
+
+    /**
+     * The maximum length a label on the card.
+     * @member {number}
+     */
+    cardFieldSize: 30,
 
     /**
      * The amount of rows selected for the card. Ranges from 1 to 7.
@@ -133,7 +145,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
                   .attr('maxlength', creator.labelSize)
                   .attr('type', 'text')
                   .val(label);
-    colon = $('<span></span>').addClass('input-group-addon').text(':');
+    colon = $('<span></span>').addClass('input-group-addon').html(' ');
     inputField = $('<input></input>')
                   .addClass('medid-field form-control')
                   .attr('maxlength', creator.fieldSize)
@@ -173,10 +185,10 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
                   .append($('<div></div>')
                     .addClass('card-block row')
                     .append($('<div></div>')
-                      .addClass('col-md-6')
+                      .addClass('col-md-8')
                       .append(inputGroup))
                     .append($('<div></div>')
-                      .addClass('col-md-6')
+                      .addClass('col-md-4')
                       .append(operations)));
 
 		//The row can be removed again
@@ -197,6 +209,45 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
       row.before(row.next());
       creator.colorCardFields();
 		});
+
+    // Keep track of the input lengths
+    inputLabel.on('change', function() {
+      colon = $(this).next();
+      if ($(this).val().length > creator.cardLabelSize) {
+        $(this).addClass('red-border');
+        if (colon.html() == ' ') {
+          colon
+            .addClass('warning-block')
+            .append($('<span></span>').addClass('fa fa-warning'));
+        }
+      } else {
+        $(this).removeClass('red-border');
+        if (colon.html() != ' ') {
+          colon
+            .removeClass('warning-block')
+            .html(' ');
+        }
+      }
+    });
+
+    inputField.on('change', function() {
+      colon = $(this).prev();
+      if ($(this).val().length > creator.cardFieldSize) {
+        $(this).addClass('red-border');
+        if (colon.html() == ' ') {
+          colon
+            .addClass('warning-block')
+            .append($('<span></span>').addClass('fa fa-warning'));
+        }
+      } else {
+        $(this).removeClass('red-border');
+        if (colon.html() != ' ') {
+          colon
+            .removeClass('warning-block')
+            .html(' ');
+        }
+      }
+    });
 
     // Add row to creator
     this.list.append(field);
