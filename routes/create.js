@@ -19,7 +19,7 @@ router.post('/settings', function(req, res) {
 		req.user.email = req.body.mail;
 		req.user.cardNum = req.body.cardNum;
 		req.user.picture = req.body.picture;
-		User.updateUser(req.user.username, req.user, function(err){
+		User.updateUser(req.user, function(err){
 			if(err) throw err;
 		});
 		res.json({status: "success"});

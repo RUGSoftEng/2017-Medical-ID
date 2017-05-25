@@ -18,7 +18,7 @@ router.get('/reset/:token', function(req, res) {
       req.flash('error', 'GET: Password reset token is invalid or has expired.');
       return res.redirect('/forgot');
     }
-    console.log('User: '+user.username+' found with reset token');
+    console.log('User: ' + user.email + ' found with reset token');
     res.render('reset', {
       user: req.user
     });
@@ -107,7 +107,7 @@ router.post('/reset/:token', function(req, res) {
         user.password = bcrypt.hashSync(req.body.password, 10); 
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
-        console.log('Changed user '+user.username+' password')
+        console.log('Changed user ' + user.email + ' password')
 
         user.save(function(err) {
           req.logIn(user, function(err) {
