@@ -54,7 +54,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
      * The maximum length a label on the card.
      * @member {number}
      */
-    cardLabelSize: 14,
+    cardLabelSize: MIDcard.labelSize,
 
     /**
      * The maximum length of a field.
@@ -66,7 +66,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
      * The maximum length a label on the card.
      * @member {number}
      */
-    cardFieldSize: 20,
+    cardFieldSize: MIDcard.fieldSize,
 
     /**
      * The amount of rows selected for the card. Ranges from 1 to 7.

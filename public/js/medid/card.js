@@ -10,7 +10,21 @@ define(['jspdf', 'jquery', 'medid/hyphenator', 'medid/res'], function(jsPDF, $, 
 	 * @requires hyphenator
 	 * @required res
 	 */
-	var MIDcard = {};
+	var MIDcard = {
+
+		/**
+     * The maximum length of a label on the card.
+     * @member {number}
+     */
+		labelSize: 13,
+
+		/**
+     * The maximum length of a field on the card.
+     * @member {number}
+     */
+		fieldSize: 19
+		
+	};
 
 	/**
 	 * Helper method to draw a card shape of a credit card size on a given document.
