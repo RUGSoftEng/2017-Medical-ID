@@ -7,7 +7,7 @@ var baseURL = 'https://medid.herokuapp.com';
 
 //TODO: test the data in req.body before using it
 
-/* Old routes */
+/* Old routes
 router.post('/card', function(req, res){
 	req.user.card = req.body;
 	User.updateUser(req.user.username, req.user, function(err){
@@ -47,13 +47,14 @@ router.get('/card', function(req, res) {
 		res.sendFile('json/guestCard.json', {root: __dirname + '/../public/'});
 	}
 });
+*/
 
 /* Current routes */
 
 router.post('/fields', function(req, res){
 	if (req.user) {
 		req.user.fields = req.body;
-		User.updateUser(req.user.username, req.user, function(err){
+		User.updateUser(req.user, function(err){
 			if(err) throw err;
 		});
 		res.json({status: "success"});
@@ -71,15 +72,17 @@ router.get('/fields', function(req, res) {
 	}
 });
 
-router.get('/qr', function(req, res) {
+router.get('/code', function(req, res) {
 	if (req.user) {
-		url = baseURL + '/profile?id=' + req.user.id;
+		url = baseURL + '/profile?code=' + req.user.code;
 	} else {
 		url = baseURL + '/users/register';
 	}
 	dataString = qrcode.toBase64(url, 4);
 	image = sharp(Buffer.from(dataString, 'base64')).jpeg().toBuffer(function(err, data, info) {
-		res.send('data:image/jpeg;base64,' + data.toString('base64'));
+		var qr = 'data:image/jpeg;base64,' + data.toString('base64');
+		var code = (req.user ? req.user.code : false);
+		res.json({code: code, qr: qr})
 	});
 });
 

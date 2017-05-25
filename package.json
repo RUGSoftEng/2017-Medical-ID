@@ -23,6 +23,7 @@
     "express-validator": "*",
     "mongodb": "*",
     "mongoose": "*",
+    "mongoose-unique-validator": "*",
     "passport": "*",
     "passport-http": "*",
     "passport-local": "*",
