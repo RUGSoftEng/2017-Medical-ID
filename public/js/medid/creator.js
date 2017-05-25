@@ -48,19 +48,37 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
      * The maximum length of a label.
      * @member {number}
      */
-    labelSize: 15,
+    labelSize: 50,
+
+    /**
+     * The maximum length a label on the card.
+     * @member {number}
+     */
+    cardLabelSize: MIDcard.labelSize,
 
     /**
      * The maximum length of a field.
      * @member {number}
      */
-    fieldSize: 57,
+    fieldSize: 500,
+
+    /**
+     * The maximum length a label on the card.
+     * @member {number}
+     */
+    cardFieldSize: MIDcard.fieldSize,
 
     /**
      * The amount of rows selected for the card. Ranges from 1 to 7.
      * @member {number}
      */
     cardNum: null,
+
+    /**
+     * The element containing the user's name.
+     * @member {Object}
+     */
+    name: null,
 
     /**
      * The picture object to retrieve (via the src attribute) the profile picture from.
@@ -102,13 +120,9 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
       inprofile = $(this).find('.toggle').find('.btn-success').is(':visible');
 
       fields.push({label: label.val(), field: field.val(), inprofile: inprofile});
-
-      // We might want to get rid of this part
-      if (label.val() == "Name" && creator.userName == "") {
-        creator.userName = field.val();
-      }
 		});
 
+    creator.userName = creator.name.val();
     if (creator.picture.attr('src') != 'img/placeholder.png') {
       creator.image = creator.picture.attr('src');
       creator.imageWidth = creator.picture.width();
@@ -126,39 +140,117 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
    * @param {boolean} inprofile - Boolean denoting whether this field has the "in profile" property.
    */
   creator.addField = function (label, field, inprofile) {
-    inputLabel = "<input class='medid-label form-control' maxlength='" + creator.labelSize + "' value='" + label + "' type='text' /></span>";
-    inputField = "<span class='input-group-addon'>:</span><input class='medid-field form-control' maxlength='" + creator.fieldSize + "' type='text' value='" + field + "' /></span>";
-    removeField = "<button class='removeField btn btn-danger'><svg class='icon-bin'><use xlink:href='/img/icons.svg#icon-bin'></use></svg></button>";
-    moveUp = "<span class='clickable moveUp'><svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-up'></use></svg></span>";
-    moveDown = "<span class='clickable moveDown'><svg class='icon-arrow-down'><use xlink:href='/img/icons.svg#icon-arrow-down'></use></svg></span>";
-    if (inprofile) {
-      toggle = "<div class='toggle' data-toggle='buttons'><label class='btn btn-success'><input type='radio' autocomplete='off'>used</label><label class='btn btn-warning active'><input type='radio' autocomplete='off'>not used</label></div>"
-    } else {
-      toggle = "<div class='toggle' data-toggle='buttons'><label class='btn btn-success active'><input type='radio' autocomplete='off'>used</label><label class='btn btn-warning'><input type='radio' autocomplete='off'>not used</label></div>"
-    }
-    operations = "<div class='row'>" + toggle + removeField + "<div class='move-wrapper'>" + moveUp + moveDown + "</div></div>";
+    inputLabel = $('<input></input>')
+                  .addClass('medid-label form-control')
+                  .attr('maxlength', creator.labelSize)
+                  .attr('type', 'text')
+                  .val(label);
+    colon = $('<span></span>').addClass('input-group-addon').html(' ');
+    inputField = $('<input></input>')
+                  .addClass('medid-field form-control')
+                  .attr('maxlength', creator.fieldSize)
+                  .attr('type', 'text')
+                  .val(field);
+    inputGroup = $('<div></div>').addClass('input-group').append([inputLabel, colon, inputField]);
 
-    field = $("<div class='fieldBox card'><div class='card-block row'><div class='col-md-6'><div class='input-group'>" + inputLabel + inputField + "</div></div><div class='col-md-6'>" + operations + "</div></div></div>");
-		this.list.append(field);
+    removeField = $('<button></button>')
+                  .addClass('removeField btn btn-danger')
+                  .html("<svg class='icon-bin'><use xlink:href='/img/icons.svg#icon-bin'></use></svg>");
+    moveUp = $('<span></span>')
+                  .addClass('clickable moveUp')
+                  .html("<svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-up'></use></svg>");
+    moveDown = $('<span></span>')
+                  .addClass('clickable moveDown')
+                  .html("<svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-down'></use></svg>");
+    toggle = $('<div></div>')
+                  .addClass('toggle')
+                  .attr('data-toggle', 'buttons')
+                  .append( $('<label></label>').addClass('btn btn-success' + (inprofile ? '' : ' active'))
+                    .append($('<input></input>').attr('type', 'radio').attr('autocomplete', 'off'))
+                    .append('public'))
+                  .append( $('<label></label>').addClass('btn btn-warning' + (inprofile ? ' active' : ''))
+                    .append($('<input></input>').attr('type', 'radio').attr('autocomplete', 'off'))
+                    .append('private'));
+    operations = $('<div></div>')
+                  .addClass('row')
+                  .append(toggle)
+                  .append(removeField)
+                  .append($('<div></div>')
+                    .addClass('move-wrapper')
+                    .append(moveUp)
+                    .append(moveDown));
+
+    field = $('<div></div>')
+                  .addClass('fieldBox card')
+                  .append($('<div></div>')
+                    .addClass('card-block row')
+                    .append($('<div></div>')
+                      .addClass('col-md-8')
+                      .append(inputGroup))
+                    .append($('<div></div>')
+                      .addClass('col-md-4')
+                      .append(operations)));
 
 		//The row can be removed again
-		field.find('.removeField').on('click', function() {
+		removeField.on('click', function() {
 			$(this).parent().parent().parent().parent().remove();
       creator.colorCardFields();
 		});
 
     // The row can be moved
-    field.find('.moveUp').on('click', function() {
+    moveUp.on('click', function() {
 			row = $(this).parent().parent().parent().parent().parent();
       row.prev().before(row);
       creator.colorCardFields();
 		});
 
-    field.find('.moveDown').on('click', function() {
+    moveDown.on('click', function() {
       row = $(this).parent().parent().parent().parent().parent();
       row.before(row.next());
       creator.colorCardFields();
 		});
+
+    // Keep track of the input lengths
+    inputLabel.on('change', function() {
+      colon = $(this).next();
+      if ($(this).val().length > creator.cardLabelSize) {
+        $(this).addClass('red-border');
+        if (colon.html() == ' ') {
+          colon
+            .addClass('warning-block')
+            .append($('<span></span>').addClass('fa fa-warning'));
+        }
+      } else {
+        $(this).removeClass('red-border');
+        if (colon.html() != ' ') {
+          colon
+            .removeClass('warning-block')
+            .html(' ');
+        }
+      }
+    });
+
+    inputField.on('change', function() {
+      colon = $(this).prev();
+      if ($(this).val().length > creator.cardFieldSize) {
+        $(this).addClass('red-border');
+        if (colon.html() == ' ') {
+          colon
+            .addClass('warning-block')
+            .append($('<span></span>').addClass('fa fa-warning'));
+        }
+      } else {
+        $(this).removeClass('red-border');
+        if (colon.html() != ' ') {
+          colon
+            .removeClass('warning-block')
+            .html(' ');
+        }
+      }
+    });
+
+    // Add row to creator
+    this.list.append(field);
 
     // Updating coloring may be necesarry
     creator.colorCardFields();
@@ -171,6 +263,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
   creator.settings = function (settings) {
     creator.cardNum = settings.cardNumInput.val();
     creator.picture = settings.picturePreview;
+    creator.name = settings.nameInput;
     if (creator.picture.attr('src') != 'img/placeholder.png') {
       creator.image = creator.picture.attr('src');
     }
@@ -179,11 +272,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     settings.showMessage = creator.showMessage;
 
     // Listeners
-    creator.picture.on('change', function() {
-      console.log("Picture changed!");
-    });
-
-    settings.cardNumInput.on('change', function() {
+    settings.cardNumInput.on('input', function() {
       creator.cardNum = $(this).val();
       creator.colorCardFields();
     });
@@ -228,6 +317,24 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     creator.list.children().slice(0,creator.cardNum ).css("background", "#ACA");
   }
 
+  /**
+   * Store the field data on the server.
+   */
+  creator.saveFields = function () {
+    $.ajax({
+      type: 'POST',
+      data: JSON.stringify(creator.fields()),
+      contentType: 'application/json',
+      enctype: 'multipart/form-data',
+      url: creator.saveEndpoint,
+      success: function(data) {
+        if (data.status == "success") {
+          creator.showMessage("Data successfully stored.");
+        }
+      }
+    });
+  }
+
   // LISTENERS
 
 	$('.addField').on('click', function() {
@@ -243,27 +350,18 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
 	});
 
   $('.save').on('click', function() {
-    $.ajax({
-      type: 'POST',
-      data: JSON.stringify(creator.fields()),
-      contentType: 'application/json',
-      enctype: 'multipart/form-data',
-      url: creator.saveEndpoint,
-      success: function(data) {
-        if (data.status == "success") {
-          creator.showMessage("Data successfully stored.");
-        }
-      }
-    });
+    creator.saveFields();
   });
 
   $('.createCard').on('click', function() {
+    creator.saveFields();
     MIDcard.get(creator, function(doc) {
       window.open(doc);
     })
   });
 
   $('.createDoc').on('click', function() {
+    creator.saveFields();
     MIDdocument.get(creator, function(doc) {
       window.open(doc);
     })

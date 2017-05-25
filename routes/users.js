@@ -12,11 +12,18 @@ router.get('/login', function(req, res){
 	res.render('login');
 });
 
+router.get('/newcode', function(req, res) {
+	if (req.user) {
+		req.user.code = genCode();
+		// this function is separated to allow handling code uniqueness errors
+		updateUser(req, res);
+	}
+});
+
 // Register User
 router.post("/register", function(req,res){
 	var name = req.body.name;
 	var email = req.body.email.toLowerCase();
-	var username = req.body.username.toLowerCase();
 	var password = req.body.password;
 	var password2 = req.body.password2;
 
@@ -24,7 +31,6 @@ router.post("/register", function(req,res){
 	req.checkBody('name', 'Name is required').notEmpty();
 	req.checkBody('email', 'Email is required').notEmpty();
 	req.checkBody('email', 'Email is not valid').isEmail();
-	req.checkBody('username', 'Username is required').notEmpty();
 	req.checkBody('password', 'Password is required').notEmpty();
 	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
 
@@ -32,60 +38,32 @@ router.post("/register", function(req,res){
 
 	if(errors){
 		res.render('login',{ errors: errors });
-	} else{
-		User.checkExists(username, email, function(err,user){
-			if(err) throw err;
-
-			if(user){
-				if(user.username === username){
-					req.flash('error_msg', 'Username is already in use ');
-				}
-				if(user.email === email) {
-					req.flash('error_msg', 'Email address is already in use');
-				}
-				res.redirect('/users/login');
-			} else{
-				//Here we generate a random seed for encrypting, saved in user.seed. Likewise a code for the qrcode.
-				var seed = crypto.randomBytes(32).toString('hex');
-				var code = crypto.randomBytes(9).toString('base64');
-
-				//username = crypto.createHash('sha256').update(username).digest('hex');
-				//To ecnrypt we simply use:  name: encrypt(name, seed)
-				var newUser = new User({
-					name: name,
-					email: email,
-					username: username,
-					password: password,
-					seed: seed,
-					code: code,
-					cardNum: 7,
-					picture: "img/placeholder.png",
-					fields: [
-						{"label": "Name", "field": name, "inprofile": true},
-						{"label": "Date of Birth", "field": "", "inprofile": true},
-						{"label": "Blood type", "field": "", "inprofile": true},
-						{"label": "Donor", "field": "", "inprofile": true},
-						{"label": "Insurance", "field": "", "inprofile": true}
-						]
-
-				});
-
-				User.createUser(newUser, function(err, user){
-					if(err) throw err;
-				});
-
-				req.flash('success_msg', 'You are registered and can now login');
-				res.redirect('/users/login');
-			}
+	}
+	else{
+		var newUser = new User({
+			name: name,
+			email: email,
+			password: password,
+			code: genCode(),
+			cardNum: 7,
+			picture: "img/placeholder.png",
+			fields: [
+				{"label": "Name", "field": name, "inprofile": true},
+				{"label": "Date of Birth", "field": "", "inprofile": true},
+				{"label": "Blood type", "field": "", "inprofile": true},
+				{"label": "Donor", "field": "", "inprofile": true},
+				{"label": "Insurance", "field": "", "inprofile": true}
+			]
 		});
+
+		// this function is separated to allow handling code uniqueness errors
+		createUser(req, res, newUser);
 	}
 });
 
 passport.use(new LocalStrategy(
-  function(username, password, done) {
-   //Example of how to hash:
-   //username = crypto.createHash('sha256').update(username.toLowerCase()).digest('hex');
-   User.getUserByUsername(username.toLowerCase(), function(err, user){
+  function(email, password, done) {
+   User.getUserByEmail(email.toLowerCase(), function(err, user){
    	if(err) throw err;
    	if(!user){
    		return done(null, false, {message: 'Unknown User'});
@@ -100,7 +78,8 @@ passport.use(new LocalStrategy(
    		}
    	});
    });
-  }));
+  })
+);
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -124,16 +103,58 @@ router.get('/logout', function(req, res){
 	res.redirect('/users/login');
 });
 
-function encrypt(text, key){
-  var cipher = crypto.createCipher(algorithm, key)
-  var encrypted = cipher.update(text,'utf8','hex') + cipher.final('hex');
-  return encrypted;
+function genCode() {
+	var LENGTH = 12;
+	var ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+	var result = '';
+  for (var i = LENGTH; i > 0; --i) result += ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+  return result;
 }
 
-function decrypt(text, key){
-  var decipher = crypto.createDecipher(algorithm, key)
-  var decrypted = decipher.update(text,'hex','utf8') + decipher.final('utf8');
-  return decrypted;
+// attempts to create a new user entry into the database
+function createUser(req, res, newUser){
+	User.createUser(newUser, function(err, user){
+		if(err){
+			if (err.errors.kind === 'unique'){
+				if(err.errors.email){
+					// same e-mail
+					req.flash('error_msg', 'Email address is already in use');
+				}
+				else if(err.errors.code){
+					// existing code, generate new one and try again
+					newUser.code = genCode();
+					createUser(req, res, newUser);
+				}
+				else
+					throw err;
+			}
+			else
+				throw err;
+		}
+		else
+			req.flash('success_msg', 'You are registered and can now login');
+
+		res.redirect('/users/login');
+	});
+}
+
+function updateUser(req, res){
+	User.updateUser(req.user, function(err){
+		if(err){
+			if (err.errors.code && err.errors.kind === 'unique')
+			{
+				// existing code, generate new one and try again
+				req.user.code = genCode();
+				updateUser(req, res);
+			}
+			else
+				throw err;
+		}
+
+		req.flash('success_msg', "Your personal code is now updated. All old references to your profile, including your cards, are now deprecated and will no longer work.");
+		res.redirect('/create');
+	});
 }
 
 module.exports = router;

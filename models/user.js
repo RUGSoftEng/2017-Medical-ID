@@ -1,20 +1,20 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
+var uniqueValidator = require('mongoose-unique-validator');
 
 // User Schema
 var UserSchema = mongoose.Schema({
-	username: {
+	email: {
 		type: String,
-		index:true
+		index: true,
+		unique: true
 	},
 	password: {
 		type: String
 	},
-	seed: {
-		type: String
-	},
 	code: {
-		type: String
+		type: String,
+		unique: true
 	},
 	resetPasswordToken: {
 		type: String
@@ -22,13 +22,10 @@ var UserSchema = mongoose.Schema({
 	resetPasswordExpires: {
 		type: Date
 	},
-	email: {
-		type: String
-	},
 	name: {
 		type: String
 	},
-    cardNum: {
+    cardNum: { // the card contains the first "cardNum" elements of "fields"
         type: Number
     },
     picture: {
@@ -41,6 +38,9 @@ var UserSchema = mongoose.Schema({
 	}]
 });
 
+// apply the uniqueValidator plugin to User Schema
+UserSchema.plugin(uniqueValidator);
+
 var User = module.exports = mongoose.model('User', UserSchema);
 
 module.exports.createUser = function(newUser, callback){
@@ -52,18 +52,18 @@ module.exports.createUser = function(newUser, callback){
 	});
 }
 
-module.exports.getUserByUsername = function(username, callback){
-	var query = {username: username};
+module.exports.getUserByEmail = function(email, callback){
+	var query = {email: email};
+	User.findOne(query, callback);
+}
+
+module.exports.getUserByCode = function(code, callback){
+	var query = {code: code};
 	User.findOne(query, callback);
 }
 
 module.exports.getUserById = function(id, callback){
 	User.findById(id, callback);
-}
-
-module.exports.checkExists = function(username, email, callback){
-	var query = {$or: [{username: username}, {email: email}]};
-	User.findOne(query, callback);
 }
 
 module.exports.comparePassword = function(candidatePassword, hash, callback){
@@ -73,7 +73,13 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
 	});
 }
 
-module.exports.updateUser = function(username, update, callback){
-	var query = {username: username};
-	User.findOneAndUpdate(query, update, false, callback);
+// this way of updating will execute validators
+module.exports.updateUser = function(update, callback){
+	User.findById(update._id, function(err, user){
+		if (err)
+			throw err;
+
+		user = update;
+		user.save(callback);
+	});
 }

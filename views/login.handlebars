@@ -5,11 +5,11 @@
 				<h2 class="header mb-3">Login</h2>
 				<form role="form" action="/users/login" method="post" class="login-form">
 					<div class="form-group">
-					<label for="username" class="cols-sm-2 control-label">Username</label>
+					<label for="username" class="cols-sm-2 control-label">Email</label>
 					<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-								<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+								<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your email"/>
 							</div>
 						</div>
 					</div>
@@ -19,12 +19,13 @@
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-								<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+								<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your password"/>
 							</div>
-							<a href="{{req.headers.host}}/forgot" class="btn btn-link pull-right">Forgot Password?</a>
+							<a href="{{req.headers.host}}/forgot" class="btn btn-link pull-right">Forgot Password?</a><br />
+							<br />
 						</div>
 					</div>
-					<button type="submit" class="btn btn-primary">Sign in</button>
+					<button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
 				</form>
 			</div>
 			<div class="col-12 col-md-6 registerblock pt-3 pt-md-0">
@@ -36,7 +37,7 @@
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-								<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>
+								<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your name"/>
 							</div>
 						</div>
 					</div>
@@ -46,7 +47,7 @@
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-								<input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+								<input type="text" class="form-control" name="email" id="email"  placeholder="Enter your email"/>
 							</div>
 						</div>
 					</div>
@@ -56,7 +57,7 @@
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-								<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+								<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your username"/>
 							</div>
 						</div>
 					</div>
@@ -66,7 +67,7 @@
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-								<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+								<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your password"/>
 							</div>
 						</div>
 					</div>
@@ -75,12 +76,12 @@
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-								<input type="password" class="form-control" name="password2" id="password2"  placeholder="Confirm your Password"/>
+								<input type="password" class="form-control" name="password2" id="password2"  placeholder="Confirm your password"/>
 							</div>
 						</div>
 					</div>
 					<button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
-				</form>                                                
+				</form>
 
 			</div>
 		</div>

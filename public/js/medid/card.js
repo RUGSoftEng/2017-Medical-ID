@@ -1,4 +1,4 @@
-define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
+define(['jspdf', 'jquery', 'medid/hyphenator', 'medid/res'], function(jsPDF, $, hyphenator) {
 
 	/**
 	 * The card module implements card creation functionality upon the creator.js module.
@@ -7,9 +7,24 @@ define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
 	 * @exports MIDcard
 	 * @requires jquery
 	 * @requires jsPDF
+	 * @requires hyphenator
 	 * @required res
 	 */
-	var MIDcard = {};
+	var MIDcard = {
+
+		/**
+     * The maximum length of a label on the card.
+     * @member {number}
+     */
+		labelSize: 13,
+
+		/**
+     * The maximum length of a field on the card.
+     * @member {number}
+     */
+		fieldSize: 19
+		
+	};
 
 	/**
 	 * Helper method to draw a card shape of a credit card size on a given document.
@@ -53,8 +68,8 @@ define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
 		var leftStartPos = [12,55], rightStartPos = [38,30];
 		var lineHeight = 5, leftLabelWidth = 19, rightLabelWidth = 21;
 		for (i = 0; i < fields.length && i < creator.cardNum; i++) {
-			fields[i].label = fields[i].label.substring(0, 13);
-			fields[i].field = fields[i].field.substring(0, 19);
+			fields[i].label = fields[i].label.substring(0, 14);
+			fields[i].field = fields[i].field.substring(0, 20);
 			if (fields[i].label == 'Donor' || fields[i].label == 'Blood type') {
 				// We place the short fields 'donor' and 'blood type' in the corner
 				if (leftCounter < 2) { // Max capacity
@@ -95,8 +110,23 @@ define(['jspdf', 'jquery', 'medid/res'], function(jsPDF, $) {
 		doc.text(104, 19, "SCAN FOR MORE INFORMATION");
 
 		// Retrieving QR code from server
-		$.get('/save/qr', function(qrcode) {
-			doc.addImage(qrcode, 'JPEG', 123, 25, 38, 38);
+		$.getJSON("/save/code", function(code) {
+			if (code.code) {
+				doc.addImage(code.qr, 'JPEG', 105, 25, 38, 38);
+				doc.setFontSize(8);
+				doc.setFontStyle("normal");
+				doc.setTextColor(124,124,124);
+				doc.text(145, 34, "Don't have a code scanner?");
+				doc.text(145, 38, "Go to:");
+				doc.setTextColor(0,0,0);
+				doc.setFontStyle("bold"); doc.text(150, 42, "medid.herokuapp.com"); doc.setFontStyle("normal");
+				doc.setTextColor(124,124,124);
+				doc.text(145, 46, "Enter the code:");
+				doc.setTextColor(0,0,0);
+				doc.setFontStyle("bold"); doc.text(150, 50, hyphenator.insertHyphen(code.code)); doc.setFontStyle("normal");
+			} else {
+				doc.addImage(code.qr, 'JPEG', 123, 25, 38, 38);
+			}
 			callback(doc);
 		})
 	}
