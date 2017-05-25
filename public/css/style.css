@@ -167,13 +167,22 @@ h2.page-header {
     .main-page-col {
         height: calc(100vh - 49px);
     }
-    
+
     .loginblock {
         border-right: 1px solid black;
     }
 }
 
-/* Toggle */
+/* Toggle & warning block */
+.warning-block {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.red-border {
+  border: 1px solid red;
+}
+
 .toggle > label {
   cursor: pointer;
 }
