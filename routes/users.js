@@ -131,11 +131,6 @@ passport.use(new LocalStrategy(
    			return done(null, false, {message: 'Invalid password'});
    		}
    	});
-   	
-   	if (!User.verified) {
-		//TODO: return to verify page
-		return done(null, false, {message: 'Email needs to be verified'});
-	}
    });
   })
 );
