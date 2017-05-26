@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 
-
+/*Renders different page based on if user is logged in or not*/
 router.get('/', function(req, res){
 	if (req.user) {
 		req.user.hyphenedCode = insertHyphen(req.user.code);
@@ -12,6 +12,7 @@ router.get('/', function(req, res){
 	}
 });
 
+/*Updates user data if new info is inserted to fields*/
 router.post('/settings', function(req, res) {
 	if (req.user) {
 		/* We need input checking here as well */
@@ -35,16 +36,5 @@ function insertHyphen(string) {
 		return string;
 	}
 }
-
-/*
-router.get('/card', function(req, res){
-	res.locals.card = true;
-	res.render('create/card');
-});
-
-router.get('/document', function(req, res){
-	res.locals.doc = true;
-	res.render('create/document');
-});*/
 
 module.exports = router;

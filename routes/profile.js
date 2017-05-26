@@ -8,23 +8,29 @@ router.get('/', function(req,res){
 		var code = req.query.code.replace(/[^0-9a-zA-Z]/gi, '');
 	}
 	if(code) {
-		User.getUserByCode(code, function(err,user){
-			if(!user){
-                req.flash('error_msg', 'No user found');
-                res.redirect('/');
-            } else if(err){
-                req.flash('error_msg', 'Error encountered, please try again');
-                res.redirect('/');
-			} else{
-                res.render('profile',{
-				    displayUser: user
-                });
-            }
-		});
+		displayProfile(code);
 	} else {
-			req.flash('error_msg', 'Please enter a code');
+		req.flash('error_msg', 'Please enter a code');
 	    res.redirect('/');
     }
 });
+
+/*Displays the profile of the user with code 'code',
+  or an error message if code does not exist */
+function displayProfile(code) {
+	User.getUserByCode(code, function(err,user){
+		if(!user){
+            req.flash('error_msg', 'No user found');
+            res.redirect('/');
+        } else if(err){
+            req.flash('error_msg', 'Error encountered, please try again');
+            res.redirect('/');
+		} else{
+            res.render('profile',{
+			    displayUser: user
+            });
+        }
+	});
+}
 
 module.exports = router;

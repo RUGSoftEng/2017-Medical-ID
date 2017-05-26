@@ -27,15 +27,10 @@ router.post("/register", function(req,res){
 	var password = req.body.password;
 	var password2 = req.body.password2;
 
-	// Validation
-	req.checkBody('name', 'Name is required').notEmpty();
-	req.checkBody('email', 'Email is required').notEmpty();
-	req.checkBody('email', 'Email is not valid').isEmail();
-	req.checkBody('password', 'Password is required').notEmpty();
-	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+	validateRegisterDetails(req);
 
 	var errors = req.validationErrors();
-
+	
 	if(errors){
 		res.render('login',{ errors: errors });
 	}
@@ -60,6 +55,14 @@ router.post("/register", function(req,res){
 		createUser(req, res, newUser);
 	}
 });
+
+function validateRegisterDetails(req) {
+	req.checkBody('name', 'Name is required').notEmpty();
+	req.checkBody('email', 'Email is required').notEmpty();
+	req.checkBody('email', 'Email is not valid').isEmail();
+	req.checkBody('password', 'Password is required').notEmpty();
+	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+}
 
 passport.use(new LocalStrategy(
   function(email, password, done) {

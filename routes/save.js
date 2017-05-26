@@ -7,50 +7,9 @@ var baseURL = 'https://medid.herokuapp.com';
 
 //TODO: test the data in req.body before using it
 
-/* Old routes
-router.post('/card', function(req, res){
-	req.user.card = req.body;
-	User.updateUser(req.user.username, req.user, function(err){
-		// needs improvement
-		if(err) throw err;
-	});
-	// req.flash('success_msg', 'Data successfully stored');
-	res.json({status: "success"});
-});
-
-router.post('/document', function(req, res){
-	req.user.document = req.body;
-	User.updateUser(req.user.username, req.user, function(err){
-		// needs improvement
-		if(err) throw err;
-	});
-	// req.flash('success_msg', 'Data successfully stored');
-	res.json({status: "success"});
-});
-
-router.get('/document', function(req, res) {
-	if (req.user) {
-		res.json(req.user.document);
-	} else {
-		res.sendFile('json/guestDocument.json', {root: __dirname + '/../public/'});
-	}
-});
-
-router.get('/card', function(req, res) {
-	if (req.user) {
-		if (req.user.card.length > 0) {
-			res.json(req.user.card);
-		} else {
-			res.sendFile('json/guestCard.json', {root: __dirname + '/../public/'});
-		}
-	} else {
-		res.sendFile('json/guestCard.json', {root: __dirname + '/../public/'});
-	}
-});
-*/
-
 /* Current routes */
 
+/*returns user input to server*/
 router.post('/fields', function(req, res){
 	if (req.user) {
 		req.user.fields = req.body;
@@ -64,6 +23,7 @@ router.post('/fields', function(req, res){
 	}
 });
 
+/*returns user fields to client*/
 router.get('/fields', function(req, res) {
 	if (req.user) {
 		res.json(req.user.fields);
@@ -72,6 +32,7 @@ router.get('/fields', function(req, res) {
 	}
 });
 
+/*returns medid code to client*/
 router.get('/code', function(req, res) {
 	if (req.user) {
 		url = baseURL + '/profile?code=' + req.user.code;
