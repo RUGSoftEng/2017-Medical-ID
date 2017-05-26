@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var validator = require("email-validator");
 var User = require('../models/user');
 
 /*Renders different page based on if user is logged in or not*/
@@ -17,13 +18,16 @@ router.post('/settings', function(req, res) {
 	if (req.user) {
 		/* We need input checking here as well */
 		req.user.name = req.body.name;
-		req.user.email = req.body.mail;
-		req.user.cardNum = req.body.cardNum;
+		req.user.cardNum = Math.min(Math.max(req.body.cardNum, 1), 7);
 		req.user.picture = req.body.picture;
-		User.updateUser(req.user, function(err){
-			if(err) throw err;
+		User.updateUser(req.user, function(err) {
+			if (err) {
+				throw err;
+			}
+			else {
+				res.json({status: "success"});
+			}
 		});
-		res.json({status: "success"});
 	} else {
 		res.json({status: "not authenticated"});
 	}

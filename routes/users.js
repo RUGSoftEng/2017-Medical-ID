@@ -16,7 +16,7 @@ router.get('/newcode', function(req, res) {
 	if (req.user) {
 		req.user.code = genCode();
 		// this function is separated to allow handling code uniqueness errors
-		updateUser(req, res);
+		updateUserCode(req, res);
 	}
 });
 
@@ -64,12 +64,12 @@ function validateRegisterDetails(req) {
 	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
 }
 
-passport.use(new LocalStrategy(
-  function(email, password, done) {
+passport.use(new LocalStrategy({passReqToCallback: true},
+  function(req, email, password, done) {
    User.getUserByEmail(email.toLowerCase(), function(err, user){
    	if(err) throw err;
    	if(!user){
-   		return done(null, false, {message: 'Unknown User'});
+   		return done(null, false, req.flash('error_msg', 'Unknown user'));
    	}
 
    	User.comparePassword(password, user.password, function(err, isMatch){
@@ -77,7 +77,7 @@ passport.use(new LocalStrategy(
    		if(isMatch){
    			return done(null, user);
    		} else {
-   			return done(null, false, {message: 'Invalid password'});
+   			return done(null, false, req.flash('error_msg', 'Invalid password'));
    		}
    	});
    });
@@ -95,7 +95,7 @@ passport.deserializeUser(function(id, done) {
 });
 
 router.post('/login',
-  passport.authenticate('local', {successRedirect:'/create', failureRedirect:'/users/login',failureFlash: true}),
+  passport.authenticate('local', {successRedirect:'/create', failureRedirect:'/login',failureFlash: true}),
   function(req, res) {
     res.redirect('/');
   });
@@ -103,7 +103,7 @@ router.post('/login',
 router.get('/logout', function(req, res){
 	req.logout();
 	req.flash('success_msg', 'You are logged out');
-	res.redirect('/users/login');
+	res.redirect('/login');
 });
 
 function genCode() {
@@ -117,42 +117,40 @@ function genCode() {
 
 // attempts to create a new user entry into the database
 function createUser(req, res, newUser){
-	User.createUser(newUser, function(err, user){
-		if(err){
-			if (err.errors.kind === 'unique'){
-				if(err.errors.email){
-					// same e-mail
-					req.flash('error_msg', 'Email address is already in use');
-				}
-				else if(err.errors.code){
-					// existing code, generate new one and try again
-					newUser.code = genCode();
-					createUser(req, res, newUser);
-				}
-				else
-					throw err;
+	User.createUser(newUser, function(err, user) {
+		if (err && err.errors) {
+			if (err.errors.email && err.errors.email.kind == 'unique') {
+				// Email is not unique
+				req.flash('error_msg', 'Email address is already in use');
+			} else if (err.errors.code && err.errors.email.kind == 'unique') {
+				// Code is not unique
+				newUser.code = genCode();
+				createUser(req, res, newUser);
+			} else {
+				// Something else not unique (should be impossible)
+				throw err
 			}
-			else
-				throw err;
 		}
-		else
+		else {
 			req.flash('success_msg', 'You are registered and can now login');
+		}
 
-		res.redirect('/users/login');
+		res.redirect('/login');
 	});
 }
 
-function updateUser(req, res){
-	User.updateUser(req.user, function(err){
-		if(err){
-			if (err.errors.code && err.errors.kind === 'unique')
-			{
+function updateUserCode(req, res){
+	User.updateUser(req.user, function(err) {
+		if (err && err.errors) {
+			if (err.errors.code && err.errors.code.kind == 'unique') {
 				// existing code, generate new one and try again
 				req.user.code = genCode();
-				updateUser(req, res);
+				updateUserCode(req, res);
 			}
-			else
+			else {
+				// An unrelated error came up.
 				throw err;
+			}
 		}
 
 		req.flash('success_msg', "Your personal code is now updated. All old references to your profile, including your cards, are now deprecated and will no longer work.");
