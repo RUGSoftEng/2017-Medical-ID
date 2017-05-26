@@ -19,13 +19,13 @@
 				</li>
 				<li class="list-group-item">
 				  <label for="inputEmail">Your e-mail address</label>
-				  <input type="text" class="form-control" id="inputEmail" value="{{user.email}}">
+				  <input type="text" class="form-control" id="inputEmail" value="{{user.email}}" disabled>
 				</li>
         <li class="list-group-item">
 				  <label for="inputName">Your profile code</label>
           <div class="input-group">
             <div class="form-control">{{user.hyphenedCode}}</div>
-            <a href="/users/newcode" class="btn btn-danger input-group-addon">Renew</a>
+            <a href="/newcode" class="btn btn-danger input-group-addon">Renew</a>
           </div>
           <span class='small'>Renewing your code will make old references to your profile unusable!</span>
 				</li>

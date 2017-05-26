@@ -27,12 +27,6 @@ define(['jquery'], function($) {
     nameInput: $('#inputName'),
 
     /**
-     * Reference to the input location for the 'email' setting.
-     * @member {Object}
-     */
-    emailInput: $('#inputEmail'),
-
-    /**
      * Reference to the input location for the 'cardNum' setting.
      * @member {Object}
      */
@@ -79,7 +73,6 @@ define(['jquery'], function($) {
    */
   settings.collectSettings = function() {
     settings.values.name = settings.nameInput.val();
-    settings.values.email = settings.emailInput.val();
     settings.values.cardNum = settings.cardNumInput.val();
     settings.values.picture = settings.picturePreview.attr('src');
   }

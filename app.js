@@ -22,7 +22,6 @@ if (serverSettings.parameters.db) {
 var db = mongoose.connection;
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
 var create = require('./routes/create');
 var save = require('./routes/save');
 var profile = require('./routes/profile');
@@ -96,7 +95,6 @@ app.use(function (req, res, next) {
 
 
 app.use('/', routes);
-app.use('/users', users);
 app.use('/create', create);
 app.use('/save', save);
 app.use('/profile', profile);
