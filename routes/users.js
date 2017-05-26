@@ -61,12 +61,14 @@ router.post("/register", function(req,res){
 	}
 });
 
-passport.use(new LocalStrategy(
-  function(email, password, done) {
+passport.use(new LocalStrategy({
+		passReqToCallback: true
+	},
+  function(req, email, password, done) {
    User.getUserByEmail(email.toLowerCase(), function(err, user){
    	if(err) throw err;
    	if(!user){
-   		return done(null, false, {message: 'Unknown User'});
+   		return done(null, false, req.flash('error_msg', 'Unknown user'));
    	}
 
    	User.comparePassword(password, user.password, function(err, isMatch){
@@ -74,7 +76,7 @@ passport.use(new LocalStrategy(
    		if(isMatch){
    			return done(null, user);
    		} else {
-   			return done(null, false, {message: 'Invalid password'});
+   			return done(null, false, req.flash('error_msg', 'Invalid password'));
    		}
    	});
    });

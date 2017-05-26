@@ -17,7 +17,7 @@ router.post('/settings', function(req, res) {
 	if (req.user) {
 		/* We need input checking here as well */
 		req.user.name = req.body.name;
-		req.user.cardNum = req.body.cardNum;
+		req.user.cardNum = Math.min(Math.max(req.body.cardNum, 1), 7);
 		req.user.picture = req.body.picture;
 		User.updateUser(req.user, function(err) {
 			if (err) {
