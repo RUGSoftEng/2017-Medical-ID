@@ -7,6 +7,10 @@ var algorithm = 'aes256';
 
 var User = require('../models/user');
 
+var bcrypt = require('bcryptjs');
+var async = require('async');
+var nodemailer = require('nodemailer');
+
 // Login
 router.get('/login', function(req, res){
 	res.render('login');
@@ -38,13 +42,13 @@ router.post("/register", function(req,res){
 
 	if(errors){
 		res.render('login',{ errors: errors });
-	}
-	else{
+	} else {
 		var newUser = new User({
 			name: name,
 			email: email,
 			password: password,
 			code: genCode(),
+			verified: false,
 			cardNum: 7,
 			picture: "img/placeholder.png",
 			fields: [
@@ -58,6 +62,56 @@ router.post("/register", function(req,res){
 
 		// this function is separated to allow handling code uniqueness errors
 		createUser(req, res, newUser);
+		
+		// send new user an email to verify their email address
+		async.waterfall([
+			function(done) {
+			  crypto.randomBytes(20, function(err, buf) {
+			//Generate our reset token	
+				var token = buf.toString('hex');
+				done(err, token);
+			  });
+			},
+			//Find user with email, save token value and expiry time:
+			function(token, done) {
+				user.resetPasswordToken = token;
+				user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+				user.save(function(err) {
+				  done(err, token, user);
+				});
+			},
+			//Logs in to gmail via nodemailer using SMTP and sends the email containing the reset token
+			//TODO: use a configuration file (added to .gitignore) and add the file to the server manually. 
+			function(token, user, done) {
+			  var transporter = nodemailer.createTransport({
+				service: 'Gmail',
+				auth: {
+					user: 'medicalid17@gmail.com',
+					pass: 'enterpasswordhere'
+				}
+				});
+			  var mailOptions = {
+				to: user.email,
+				from: 'passwordreset@medid.herokuapp.com',
+				subject: 'Node.js Password Reset',
+				text: 'You are receiving this email because you (or someone else) need to verify the email adress used for your account.\n\n' +
+				  'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+				   'http://'+req.headers.host + '/verify/' + token + '\n\n' +
+				  'If you did not request this, please ignore this email and this email adress will not be verified.\n'
+			  };
+			  
+			  transporter.sendMail(mailOptions, function(err) {
+				req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+				done(err, 'done');
+			  });
+			  req.flash('success_msg', 'An e-mail has been sent to you');
+			}
+		  ], function(err) {
+			if (err) return next(err);
+			res.redirect('/forgot');
+			req.flash('error_msg', 'Error');
+		  });
 	}
 });
 
@@ -66,7 +120,7 @@ passport.use(new LocalStrategy(
    User.getUserByEmail(email.toLowerCase(), function(err, user){
    	if(err) throw err;
    	if(!user){
-   		return done(null, false, {message: 'Unknown User'});
+   		return done(null, false, {message: 'Unknown user'});
    	}
 
    	User.comparePassword(password, user.password, function(err, isMatch){
@@ -77,6 +131,11 @@ passport.use(new LocalStrategy(
    			return done(null, false, {message: 'Invalid password'});
    		}
    	});
+   	
+   	if (!User.verified) {
+		//TODO: return to verify page
+		return done(null, false, {message: 'Email needs to be verified'});
+	}
    });
   })
 );
