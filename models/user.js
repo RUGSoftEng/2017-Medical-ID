@@ -29,7 +29,7 @@ var UserSchema = mongoose.Schema({
         type: Number
     },
     picture: {
-        type: String
+        type: Buffer
     },
 	fields: [{
 		label: String,
