@@ -25,7 +25,7 @@ router.get('/newcode', function(req, res) {
 });
 
 // Register User
-router.post("/register", function(req,res){
+router.post("/register", function(req,res,next){
 	var name = req.body.name;
 	var email = req.body.email.toLowerCase();
 	var password = req.body.password;
@@ -74,16 +74,16 @@ router.post("/register", function(req,res){
 			},
 			//Find user with email, save token value and expiry time:
 			function(token, done) {
-				user.resetPasswordToken = token;
-				user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+				newUser.resetPasswordToken = token;
+				newUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
-				user.save(function(err) {
-				  done(err, token, user);
+				newUser.save(function(err) {
+				  done(err, token, newUser);
 				});
 			},
 			//Logs in to gmail via nodemailer using SMTP and sends the email containing the reset token
 			//TODO: use a configuration file (added to .gitignore) and add the file to the server manually. 
-			function(token, user, done) {
+			function(token, newUser, done) {
 			  var transporter = nodemailer.createTransport({
 				service: 'Gmail',
 				auth: {
@@ -92,7 +92,7 @@ router.post("/register", function(req,res){
 				}
 				});
 			  var mailOptions = {
-				to: user.email,
+				to: newUser.email,
 				from: 'passwordreset@medid.herokuapp.com',
 				subject: 'Node.js Password Reset',
 				text: 'You are receiving this email because you (or someone else) need to verify the email adress used for your account.\n\n' +
@@ -102,7 +102,7 @@ router.post("/register", function(req,res){
 			  };
 			  
 			  transporter.sendMail(mailOptions, function(err) {
-				req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+				req.flash('info', 'An e-mail has been sent to ' + newUser.email + ' with further instructions.');
 				done(err, 'done');
 			  });
 			  req.flash('success_msg', 'An e-mail has been sent to you');

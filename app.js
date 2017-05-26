@@ -18,7 +18,7 @@ if (serverSettings.parameters.db) {
 	console.log("Connected to custom database '" + serverSettings.parameters.db + "'.");
 }
 
-//mongoose.connect('mongodb://localhost/loginapp');
+//mongoose.connect('mongodb://localhost/app');
 var db = mongoose.connection;
 
 var routes = require('./routes/index');
