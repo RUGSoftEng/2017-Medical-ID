@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var validator = require("email-validator");
 var User = require('../models/user');
 
 
@@ -17,6 +18,7 @@ router.post('/settings', function(req, res) {
 		/* We need input checking here as well */
 		req.user.name = req.body.name;
 		req.user.email = req.body.mail;
+		console.log(req.body.mail + " " + validator.validate(req.body.mail))
 		req.user.cardNum = req.body.cardNum;
 		req.user.picture = req.body.picture;
 		User.updateUser(req.user, function(err){
