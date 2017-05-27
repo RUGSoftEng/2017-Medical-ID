@@ -145,72 +145,96 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     * @param {boolean} inprofile - Boolean denoting whether this field has the "in profile" property.
     */
     creator.addField = function (label, field, inprofile) {
-        inputLabel = $('<input></input>')
-        .addClass('medid-label form-control')
-        .attr('maxlength', creator.labelSize)
-        .attr('type', 'text')
-        .val(label);
+        inputLabel =    $('<input></input>')
+                        .addClass('medid-label form-control')
+                        .attr('maxlength', creator.labelSize)
+                        .attr('type', 'text')
+                        .val(label);
         
-        colon = $('<span></span>').addClass('input-group-addon').html(' ');
+        colon =         $('<span></span>')
+                        .addClass('input-group-addon')
+                        .html(' ');
         
-        inputField = $('<input></input>')
-        .addClass('medid-field form-control')
-        .attr('maxlength', creator.fieldSize)
-        .attr('type', 'text')
-        .val(field);
+        inputField =    $('<input></input>')
+                        .addClass('medid-field form-control')
+                        .attr('maxlength', creator.fieldSize)
+                        .attr('type', 'text')
+                        .val(field);
         
-        inputGroup = $('<div></div>').addClass('input-group').append([inputLabel, colon, inputField]);
+        inputGroup =    $('<div></div>')
+                        .addClass('input-group')
+                        .append([inputLabel, colon, inputField]);
 
-        removeField = $('<button></button>')
-        .addClass('removeField btn btn-danger')
-        .html("<svg class='icon-bin'><use xlink:href='/img/icons.svg#icon-bin'></use></svg>");
+        removeField =   $('<button></button>')
+                        .addClass('removeField btn btn-danger')
+                        .html("<svg class='icon-bin'><use xlink:href='/img/icons.svg#icon-bin'></use></svg>");
         
-        moveUp = $('<span></span>')
-        .addClass('clickable moveUp')
-        .html("<svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-up'></use></svg>");
+        moveUp =        $('<span></span>')
+                        .addClass('clickable moveUp')
+                        .html("<svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-up'></use></svg>");
     
-        moveDown = $('<span></span>')
-        .addClass('clickable moveDown')
-        .html("<svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-down'></use></svg>");
+        moveDown =      $('<span></span>')
+                        .addClass('clickable moveDown')
+                        .html("<svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-down'></use></svg>");
+                
+        toggle =        $('<div></div>')
+                        .addClass('toggle')
+                        .attr('data-toggle', 'buttons')
+                        .append(
+                            $('<label></label>')
+                            .addClass('btn btn-success' + (inprofile ? '' : ' active'))
+                            .append(
+                                $('<input></input>')
+                                .attr('type', 'radio')
+                                .attr('autocomplete', 'off')
+                            )
+                            .append('public')
+                        )
+                        .append(
+                            $('<label></label>')
+                            .addClass('btn btn-warning' + (inprofile ? ' active' : ''))
+                            .append(
+                                $('<input></input>')
+                                .attr('type', 'radio')
+                                .attr('autocomplete', 'off')
+                            )
+                            .append('private')
+                        );
         
-        toggle = $('<div></div>')
-        .addClass('toggle')
-        .attr('data-toggle', 'buttons')
-        .append( $('<label></label>').addClass('btn btn-success' + (inprofile ? '' : ' active'))
-        .append($('<input></input>').attr('type', 'radio').attr('autocomplete', 'off'))
-        .append('public'))
-        .append( $('<label></label>').addClass('btn btn-warning' + (inprofile ? ' active' : ''))
-        .append($('<input></input>').attr('type', 'radio').attr('autocomplete', 'off'))
-        .append('private'));
+        operations =    $('<div></div>')
+                        .addClass('row')
+                        .addClass('justify-content-around')
+                        .append(toggle)
+                        .append(removeField)
+                        .append(
+                            $('<div></div>')
+                            .addClass('move-wrapper')
+                            .append(moveUp)
+                            .append(moveDown)
+                        );
         
-        operations = $('<div></div>')
-        .addClass('row')
-        .addClass('justify-content-around')
-        .append(toggle)
-        .append(removeField)
-        .append($('<div></div>')
-        .addClass('move-wrapper')
-        .append(moveUp)
-        .append(moveDown));
+        field =         $('<div></div>')
+                        .addClass('fieldBox card')
+                        .append(
+                            $('<div></div>')
+                            .addClass('card-block row')
+                            .append($('<div></div>')
+                            .addClass('col-md-8')
+                            .append(inputGroup))
+                            .append(
+                                $('<div></div>')
+                                .addClass('col-md-4')
+                                .append(operations)
+                            )
+                        );
         
-        field = $('<div></div>')
-        .addClass('fieldBox card')
-        .append($('<div></div>')
-        .addClass('card-block row')
-        .append($('<div></div>')
-        .addClass('col-md-8')
-        .append(inputGroup))
-        .append($('<div></div>')
-        .addClass('col-md-4')
-        .append(operations)));
-        
-        //The row can be removed again
+        // Remove the field
         removeField.on('click', function() {
             $(this).parent().parent().parent().parent().remove();
             creator.colorCardFields();
         });
 
-        // The row can be moved
+        // Move the field
         moveUp.on('click', function() {
             row = $(this).parent().parent().parent().parent().parent();
             row.prev().before(row);
