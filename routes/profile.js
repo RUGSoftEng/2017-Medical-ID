@@ -22,7 +22,7 @@ router.get('/', function(req,res){
             }
 		});
 	} else {
-			req.flash('error_msg', 'Please enter a code');
+	    req.flash('error_msg', 'Please enter a code');
 	    res.redirect('/');
     }
 });

@@ -48,7 +48,7 @@ router.post("/register", function(req,res,next){
 			email: email,
 			password: password,
 			code: genCode(),
-			verified: false,
+			verified: new Boolean(false),
 			cardNum: 7,
 			picture: "img/placeholder.png",
 			fields: [
@@ -94,7 +94,7 @@ router.post("/register", function(req,res,next){
 			  var mailOptions = {
 				to: newUser.email,
 				from: 'passwordreset@medid.herokuapp.com',
-				subject: 'Node.js Password Reset',
+				subject: 'Node.js Verify email',
 				text: 'You are receiving this email because you (or someone else) need to verify the email adress used for your account.\n\n' +
 				  'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
 				   'http://'+req.headers.host + '/verify/' + token + '\n\n' +
@@ -105,7 +105,7 @@ router.post("/register", function(req,res,next){
 				req.flash('info', 'An e-mail has been sent to ' + newUser.email + ' with further instructions.');
 				done(err, 'done');
 			  });
-			  req.flash('success_msg', 'An e-mail has been sent to you');
+			  req.flash('success_msg', 'A verification e-mail has been sent to you');
 			}
 		  ], function(err) {
 			if (err) return next(err);

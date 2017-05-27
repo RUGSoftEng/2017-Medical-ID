@@ -27,6 +27,7 @@ var create = require('./routes/create');
 var save = require('./routes/save');
 var profile = require('./routes/profile');
 var forgot = require('./routes/forgot');
+var verify = require('./routes/verify');
 
 
 // Init App
@@ -101,6 +102,7 @@ app.use('/create', create);
 app.use('/save', save);
 app.use('/profile', profile);
 app.use('/forgot', forgot);
+app.use('/verify', verify);
 
 
 // Set Port
