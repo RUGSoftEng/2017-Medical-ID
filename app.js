@@ -18,7 +18,7 @@ if (serverSettings.parameters.db) {
 	console.log("Connected to custom database '" + serverSettings.parameters.db + "'.");
 }
 
-//mongoose.connect('mongodb://localhost/loginapp');
+//mongoose.connect('mongodb://localhost/app');
 var db = mongoose.connection;
 
 var routes = require('./routes/index');
@@ -26,6 +26,7 @@ var create = require('./routes/create');
 var save = require('./routes/save');
 var profile = require('./routes/profile');
 var forgot = require('./routes/forgot');
+var verify = require('./routes/verify');
 
 
 // Init App
@@ -99,6 +100,7 @@ app.use('/create', create);
 app.use('/save', save);
 app.use('/profile', profile);
 app.use('/forgot', forgot);
+app.use('/verify', verify);
 
 
 // Set Port

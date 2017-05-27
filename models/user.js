@@ -22,6 +22,9 @@ var UserSchema = mongoose.Schema({
 	resetPasswordExpires: {
 		type: Date
 	},
+	verifed: {
+		type: Boolean
+	},
 	name: {
 		type: String
 	},

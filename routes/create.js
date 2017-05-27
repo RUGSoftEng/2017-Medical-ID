@@ -6,8 +6,13 @@ var User = require('../models/user');
 
 router.get('/', function(req, res){
 	if (req.user) {
-		req.user.hyphenedCode = insertHyphen(req.user.code);
-		res.render('create/create');
+		if(!req.user.verified){
+	    		res.redirect('/verify')
+			console.log('Profile: User ' + req.user.email + ' verified: '+req.user.verified)
+		}else {
+			req.user.hyphenedCode = insertHyphen(req.user.code);
+			res.render('create/create');
+		}
 	} else {
 		res.render('create/guestcreate');
 	}
