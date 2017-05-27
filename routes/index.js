@@ -1,6 +1,5 @@
 var express = require('express');
-var router = express.Router();
-var User = require('../models/user');
+var router = require('./users')
 
 // Get Homepage
 router.get('/', function(req, res){

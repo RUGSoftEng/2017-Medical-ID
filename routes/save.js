@@ -5,55 +5,20 @@ var qrcode = require('qrcode-js');
 var sharp = require('sharp');
 var baseURL = 'https://medid.herokuapp.com';
 
-//TODO: test the data in req.body before using it
-
-/* Old routes
-router.post('/card', function(req, res){
-	req.user.card = req.body;
-	User.updateUser(req.user.username, req.user, function(err){
-		// needs improvement
-		if(err) throw err;
-	});
-	// req.flash('success_msg', 'Data successfully stored');
-	res.json({status: "success"});
-});
-
-router.post('/document', function(req, res){
-	req.user.document = req.body;
-	User.updateUser(req.user.username, req.user, function(err){
-		// needs improvement
-		if(err) throw err;
-	});
-	// req.flash('success_msg', 'Data successfully stored');
-	res.json({status: "success"});
-});
-
-router.get('/document', function(req, res) {
-	if (req.user) {
-		res.json(req.user.document);
-	} else {
-		res.sendFile('json/guestDocument.json', {root: __dirname + '/../public/'});
-	}
-});
-
-router.get('/card', function(req, res) {
-	if (req.user) {
-		if (req.user.card.length > 0) {
-			res.json(req.user.card);
-		} else {
-			res.sendFile('json/guestCard.json', {root: __dirname + '/../public/'});
-		}
-	} else {
-		res.sendFile('json/guestCard.json', {root: __dirname + '/../public/'});
-	}
-});
-*/
-
 /* Current routes */
 
 router.post('/fields', function(req, res){
 	if (req.user) {
-		req.user.fields = req.body;
+		req.user.fields = [];
+		for (i = 0; i < req.body.length; i++) {
+			req.user.fields.push({
+				label: req.body[i].label.substring(0,30),
+				field: req.body[i].field.substring(0,200),
+				inprofile: (req.body[i].inprofile ? true : false)
+			})
+		}
+
+		console.log(req.user.fields);
 		User.updateUser(req.user, function(err){
 			if(err) throw err;
 		});

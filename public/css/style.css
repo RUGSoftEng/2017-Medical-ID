@@ -38,8 +38,8 @@ html,body {
 }
 
 #picturePreview {
-  max-height: 100px;
-  max-width: 100px;
+    max-height: 100px;
+    max-width: 100px;
 }
 
 .addField, .addImage {
@@ -54,14 +54,14 @@ html,body {
 
 #message {
 	color: green;
-  display: none;
-  padding: 8px;
+    display: none;
+    padding: 8px;
 }
 
 #error {
 	color: red;
-  display: none;
-  padding: 8px;
+    display: none;
+    padding: 8px;
 }
 
 .messageBar {
@@ -118,11 +118,6 @@ h2.page-header {
     align-items: center;
 }
 
-.loginbox {
-    border-radius: 15px;
-    background-color: hsl(221, 61%, 80%);
-}
-
 .loginblock {
     padding-right: 25px;
 }
@@ -137,6 +132,16 @@ h2.page-header {
     align-items: center;
     min-height: calc(100vh - 49px);
 }
+
+.pass-strength {
+    background-color: red;
+    height: 20px; 
+    margin-bottom: 15px;
+    border-radius: 3px;
+    color: white;
+    text-align: center;
+}
+
 /* DEFAULT BOOTSTRAP CHANGES */
 .header {
     padding-bottom: 1rem;
@@ -163,11 +168,20 @@ h2.page-header {
 }
 
 /* MEDIA QUERIES */
+@media (min-width: 576px) {
+    .loginbox {
+        border-radius: 15px;
+        background-color: hsl(221, 61%, 80%);
+    }
+}
+
 @media (min-width: 768px) {
     .main-page-col {
         height: calc(100vh - 49px);
     }
+}
 
+@media (min-width: 992px) {
     .loginblock {
         border-right: 1px solid black;
     }
