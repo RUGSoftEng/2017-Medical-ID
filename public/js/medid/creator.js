@@ -185,6 +185,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
         
         operations = $('<div></div>')
         .addClass('row')
+        .addClass('justify-content-around')
         .append(toggle)
         .append(removeField)
         .append($('<div></div>')
