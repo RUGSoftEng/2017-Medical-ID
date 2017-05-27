@@ -164,6 +164,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
         removeField = $('<button></button>')
         .addClass('removeField btn btn-danger')
         .html("<svg class='icon-bin'><use xlink:href='/img/icons.svg#icon-bin'></use></svg>");
+        
         moveUp = $('<span></span>')
         .addClass('clickable moveUp')
         .html("<svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-up'></use></svg>");
@@ -171,6 +172,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
         moveDown = $('<span></span>')
         .addClass('clickable moveDown')
         .html("<svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-down'></use></svg>");
+        
         toggle = $('<div></div>')
         .addClass('toggle')
         .attr('data-toggle', 'buttons')
