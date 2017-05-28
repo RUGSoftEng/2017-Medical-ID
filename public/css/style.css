@@ -55,17 +55,11 @@ html,body {
 #message {
 	color: green;
     display: none;
-    padding: 8px;
 }
 
 #error {
 	color: red;
     display: none;
-    padding: 8px;
-}
-
-.messageBar {
-  height: 30px;
 }
 
 h2.page-header {

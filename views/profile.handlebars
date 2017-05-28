@@ -7,16 +7,18 @@
             {{#if displayUser}}
                 <table class="table-striped table">
                     {{#each displayUser.fields}}
-                      {{#if this.inprofile}}
-                        <tr>
-                            <td>
-                                <span style="font-weight: 700;">{{this.label}}</span>
-                            </td>
-                            <td>
-                                {{this.field}}
-                            </td>
-                        </tr>
-                      {{/if}}
+                        {{#if this.inprofile}}
+                            {{#if this.field}}
+                                <tr>
+                                    <td>
+                                        <span style="font-weight: 700;">{{this.label}}</span>
+                                    </td>
+                                    <td>
+                                        {{this.field}}
+                                    </td>
+                                </tr>
+                            {{/if}}
+                        {{/if}}
                     {{/each}}
                 </table>
             {{else}}
