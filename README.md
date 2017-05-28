@@ -4,17 +4,17 @@ Running project: [VIEW](https://medid.herokuapp.com/)
 
 Client-side documentation: [VIEW](https://htmlpreview.github.io/?https://raw.githubusercontent.com/RUGSoftEng/2017-Medical-ID/develop/doc/index.html)
 
-**Install and run instructions:**
+**Install and run instructions:**   
 Ensure you have Python2.7 and NodeJS installed on your machine.
 
 In forgot.js, there are two sections as such:
 
-'''sh
+```sh
 auth: {
     user: 'medicalid17@gmail.com',
     pass: 'enterpasswordhere'
 }
-'''
+```
 
 Here, you should enter the username and password of the account you would like to send the password reset emails.
 

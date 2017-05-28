@@ -12,6 +12,7 @@
   "repository": "https://github.com/RUGSoftEng/2017-Medical-ID",
   "dependencies": {
     "bcryptjs": "*",
+    "bluebird": "^3.5.0",
     "body-parser": "*",
     "connect-flash": "*",
     "cookie-parser": "^1.4.1",

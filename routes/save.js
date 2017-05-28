@@ -5,8 +5,6 @@ var qrcode = require('qrcode-js');
 var sharp = require('sharp');
 var baseURL = 'https://medid.herokuapp.com';
 
-/* Current routes */
-
 router.post('/fields', function(req, res){
 	if (req.user) {
 		req.user.fields = [];
@@ -17,8 +15,6 @@ router.post('/fields', function(req, res){
 				inprofile: (req.body[i].inprofile ? true : false)
 			})
 		}
-
-		console.log(req.user.fields);
 		User.updateUser(req.user, function(err){
 			if(err) throw err;
 		});
