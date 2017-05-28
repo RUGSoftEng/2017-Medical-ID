@@ -218,9 +218,11 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
                         .append(
                             $('<div></div>')
                             .addClass('card-block row')
-                            .append($('<div></div>')
-                            .addClass('col-md-8')
-                            .append(inputGroup))
+                            .append(
+                                $('<div></div>')
+                                .addClass('col-md-8')
+                                .append(inputGroup)
+                            )
                             .append(
                                 $('<div></div>')
                                 .addClass('col-md-4')
