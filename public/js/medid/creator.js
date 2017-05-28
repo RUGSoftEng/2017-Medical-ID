@@ -20,8 +20,8 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
         */
         list: $('#fields').sortable({
             axis: "y",
-            revert: true,
-            cursor: "move"
+            cursor: "move",
+            tolerance: "pointer"
         }),
 
         /**
