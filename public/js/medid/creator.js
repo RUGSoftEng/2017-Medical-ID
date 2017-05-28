@@ -15,7 +15,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
         
         /**
         * The DIV element containing all the fields of the creator form.
-        * The element is set to sortable to allow reordering of fields through drap and drop.
+        * The element is set to sortable to allow reordering of fields through drag and drop.
         * @member {Object}
         */
         list: $('#fields').sortable({
