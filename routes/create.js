@@ -33,6 +33,7 @@ router.post('/settings', function(req, res) {
 	}
 });
 
+/*Inserts dash between every third character of a string*/
 function insertHyphen(string) {
 	if (string.length > 3) {
 		return string.slice(0, 3) + "-" + insertHyphen(string.slice(3));

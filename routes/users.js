@@ -7,20 +7,21 @@ var algorithm = 'aes256';
 
 var User = require('../models/user');
 
-// Login
+/*Display login page*/
 router.get('/login', function(req, res){
 	res.render('login');
 });
 
+/*Renew code linked to profile*/
 router.get('/newcode', function(req, res) {
 	if (req.user) {
 		req.user.code = genCode();
-		// this function is separated to allow handling code uniqueness errors
+		/* this function is separated to allow handling code uniqueness errors */
 		updateUserCode(req, res);
 	}
 });
 
-// Register User
+/*Register user: send user info to server*/
 router.post("/register", function(req,res){
 	var name = req.body.name;
 	var email = req.body.email.toLowerCase();
@@ -51,11 +52,12 @@ router.post("/register", function(req,res){
 			]
 		});
 
-		// this function is separated to allow handling code uniqueness errors
+		/*this function is separated to allow handling code uniqueness errors */
 		createUser(req, res, newUser);
 	}
 });
 
+/*Flashes an error message to the user if some piece of information is invalid*/
 function validateRegisterDetails(req) {
 	req.checkBody('name', 'Name is required').notEmpty();
 	req.checkBody('email', 'Email is required').notEmpty();

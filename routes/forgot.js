@@ -6,6 +6,8 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var User = require('../models/user');
 
+/*Provides routes for when user has forgotten password, OBS requires gmail account*/
+
 // Get Homepage
 router.get('/', function(req, res){
 	res.render('forgot');

@@ -3,12 +3,13 @@ var router = express.Router();
 
 var User = require('../models/user');
 
+/*Server handles request to profile given a code entered on index page*/
 router.get('/', function(req,res){
 	if (req.query.code) {
 		var code = req.query.code.replace(/[^0-9a-zA-Z]/gi, '');
 	}
 	if(code) {
-		displayProfile(code);
+		displayProfile(code, req, res);
 	} else {
 		req.flash('error_msg', 'Please enter a code');
 	    res.redirect('/');
@@ -17,7 +18,7 @@ router.get('/', function(req,res){
 
 /*Displays the profile of the user with code 'code',
   or an error message if code does not exist */
-function displayProfile(code) {
+function displayProfile(code, req, res) {
 	User.getUserByCode(code, function(err,user){
 		if(!user){
             req.flash('error_msg', 'No user found');
