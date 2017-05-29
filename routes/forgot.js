@@ -6,11 +6,9 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var User = require('../models/user');
 
-/*Provides routes for when user has forgotten password, OBS requires gmail account*/
-
 // Get Homepage
 router.get('/', function(req, res){
-	res.render('forgot');
+  res.render('forgot');
 });
 
 //Gets the submitted token, finds user with token, checks if token is valid, if valid promt to reset pw
@@ -33,7 +31,7 @@ router.post('/', function(req, res, next) {
   async.waterfall([
     function(done) {
       crypto.randomBytes(20, function(err, buf) {
-	      //Generate our reset token	
+  //Generate our reset token  
         var token = buf.toString('hex');
         done(err, token);
       });
@@ -93,7 +91,32 @@ router.post('/', function(req, res, next) {
 //Checks if token is valid, sets and hashes new password, sets token and expiry fields to null, sends a confirmation email.
 router.post('/reset/:token', function(req, res) {
   async.waterfall([
-    checkTokenValidity(done),
+    function(done) {
+      User.findOne({ resetPasswordToken: req.params.token}, function(err, user) {
+        if (!user){
+          req.flash('error', 'POST: Password reset token is invalid.');
+          console.log('ERROR token '+req.params.token+' was not found')
+          return res.redirect('back');
+        }
+
+        if(Date.now()>user.resetPasswordExpires){
+          req.flash('error', 'POST: The password reset token expired.');
+          return res.redirect('back');
+        }
+
+        user.password = bcrypt.hashSync(req.body.password, 10); 
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        console.log('Changed user ' + user.email + ' password')
+
+        user.save(function(err) {
+          req.logIn(user, function(err) {
+            done(err, user);
+          });
+        });
+
+      });
+    },
     function(user, done) {
       var smtpTransport = nodemailer.createTransport({
         service: 'Gmail',
@@ -118,33 +141,6 @@ router.post('/reset/:token', function(req, res) {
     res.redirect('/');
   });
 });
-
-function checkTokenValidity(done) {
-    User.findOne({ resetPasswordToken: req.params.token}, function(err, user) {
-      if (!user){
-        req.flash('error', 'POST: Password reset token is invalid.');
-        console.log('ERROR token '+req.params.token+' was not found')
-        return res.redirect('back');
-      }
-
-      if(Date.now()>user.resetPasswordExpires){
-        req.flash('error', 'POST: The password reset token expired.');
-        return res.redirect('back');
-      }
-
-      user.password = bcrypt.hashSync(req.body.password, 10); 
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpires = undefined;
-      console.log('Changed user ' + user.email + ' password')
-
-      user.save(function(err) {
-        req.logIn(user, function(err) {
-          done(err, user);
-        });
-      });
-
-    });
-}
 //END: set new password
 
 module.exports = router;
