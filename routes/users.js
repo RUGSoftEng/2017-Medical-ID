@@ -7,39 +7,35 @@ var algorithm = 'aes256';
 
 var User = require('../models/user');
 
-// Login
+/*Routing related to user account, profile, registering, user code*/
+
+/*Display login page*/
 router.get('/login', function(req, res){
 	res.render('login');
 });
 
+/*Renew code linked to profile*/
 router.get('/newcode', function(req, res) {
 	if (req.user) {
 		req.user.code = genCode();
-		// this function is separated to allow handling code uniqueness errors
 		updateUserCode(req, res);
 	}
 });
 
-// Register User
+/*Register user: send user info to server, store user in database*/
 router.post("/register", function(req,res){
 	var name = req.body.name;
 	var email = req.body.email.toLowerCase();
 	var password = req.body.password;
 	var password2 = req.body.password2;
 
-	// Validation
-	req.checkBody('name', 'Name is required').notEmpty();
-	req.checkBody('email', 'Email is required').notEmpty();
-	req.checkBody('email', 'Email is not valid').isEmail();
-	req.checkBody('password', 'Password is required').notEmpty();
-	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+	validateRegisterDetails(req);
 
 	var errors = req.validationErrors();
-
+	
 	if(errors){
 		res.render('login',{ errors: errors });
-	}
-	else{
+	} else {
 		var newUser = new User({
 			name: name,
 			email: email,
@@ -55,15 +51,21 @@ router.post("/register", function(req,res){
 				{"label": "Insurance", "field": "", "inprofile": true}
 			]
 		});
-
-		// this function is separated to allow handling code uniqueness errors
 		createUser(req, res, newUser);
 	}
 });
 
-passport.use(new LocalStrategy({
-		passReqToCallback: true
-	},
+/*Flashes an error message to the user if some piece of information is invalid*/
+function validateRegisterDetails(req) {
+	req.checkBody('name', 'Name is required').notEmpty();
+	req.checkBody('email', 'Email is required').notEmpty();
+	req.checkBody('email', 'Email is not valid').isEmail();
+	req.checkBody('password', 'Password is required').notEmpty();
+	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+}
+
+/*Passport methods authenticate users by email and password*/
+passport.use(new LocalStrategy({passReqToCallback: true},
   function(req, email, password, done) {
    User.getUserByEmail(email.toLowerCase(), function(err, user){
    	if(err) throw err;
@@ -94,10 +96,10 @@ passport.deserializeUser(function(id, done) {
 });
 
 router.post('/login',
-  passport.authenticate('local', {successRedirect:'/create', failureRedirect:'/login',failureFlash: true}),
-  function(req, res) {
+  	passport.authenticate('local', {successRedirect:'/create', failureRedirect:'/login',failureFlash: true}),
+  	function(req, res) {
     res.redirect('/');
-  });
+});
 
 router.get('/logout', function(req, res){
 	req.logout();
@@ -108,50 +110,41 @@ router.get('/logout', function(req, res){
 function genCode() {
 	var LENGTH = 12;
 	var ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
 	var result = '';
-  for (var i = LENGTH; i > 0; --i) result += ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
-  return result;
+  	for (var i = LENGTH; i > 0; --i) result += ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+  	return result;
 }
 
-// attempts to create a new user entry into the database
+/*Creates new user in database, displays error if email is not unique, regenerates code if not unique*/
 function createUser(req, res, newUser){
 	User.createUser(newUser, function(err, user) {
 		if (err && err.errors) {
 			if (err.errors.email && err.errors.email.kind == 'unique') {
-				// Email is not unique
 				req.flash('error_msg', 'Email address is already in use');
 			} else if (err.errors.code && err.errors.email.kind == 'unique') {
-				// Code is not unique
 				newUser.code = genCode();
 				createUser(req, res, newUser);
 			} else {
-				// Something else not unique (should be impossible)
-				throw err
+				throw err;
 			}
-		}
-		else {
+		} else {
 			req.flash('success_msg', 'You are registered and can now login');
 		}
-
 		res.redirect('/login');
 	});
 }
 
+/*Regenerates code upon request from user, tries again if code already exists in database*/
 function updateUserCode(req, res){
 	User.updateUser(req.user, function(err) {
 		if (err && err.errors) {
 			if (err.errors.code && err.errors.code.kind == 'unique') {
-				// existing code, generate new one and try again
 				req.user.code = genCode();
 				updateUserCode(req, res);
-			}
-			else {
-				// An unrelated error came up.
+			} else {
 				throw err;
 			}
 		}
-
 		req.flash('success_msg', "Your personal code is now updated. All old references to your profile, including your cards, are now deprecated and will no longer work.");
 		res.redirect('/create');
 	});
