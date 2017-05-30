@@ -247,10 +247,15 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
                             )
                         );
 
+        toggle.on('click', function() {
+            creator.saveFields();
+        });
+
         // Remove the field
         removeField.on('click', function() {
             $(this).parent().parent().parent().parent().remove();
             creator.colorCardFields();
+            creator.saveFields();
         });
 
         // Move the field
