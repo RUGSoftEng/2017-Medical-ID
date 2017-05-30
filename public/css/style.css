@@ -77,6 +77,10 @@ h2.page-header {
   background-color: #ABC;
 }
 
+.fieldSeperator {
+  margin: 5px;
+}
+
 .card-block {
   margin: 0px;
   padding: 0px;
@@ -129,7 +133,7 @@ h2.page-header {
 
 .pass-strength {
     background-color: red;
-    height: 20px; 
+    height: 20px;
     margin-bottom: 15px;
     border-radius: 3px;
     color: white;

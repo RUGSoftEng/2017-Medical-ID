@@ -34,11 +34,6 @@
 					<input class='form-control' id='uploadPicture' type="file" name="pic" accept="image/*">
 				  </div>
 				</li>
-				<li class="list-group-item">
-				  <label for="inputEmail">Amount of fields on your card</label>
-				  <input type="number" class="form-control" id="inputCardNum" value="{{user.cardNum}}" max="7" min="1">
-				  <small>The top fields will appear on the card.</small>
-				</li>
 			  </ul>
 		  </div>
 		  <div class="card-footer">
@@ -54,14 +49,18 @@
 			<h4 class="mb-0">Your fields</h4>
 		  </div>
 		  <div class="card-block">
+        <div class='card fieldSeperator'>
+          <div class='card-header'><h5>Fields on the card:</h5></div>
+        </div>
 			<div id='fields'>
-
+        <div id='seperator' class='fieldSeperator card'>
+          <div class='card-header'><h5>Fields not on the card:</h5></div>
+        </div>
 			</div>
 		  </div>
 		  <div class="card-footer">
 			<p>
 				<input type='button' value='Add field' class='addField btn btn-primary' />
-				<input type='button' value='Save' class="save btn btn-primary"/>
 				<input type='button' value='Create card' class="createCard btn btn-primary"/>
 				<input type='button' value='Create profile as document' class="createDoc btn btn-primary"/>
 			</p>
