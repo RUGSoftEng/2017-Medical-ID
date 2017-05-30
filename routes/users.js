@@ -11,7 +11,7 @@ var User = require('../models/user');
 
 /*Display login page*/
 router.get('/login', function(req, res){
-	res.render('login');
+	res.render('login', {page: "Login"});
 });
 
 /*Renew code linked to profile*/

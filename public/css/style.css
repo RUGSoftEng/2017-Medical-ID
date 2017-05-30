@@ -5,19 +5,20 @@ html,body {
     min-height: 100vh;
 }
 
-.bigButtonCell {
+a.bigButtonCell {
     background-color: hsl(221, 61%, 50%);
     width: 75%;
     margin: 0 auto;
     padding: 15px 0;
     border-radius: 15px;
     border: thin solid hsl(221, 61%, 25%);
-}
-
-.bigButtonCell a {
     text-decoration: none;
     color: white;
     font-size: 2em;
+}
+
+a.bigButtonCell:hover {
+  text-decoration: none;
 }
 
 .main-page-col {
@@ -215,4 +216,9 @@ h2.page-header {
 }
 .btn.active span:last-child  {
 	display: none;
+}
+
+.alert {
+  position: absolute;
+  z-index: 1;
 }

@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		{{#if page}}
+		<title>Medical ID | {{page}}</title>
+		{{else}}
 		<title>Medical ID</title>
+		{{/if}}
 		<link rel="stylesheet" href="/css/bootstrap.css" />
 		<link rel="stylesheet" href="/css/style.css" />
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
@@ -14,7 +18,11 @@
 		{{creator}}
 
 		<nav class="navbar navbar-toggleable navbar-inverse bg-inverse">
+			{{#if page}}
+			<span class="navbar-brand unselectable">Medical ID | {{page}}</span>
+			{{else}}
 			<span class="navbar-brand unselectable">Medical ID</span>
+			{{/if}}
 
 			<button type="button" class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#myNavbar">
 				<span class="navbar-toggler-icon"></span>
