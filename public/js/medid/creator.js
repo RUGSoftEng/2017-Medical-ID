@@ -48,6 +48,12 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
         saveEndpoint: "",
 
         /**
+         * Boolean on whether the fields should be saved.
+         * @member {string}
+         */
+        saveEnabled: false,
+
+        /**
         * The element to display messages in.
         * @member {Object}
         */
@@ -128,8 +134,6 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     creator.fields = function () {
         var fields = [];
         var label, field;
-
-        console.log(creator.list.children('.fieldBox'));
 
         creator.list.children('.fieldBox').each(function () {
             label = $(this).find('.medid-label');
@@ -254,12 +258,14 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
             row = $(this).parent().parent().parent().parent().parent();
             row.prev().before(row);
             creator.colorCardFields();
+            creator.saveFields();
         });
 
         moveDown.on('click', function() {
             row = $(this).parent().parent().parent().parent().parent();
             row.before(row.next());
             creator.colorCardFields();
+            creator.saveFields();
         });
 
         // Keep track of the input lengths
@@ -283,6 +289,8 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
                     .html(' ');
                 }
             }
+
+            creator.saveFields();
         });
 
         inputField.on('change', function() {
@@ -305,6 +313,8 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
                     .html(' ');
                 }
             }
+
+            creator.saveFields();
         });
 
         // Add row to creator
@@ -379,18 +389,20 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     * Store the field data on the server.
     */
     creator.saveFields = function () {
-        $.ajax({
-            type: 'POST',
-            data: JSON.stringify({fields: creator.fields(), cardNum: creator.seperator.prevAll().length}),
-            contentType: 'application/json',
-            enctype: 'multipart/form-data',
-            url: creator.saveEndpoint,
-            success: function(data) {
-                if (data.status == "success") {
-                    // creator.showMessage("Data successfully stored.");
-                }
-            }
-        });
+        if (creator.saveEnabled) {
+          $.ajax({
+              type: 'POST',
+              data: JSON.stringify({fields: creator.fields(), cardNum: creator.seperator.prevAll().length}),
+              contentType: 'application/json',
+              enctype: 'multipart/form-data',
+              url: creator.saveEndpoint,
+              success: function(data) {
+                  if (data.status == "success") {
+                      // creator.showMessage("Data successfully stored.");
+                  }
+              }
+          });
+        }
     }
 
     // LISTENERS
@@ -430,7 +442,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     */
     creator.init = function () {
         if (creator.saveEndpoint == "") {
-            console.log("Error: no endpoint found for saving this document!")
+            console.log("Error: no endpoint found for saving this document!");
         } else {
             $.getJSON(creator.saveEndpoint, function(data) {
                 fields = data.fields;

@@ -36,10 +36,15 @@
                 <h4 class="mb-0">Your fields</h4>
               </div>
               <div class="card-block">
-                <div id='fields'>
-
+                <div class='card fieldSeperator'>
+                  <div class='card-header'><h5>Fields on the card:</h5></div>
                 </div>
-              </div>
+          			<div id='fields'>
+                  <div id='seperator' class='fieldSeperator card'>
+                    <div class='card-header'><h5>Fields not on the card:</h5></div>
+                  </div>
+          			</div>
+        		  </div>
               <div class="card-footer">
                 <p>
                     <input type='button' value='Add field' class='addField btn btn-primary' />
@@ -47,12 +52,12 @@
                     <input type='button' value='Create document' class="createDoc btn btn-primary"/>
                     <span id='message'></span>
                 </p>
-                <p>To save your settings, please <a href='/register'>register</a> as a user.</p>
+                <p>To save your settings, please <a href='/login'>register</a> as a user.</p>
               </div>
             </div>
 		</div>
     </div>
 </div>
 <script>
-    require(['medid/profile']);
+    require(['medid/guestcreate']);
 </script>
