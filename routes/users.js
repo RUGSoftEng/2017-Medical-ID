@@ -32,7 +32,7 @@ router.post("/register", function(req,res){
 	validateRegisterDetails(req);
 
 	var errors = req.validationErrors();
-	
+
 	if(errors){
 		res.render('login',{ errors: errors });
 	} else {
@@ -70,7 +70,7 @@ passport.use(new LocalStrategy({passReqToCallback: true},
    User.getUserByEmail(email.toLowerCase(), function(err, user){
    	if(err) throw err;
    	if(!user){
-   		return done(null, false, req.flash('error_msg', 'Unknown user'));
+   		return done(null, false, req.flash('error_msg', 'Login failed: invalid username/password.'));
    	}
 
    	User.comparePassword(password, user.password, function(err, isMatch){
@@ -78,7 +78,7 @@ passport.use(new LocalStrategy({passReqToCallback: true},
    		if(isMatch){
    			return done(null, user);
    		} else {
-   			return done(null, false, req.flash('error_msg', 'Invalid password'));
+   			return done(null, false, req.flash('error_msg', 'Login failed: invalid username/password.'));
    		}
    	});
    });
