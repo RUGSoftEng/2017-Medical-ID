@@ -5,16 +5,18 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vows test/test.js --spec"
   },
   "author": "Medical ID development team",
   "license": "ISC",
   "repository": "https://github.com/RUGSoftEng/2017-Medical-ID",
   "dependencies": {
     "bcryptjs": "*",
+    "bluebird": "^3.5.0",
     "body-parser": "*",
     "connect-flash": "*",
     "cookie-parser": "^1.4.1",
+    "email-validator": "^1.0.7",
     "express": "*",
     "express-force-https": "^1.0.0",
     "express-handlebars": "*",
@@ -23,11 +25,16 @@
     "express-validator": "*",
     "mongodb": "*",
     "mongoose": "*",
+    "mongoose-unique-validator": "*",
+    "nodemailer": "*",
     "passport": "*",
     "passport-http": "*",
     "passport-local": "*",
     "qrcode-js": "0.0.2",
-    "sharp": "^0.17.3",
-    "nodemailer": "*"
+    "sharp": "^0.17.3"
+  },
+  "devDependencies": {
+    "vows": "*",
+    "request": "*"
   }
 }

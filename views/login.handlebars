@@ -1,15 +1,15 @@
 <div class="row loginwrapper">
-	<div class="col-8 offset-2 loginbox p-3 mt-5 mt-md-0">
+	<div class="col-12 col-sm-8 offset-sm-2 loginbox p-3 mt-0 mt-sm-5 mt-lg-0">
 		<div class="row">
-			<div class="col-12 mb-3 mb-md-0 col-md-6 loginblock">
+			<div class="col-12 mb-3 col-lg-6 mb-lg-0 loginblock">
 				<h2 class="header mb-3">Login</h2>
-				<form role="form" action="/users/login" method="post" class="login-form">
+				<form role="form" action="/login" method="post" class="login-form">
 					<div class="form-group">
-					<label for="username" class="cols-sm-2 control-label">Username</label>
+					<label for="username" class="cols-sm-2 control-label">Email</label>
 					<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-								<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+								<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your email"/>
 							</div>
 						</div>
 					</div>
@@ -19,24 +19,25 @@
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-								<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+								<input type="password" class="form-control" name="password" id="loginpassword"  placeholder="Enter your password"/>
 							</div>
-							<a href="{{req.headers.host}}/forgot" class="btn btn-link pull-right">Forgot Password?</a>
+							<a href="{{req.headers.host}}/forgot" class="btn btn-link pull-right">Forgot Password?</a><br />
+							<br />
 						</div>
 					</div>
-					<button type="submit" class="btn btn-primary">Sign in</button>
+					<button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
 				</form>
 			</div>
-			<div class="col-12 col-md-6 registerblock pt-3 pt-md-0">
+			<div class="col-12 mb-3 col-lg-6 mb-lg-0 registerblock">
 				<h2 class="header mb-3">Register</h2>
-				<form role="form" action="/users/register" method="post" class="login-form">
+				<form role="form" action="/register" method="post" class="login-form">
 
 					<div class="form-group">
 						<label for="name" class="cols-sm-2 control-label">Your Name</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-								<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>
+								<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your name"/>
 							</div>
 						</div>
 					</div>
@@ -46,17 +47,7 @@
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-								<input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
-							</div>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="username" class="cols-sm-2 control-label">Username</label>
-						<div class="cols-sm-10">
-							<div class="input-group">
-								<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-								<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+								<input type="text" class="form-control" name="email" id="email"  placeholder="Enter your email"/>
 							</div>
 						</div>
 					</div>
@@ -66,7 +57,7 @@
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-								<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+								<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your password"/>
 							</div>
 						</div>
 					</div>
@@ -75,14 +66,17 @@
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-								<input type="password" class="form-control" name="password2" id="password2"  placeholder="Confirm your Password"/>
+								<input type="password" class="form-control" name="password2" id="password2"  placeholder="Confirm your password"/>
 							</div>
 						</div>
 					</div>
+                    
+                    <div class="pass-strength">Weak</div>
 					<button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
-				</form>                                                
+				</form>
 
 			</div>
 		</div>
 	</div>
 </div>
+<script>require(['medid/login']);</script> 

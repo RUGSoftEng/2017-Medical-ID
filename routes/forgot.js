@@ -8,7 +8,7 @@ var User = require('../models/user');
 
 // Get Homepage
 router.get('/', function(req, res){
-	res.render('forgot');
+  res.render('forgot');
 });
 
 //Gets the submitted token, finds user with token, checks if token is valid, if valid promt to reset pw
@@ -18,7 +18,7 @@ router.get('/reset/:token', function(req, res) {
       req.flash('error', 'GET: Password reset token is invalid or has expired.');
       return res.redirect('/forgot');
     }
-    console.log('User: '+user.username+' found with reset token');
+    console.log('User: ' + user.email + ' found with reset token');
     res.render('reset', {
       user: req.user
     });
@@ -31,7 +31,7 @@ router.post('/', function(req, res, next) {
   async.waterfall([
     function(done) {
       crypto.randomBytes(20, function(err, buf) {
-	//Generate our reset token	
+  //Generate our reset token  
         var token = buf.toString('hex');
         done(err, token);
       });
@@ -107,7 +107,7 @@ router.post('/reset/:token', function(req, res) {
         user.password = bcrypt.hashSync(req.body.password, 10); 
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
-        console.log('Changed user '+user.username+' password')
+        console.log('Changed user ' + user.email + ' password')
 
         user.save(function(err) {
           req.logIn(user, function(err) {
