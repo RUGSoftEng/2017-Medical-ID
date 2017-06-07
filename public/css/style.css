@@ -127,15 +127,6 @@ h2.page-header {
     min-height: calc(100vh - 49px);
 }
 
-.pass-strength {
-    background-color: red;
-    height: 20px; 
-    margin-bottom: 15px;
-    border-radius: 3px;
-    color: white;
-    text-align: center;
-}
-
 /* DEFAULT BOOTSTRAP CHANGES */
 .header {
     padding-bottom: 1rem;
