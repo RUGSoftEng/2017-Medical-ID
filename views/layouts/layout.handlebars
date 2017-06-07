@@ -35,11 +35,11 @@
     </nav>
 
     {{#if success_msg}}
-    <div class="alert alert-success mb-0">{{success_msg}}</div>
+    <div class="alert col-12 alert-success mb-0">{{success_msg}}</div>
     {{/if}} {{#if error_msg}}
-    <div class="alert alert-danger mb-0">{{error_msg}}</div>
+    <div class="alert col-12 alert-danger mb-0">{{error_msg}}</div>
     {{/if}} {{#if errors}} {{#each errors}}
-    <div class="alert alert-danger mb-0">{{msg}}</div>
+    <div class="alert col-12 alert-danger mb-0">{{msg}}</div>
     {{/each}} {{/if}}
 
     <div class="container-fluid">
