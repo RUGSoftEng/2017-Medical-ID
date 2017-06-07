@@ -8,17 +8,17 @@ var baseURL = 'https://medid.herokuapp.com';
 /* Retrieves user input from client, stores it. */
 router.post('/fields', function(req, res){
 	if (req.user) {
-		req.user.fields = [];
-		console.log(req.body);
-		fields = req.body.fields;
-		for (i = 0; i < fields.length; i++) {
-			req.user.fields.push({
-				label: fields[i].label.substring(0,30),
-				field: fields[i].field.substring(0,200),
-				inprofile: (fields[i].inprofile ? true : false)
-			})
+		fields = [];
+		for (i = 0; i < req.body.fields.length; i++) {
+			fields.push({
+				label: req.body.fields[i].label.substring(0,30),
+				field: req.body.fields[i].field.substring(0,200),
+				inprofile: (req.body.fields[i].inprofile ? true : false)
+			});
 		}
+		req.user.fields = fields;
 		req.user.cardNum = req.body.cardNum;
+		console.log(req.user.fields);
 		User.updateUser(req.user, function(err){
 			if(err) throw err;
 		});

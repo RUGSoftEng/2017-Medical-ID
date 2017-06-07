@@ -24,6 +24,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
             tolerance: "pointer",
             containment: "parent",
             update: function(event, ui) {
+              creator.cardNum = creator.seperator.prevAll().length;
               creator.colorCardFields();
               creator.saveFields();
             }
