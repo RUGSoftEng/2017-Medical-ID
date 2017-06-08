@@ -29,10 +29,13 @@ define(['jquery'], function($) {
 	// Depending on the count variable, assign different 
 	if(string.length < 8 || count <= 1){
 		passwordstrength.strengthbox.css("background-color", "#ff6666");
+        $(".strength-text").text("Weak");
 	}else if(count == 2){
 		passwordstrength.strengthbox.css("background-color", "#ffff66");
+        $(".strength-text").text("Fair");
 	} else {
 		passwordstrength.strengthbox.css("background-color", "#66ff66");
+        $(".strength-text").text("Strong");
 	}
   }
 
