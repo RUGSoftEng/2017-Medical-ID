@@ -7,6 +7,10 @@ var algorithm = 'aes256';
 
 var User = require('../models/user');
 
+var bcrypt = require('bcryptjs');
+var async = require('async');
+var nodemailer = require('nodemailer');
+
 /*Routing related to user account, profile, registering, user code*/
 
 /*Display login page*/
@@ -23,12 +27,11 @@ router.get('/newcode', function(req, res) {
 });
 
 /*Register user: send user info to server, store user in database*/
-router.post("/register", function(req,res){
+router.post("/register", function(req,res, next){
 	var name = req.body.name;
 	var email = req.body.email.toLowerCase();
 	var password = req.body.password;
 	var password2 = req.body.password2;
-
 	validateRegisterDetails(req);
 
 	var errors = req.validationErrors();
@@ -41,6 +44,7 @@ router.post("/register", function(req,res){
 			email: email,
 			password: password,
 			code: genCode(),
+			verified: false,
 			cardNum: 7,
 			picture: "img/placeholder.png",
 			fields: [
@@ -52,6 +56,54 @@ router.post("/register", function(req,res){
 			]
 		});
 		createUser(req, res, newUser);
+		console.log(newUser.email+' created');
+		
+		// send new user an email to verify their email address
+		async.waterfall([
+			function(done) {
+			  crypto.randomBytes(20, function(err, buf) {
+			//Generate our reset token	
+				var token = buf.toString('hex');
+				done(err, token);
+			  });
+			},
+			//Find user with email, save token value and expiry time:
+			function(token, done) {
+				newUser.resetPasswordToken = token;
+				newUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+				newUser.save(function(err) {
+				  done(err, token, newUser);
+				});
+			},
+			//Logs in to gmail via nodemailer using SMTP and sends the email containing the reset token
+			//TODO: use a configuration file (added to .gitignore) and add the file to the server manually. 
+			function(token, newUser, done) {
+			  var transporter = nodemailer.createTransport({
+				service: 'Gmail',
+				auth: {
+					user: 'medicalid17@gmail.com',
+					pass: 'enterpasswordhere'
+				}
+				});
+			  var mailOptions = {
+				to: newUser.email,
+				from: 'passwordreset@medid.herokuapp.com',
+				subject: 'Node.js Verify email',
+				text: 'You are receiving this email because you (or someone else) need to verify the email adress used for your account.\n\n' +
+				  'To verify your account please click on the <a href="http://'+req.headers.host + '/verify/' + token +'">link</a>' + '\n\n' +			
+					'If the link does not work paste the token:\n'
+					+ token+ '\n\n'+
+				  'If you did not request this, please ignore this email and this email adress will not be verified.\n'
+			  };
+			  
+			  transporter.sendMail(mailOptions, function(err) {
+				req.flash('info', 'An e-mail has been sent to ' + newUser.email + ' with further instructions.');
+				done(err, 'done');
+			  });
+			  req.flash('success_msg', 'A verification e-mail has been sent to you');
+			}
+		  ]);
 	}
 });
 
