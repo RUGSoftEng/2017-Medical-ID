@@ -33,6 +33,7 @@ define(['jquery'], function($) {
 	}else if(count == 2){
 		passwordstrength.strengthbox.css("background-color", "#ffff66");
         $(".strength-text").text("Fair");
+        
 	} else {
 		passwordstrength.strengthbox.css("background-color", "#66ff66");
         $(".strength-text").text("Strong");
