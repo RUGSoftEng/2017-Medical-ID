@@ -127,7 +127,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
             fields.push({label: label.val(), field: field.val(), inprofile: inprofile});
         });
 
-        creator.userName = creator.name.val();
+        creator.userName = creator.name.val() || "";
     
         if (creator.picture.attr('src') != 'img/placeholder.png') {
             creator.image = creator.picture.attr('src');
