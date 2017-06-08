@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var uniqueValidator = require('mongoose-unique-validator');
 
-// User Schema
+/*User schema for database: defines user info
+  cardNum = the card contains the first "cardNum" elements of "fields"*/
 var UserSchema = mongoose.Schema({
 	email: {
 		type: String,
@@ -28,7 +29,7 @@ var UserSchema = mongoose.Schema({
 	name: {
 		type: String
 	},
-    cardNum: { // the card contains the first "cardNum" elements of "fields"
+    cardNum: {
         type: Number
     },
     picture: {
@@ -41,7 +42,7 @@ var UserSchema = mongoose.Schema({
 	}]
 });
 
-// apply the uniqueValidator plugin to User Schema
+/*apply the uniqueValidator plugin to UserSchema: pre save validation for unique fields */
 UserSchema.plugin(uniqueValidator);
 
 var User = module.exports = mongoose.model('User', UserSchema);
@@ -76,12 +77,12 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
 	});
 }
 
-// this way of updating will execute validators
+/* this way of updating will execute validators */
 module.exports.updateUser = function(update, callback){
 	User.findById(update._id, function(err, user){
 		if (err)
 			throw err;
-
+		
 		user = update;
 		user.save(callback);
 	});

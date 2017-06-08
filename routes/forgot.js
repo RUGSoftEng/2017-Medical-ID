@@ -9,7 +9,7 @@ var config = require('../config')
 
 // Get Homepage
 router.get('/', function(req, res){
-	res.render('forgot');
+  res.render('forgot');
 });
 
 //Gets the submitted token, finds user with token, checks if token is valid, if valid promt to reset pw
@@ -32,7 +32,7 @@ router.post('/', function(req, res, next) {
   async.waterfall([
     function(done) {
       crypto.randomBytes(20, function(err, buf) {
-	//Generate our reset token	
+  //Generate our reset token  
         var token = buf.toString('hex');
         done(err, token);
       });

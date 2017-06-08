@@ -1,78 +1,85 @@
-<div class="row messageBar">
-  <div id='message' class="alert col-12 alert-success"></div>
-  <div id='error' class="alert col-12 alert-danger"></div>
-</div>
 <div class="row">
-  <div class="col-12 p-3">
-      <h2 class="page-header mb-0">Profile</h2>
-  </div>
-  <div class="col-12 col-lg-4 pl-3 pr-3 pb-3">
-		<div class="card">
-		  <div class="card-header">
-			<h4 class="mb-0">Settings</h4>
-		  </div>
-		  <div class="card-block">
-			  <ul class="form-group list-group list-group-flush">
-				<li class="list-group-item">
-				  <label for="inputName">Your name</label>
-				  <input type="text" class="form-control" id="inputName" value="{{user.name}}">
-				</li>
-				<li class="list-group-item">
-				  <label for="inputEmail">Your e-mail address</label>
-				  <input type="text" class="form-control" id="inputEmail" value="{{user.email}}" disabled>
-				</li>
-        <li class="list-group-item">
-				  <label for="inputName">Your profile code</label>
-          <div class="input-group">
-            <div class="form-control">{{user.hyphenedCode}}</div>
-            <a href="/newcode" class="btn btn-danger input-group-addon">Renew</a>
-          </div>
-          <span class='small'>Renewing your code will make old references to your profile unusable!</span>
-				</li>
-				<li class="list-group-item">
-				  <label for="uploadPicture">Your profile picture</label>
-				  <div class='input-group'>
-					<span class='input-group-addon'><img id='picturePreview' src="{{user.picture}}" /></span>
-					<input class='form-control' id='uploadPicture' type="file" name="pic" accept="image/*">
-				  </div>
-				</li>
-				<li class="list-group-item">
-				  <label for="inputEmail">Amount of fields on your card</label>
-				  <input type="number" class="form-control" id="inputCardNum" value="{{user.cardNum}}" max="7" min="1">
-				  <small>The top fields will appear on the card.</small>
-				</li>
-			  </ul>
-		  </div>
-		  <div class="card-footer">
-			<button class="updateSettings btn btn-primary">Update</button>
-		  </div>
-		</div>
-  </div>
-  <div class="col-12 col-lg-8 pl-3 pr-3 pb-3">
-	<div id='PDFCreate'>
-		<img src='/img/loading.gif' id='creatorFormLoading' />
-		<div class="card" id='creatorForm' style='display: none;' >
-		  <div class="card-header">
-			<h4 class="mb-0">Your fields</h4>
-		  </div>
-		  <div class="card-block">
-			<div id='fields'>
+    <div id='message' class="alert col-12 alert-success"></div>
+    <div id='error' class="alert col-12 alert-danger"></div>
 
-			</div>
-		  </div>
-		  <div class="card-footer">
-			<p>
-				<input type='button' value='Add field' class='addField btn btn-primary' />
-				<input type='button' value='Save' class="save btn btn-primary"/>
-				<input type='button' value='Create card' class="createCard btn btn-primary"/>
-				<input type='button' value='Create profile as document' class="createDoc btn btn-primary"/>
-			</p>
-			<p><a href="/profile?code={{user.code}}">View your personal profile!</a></p>
-		  </div>
-		</div>
-	</div>
-  </div>
+    <div class="col-12 p-3">
+        <h2 class="page-header mb-0">Profile</h2>
+    </div>
+
+    <div class="col-12 col-lg-4 pl-3 pr-3 pb-3">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Settings</h4>
+            </div>
+
+            <div class="card-block">
+                <ul class="form-group list-group list-group-flush">
+                    <li class="list-group-item">
+                        <label for="inputName">Your name</label>
+                        <input type="text" class="form-control" id="inputName" value="{{user.name}}">
+                    </li>
+                    <li class="list-group-item">
+                        <label for="inputEmail">Your e-mail address</label>
+                        <input type="text" class="form-control" id="inputEmail" value="{{user.email}}" disabled>
+                    </li>
+                    <li class="list-group-item">
+                        <label for="inputName">Your profile code</label>
+                        <div class="input-group">
+                            <div class="form-control">{{user.hyphenedCode}}</div>
+                            <a href="/newcode" class="btn btn-danger input-group-addon">Renew</a>
+                        </div>
+                        <span class='small'>Renewing your code will make old references to your profile unusable!</span>
+                    </li>
+                    <li class="list-group-item">
+                        <label for="uploadPicture">Your profile picture</label>
+                        <div class='input-group'>
+                            <span class='input-group-addon'><img id='picturePreview' src="{{user.picture}}" /></span>
+                            <input class='form-control' id='uploadPicture' type="file" name="pic" accept="image/*">
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <label for="inputEmail">Amount of fields on your card</label>
+                        <input type="number" class="form-control" id="inputCardNum" value="{{user.cardNum}}" max="7" min="1">
+                        <small>The top fields will appear on the card.</small>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card-footer">
+                <button class="updateSettings btn btn-primary">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-8 pl-3 pr-3 pb-3">
+        <div id='PDFCreate'>
+            <img src='/img/loading.gif' id='creatorFormLoading' />
+
+            <div class="card" id='creatorForm' style='display: none;'>
+                <div class="card-header">
+                    <h4 class="mb-0">Your fields</h4>
+                </div>
+
+                <div class="card-block">
+                    <div id='fields'>
+
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <p>
+                        <input type='button' value='Add field' class='addField btn btn-primary' />
+                        <input type='button' value='Save' class="save btn btn-primary" />
+                        <input type='button' value='Create card' class="createCard btn btn-primary" />
+                        <input type='button' value='Create profile as document' class="createDoc btn btn-primary" />
+                    </p>
+                    <p><a href="/profile?code={{user.code}}">View your personal profile!</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
     require(['medid/profile']);
+
 </script>

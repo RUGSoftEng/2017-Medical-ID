@@ -5,8 +5,7 @@ var qrcode = require('qrcode-js');
 var sharp = require('sharp');
 var baseURL = 'https://medid.herokuapp.com';
 
-/* Current routes */
-
+/* Retrieves user input from client, stores it. */
 router.post('/fields', function(req, res){
 	if (req.user) {
 		req.user.fields = [];
@@ -17,8 +16,6 @@ router.post('/fields', function(req, res){
 				inprofile: (req.body[i].inprofile ? true : false)
 			})
 		}
-
-		console.log(req.user.fields);
 		User.updateUser(req.user, function(err){
 			if(err) throw err;
 		});
@@ -29,6 +26,7 @@ router.post('/fields', function(req, res){
 	}
 });
 
+/* Returns user fields to client. */
 router.get('/fields', function(req, res) {
 	if (req.user) {
 		res.json(req.user.fields);
@@ -37,6 +35,7 @@ router.get('/fields', function(req, res) {
 	}
 });
 
+/* Returns medid code, including QR-code to client. */
 router.get('/code', function(req, res) {
 	if (req.user) {
 		url = baseURL + '/profile?code=' + req.user.code;

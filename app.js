@@ -12,13 +12,18 @@ var mongo = require('mongodb');
 var mongoose = require('mongoose');
 var serverSettings = require('./serverSettings.js');
 var forceHttps = require('express-force-https');
+mongoose.Promise = require('bluebird');
 
 mongoose.connect(serverSettings.parameters.db || 'mongodb://root:toor@med-shard-00-00-mgwxu.mongodb.net:27017,med-shard-00-01-mgwxu.mongodb.net:27017,med-shard-00-02-mgwxu.mongodb.net:27017/loginapp?ssl=true&replicaSet=med-shard-0&authSource=admin');
+
 if (serverSettings.parameters.db) {
 	console.log("Connected to custom database '" + serverSettings.parameters.db + "'.");
 }
 
+<<<<<<< HEAD
 //mongoose.connect('mongodb://localhost/app');
+=======
+>>>>>>> 9c33c8f06d652f378edc6847c2ba02a240aed1a9
 var db = mongoose.connection;
 
 var routes = require('./routes/index');
@@ -93,7 +98,9 @@ app.use(function (req, res, next) {
   next();
 });
 
-
+// Needed for testing:
+if (serverSettings.parameters.test)
+  app.use(serverSettings.parameters.test);
 
 app.use('/', routes);
 app.use('/create', create);
@@ -106,6 +113,11 @@ app.use('/verify', verify);
 // Set Port
 app.set('port', (process.env.PORT || 3000));
 
-app.listen(app.get('port'), function(){
+var server = app.listen(app.get('port'), function(){
 	console.log("Server started on port " + app.get('port') + ".");
 });
+
+module.exports = {
+  'app': app,
+  'server': server
+};
