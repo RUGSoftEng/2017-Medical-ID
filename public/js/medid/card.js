@@ -125,7 +125,12 @@ define(['jspdf', 'jquery', 'medid/hyphenator', 'medid/res'], function(jsPDF, $, 
 				doc.setTextColor(0,0,0);
 				doc.setFontStyle("bold"); doc.text(150, 50, hyphenator.insertHyphen(code.code)); doc.setFontStyle("normal");
 			} else {
-				doc.addImage(code.qr, 'JPEG', 123, 25, 38, 38);
+				//doc.addImage(code.qr, 'JPEG', 123, 25, 38, 38);
+				doc.setFontSize(10);
+				doc.setFontStyle("bold");
+				doc.setTextColor(0,0,0);
+				doc.text(108, 39, "For a full online profile, please register at");
+				doc.text(126, 42, "medid.herokuapp.com");
 			}
 			callback(doc);
 		})
