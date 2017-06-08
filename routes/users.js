@@ -7,17 +7,13 @@ var algorithm = 'aes256';
 
 var User = require('../models/user');
 
-<<<<<<< HEAD
 var bcrypt = require('bcryptjs');
 var async = require('async');
 var nodemailer = require('nodemailer');
 
-// Login
-=======
 /*Routing related to user account, profile, registering, user code*/
 
 /*Display login page*/
->>>>>>> 9c33c8f06d652f378edc6847c2ba02a240aed1a9
 router.get('/login', function(req, res){
 	res.render('login');
 });
@@ -30,13 +26,8 @@ router.get('/newcode', function(req, res) {
 	}
 });
 
-<<<<<<< HEAD
-// Register User
-router.post("/register", function(req,res,next){
-=======
 /*Register user: send user info to server, store user in database*/
 router.post("/register", function(req,res){
->>>>>>> 9c33c8f06d652f378edc6847c2ba02a240aed1a9
 	var name = req.body.name;
 	var email = req.body.email.toLowerCase();
 	var password = req.body.password;

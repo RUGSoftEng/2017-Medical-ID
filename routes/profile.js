@@ -11,11 +11,7 @@ router.get('/', function(req,res){
 	if(code) {
 		displayProfile(code, req, res);
 	} else {
-<<<<<<< HEAD
-	    req.flash('error_msg', 'Please enter a code');
-=======
 		req.flash('error_msg', 'Please enter a code');
->>>>>>> 9c33c8f06d652f378edc6847c2ba02a240aed1a9
 	    res.redirect('/');
     }
 });

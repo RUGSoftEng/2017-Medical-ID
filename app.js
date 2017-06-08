@@ -20,10 +20,6 @@ if (serverSettings.parameters.db) {
 	console.log("Connected to custom database '" + serverSettings.parameters.db + "'.");
 }
 
-<<<<<<< HEAD
-//mongoose.connect('mongodb://localhost/app');
-=======
->>>>>>> 9c33c8f06d652f378edc6847c2ba02a240aed1a9
 var db = mongoose.connection;
 
 var routes = require('./routes/index');
@@ -32,7 +28,6 @@ var save = require('./routes/save');
 var profile = require('./routes/profile');
 var forgot = require('./routes/forgot');
 var verify = require('./routes/verify');
-
 
 // Init App
 var app = express();
@@ -108,7 +103,6 @@ app.use('/save', save);
 app.use('/profile', profile);
 app.use('/forgot', forgot);
 app.use('/verify', verify);
-
 
 // Set Port
 app.set('port', (process.env.PORT || 3000));
