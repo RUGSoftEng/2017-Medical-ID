@@ -18,7 +18,6 @@ router.post('/fields', function(req, res){
 		}
 		req.user.fields = fields;
 		req.user.cardNum = req.body.cardNum;
-		console.log(req.user.fields);
 		User.updateUser(req.user, function(err){
 			if(err) throw err;
 		});

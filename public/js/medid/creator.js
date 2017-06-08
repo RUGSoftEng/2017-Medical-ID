@@ -25,6 +25,10 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
             containment: "parent",
             update: function(event, ui) {
               creator.cardNum = creator.seperator.prevAll().length;
+              if (creator.cardNum > 7) {
+              	$('#fields .fieldBox:nth-child(7)').after(creator.seperator);
+              	creator.cardNum = 7;
+              }
               creator.colorCardFields();
               creator.saveFields();
             }

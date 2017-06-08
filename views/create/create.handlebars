@@ -40,9 +40,7 @@
                 </ul>
             </div>
 
-            <div class="card-footer">
-                <button class="updateSettings btn btn-primary">Update</button>
-            </div>
+            <div class="card-footer"></div>
         </div>
     </div>
 
@@ -53,15 +51,25 @@
             <div class="card" id='creatorForm' style='display: none;'>
                 <div class="card-header">
                     <h4 class="mb-0">Your fields</h4>
+                    <small>
+                    Use drag-and-drop to modify your set-up of fields.<br />
+                	Private fields will never appear in your profile, but may appear on your card.
+                	</small>
                 </div>
 
                 <div class="card-block">
                     <div class='card fieldSeperator'>
-						<div class='card-header'><h5>Fields on the card:</h5></div>
+						<div class='card-header'>
+							<h5>Fields on the card:</h5>
+							<small>Select up to 7 fields.</small>
+						</div>
 					</div>
                     <div id='fields'>
 						<div id='seperator' class='fieldSeperator card'>
-							<div class='card-header'><h5>Fields not on the card:</h5></div>
+							<div class='card-header'>
+								<h5>Fields not on the card:</h5>
+								<small>Unlimited.</small>
+							</div>
 						</div>
                     </div>
                 </div>
