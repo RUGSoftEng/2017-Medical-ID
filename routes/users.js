@@ -103,11 +103,7 @@ router.post("/register", function(req,res, next){
 			  });
 			  req.flash('success_msg', 'A verification e-mail has been sent to you');
 			}
-		  ], function(err) {
-			if (err) return next(err);
-			res.redirect('/forgot');
-			req.flash('error_msg', 'Error');
-		  });
+		  ]);
 	}
 });
 
