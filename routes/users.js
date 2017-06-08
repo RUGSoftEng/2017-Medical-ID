@@ -27,12 +27,11 @@ router.get('/newcode', function(req, res) {
 });
 
 /*Register user: send user info to server, store user in database*/
-router.post("/register", function(req,res){
+router.post("/register", function(req,res, next){
 	var name = req.body.name;
 	var email = req.body.email.toLowerCase();
 	var password = req.body.password;
 	var password2 = req.body.password2;
-
 	validateRegisterDetails(req);
 
 	var errors = req.validationErrors();
@@ -45,7 +44,7 @@ router.post("/register", function(req,res){
 			email: email,
 			password: password,
 			code: genCode(),
-			verified: new Boolean(false),
+			verified: false,
 			cardNum: 7,
 			picture: "img/placeholder.png",
 			fields: [
@@ -57,6 +56,7 @@ router.post("/register", function(req,res){
 			]
 		});
 		createUser(req, res, newUser);
+		console.log(newUser.email+' created');
 		
 		// send new user an email to verify their email address
 		async.waterfall([
@@ -91,8 +91,9 @@ router.post("/register", function(req,res){
 				from: 'passwordreset@medid.herokuapp.com',
 				subject: 'Node.js Verify email',
 				text: 'You are receiving this email because you (or someone else) need to verify the email adress used for your account.\n\n' +
-				  'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-				   'http://'+req.headers.host + '/verify/' + token + '\n\n' +
+				  'To verify your account please click on the <a href="http://'+req.headers.host + '/verify/' + token +'">link</a>' + '\n\n' +			
+					'If the link does not work paste the token:\n'
+					+ token+ '\n\n'+
 				  'If you did not request this, please ignore this email and this email adress will not be verified.\n'
 			  };
 			  

@@ -21,18 +21,23 @@ router.get('/:token', function(req, res) {
     }
 
     user.verified = true;
-    console.log(user.email + ' is verified? '+user.verified);
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
-    req.flash('Email verified');
-    return res.redirect('/create');
+	user.save(function(err) {
+         if(err){
+			res.send(err);		
+		}
+		console.log('from get(/:token) '+user.email + ' is verified: '+user.verified);
+    	user.resetPasswordToken = undefined;
+    	user.resetPasswordExpires = undefined;
+    	req.flash('Email verified');
+		res.redirect('/create');
+    });
   });
 });
 
 router.post('/', function(req, res) {
   async.waterfall([
     function(done) {
-      User.findOne({ resetPasswordToken: req.params.token}, function(err, user) {
+      User.findOne({ resetPasswordToken: req.body.token}, function(err, user) {
         if (!user){
           req.flash('error', 'POST: Password reset token is invalid.');
           console.log('ERROR token '+req.params.token+' was not found')
@@ -68,7 +73,7 @@ router.post('/', function(req, res) {
       var mailOptions = {
         to: user.email,
         from: 'noreply@medid.com',
-        subject: 'Your password has been changed',
+        subject: 'Your Account has been verified',
         text: 'Hello,\n\n' +
           'This is a confirmation that your account ' + user.email + ' has just been verified.\n'
       };
