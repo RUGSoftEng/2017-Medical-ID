@@ -11,10 +11,11 @@ router.get('/', function(req, res){
 			console.log('Profile: User ' + req.user.email + ' verified: '+req.user.verified)
 		}else {
 			req.user.hyphenedCode = insertHyphen(req.user.code);
-			res.render('create/create');
+		  res.render('create/create', {page: "Profile"});
 		}
 	} else {
-		res.render('create/guestcreate');
+		req.page = "Create";
+		res.render('create/guestcreate', {page: "Create"});
 	}
 });
 
@@ -23,7 +24,6 @@ router.post('/settings', function(req, res) {
 	if (req.user) {
 		/* We need input checking here as well */
 		req.user.name = req.body.name;
-		req.user.cardNum = Math.min(Math.max(req.body.cardNum, 1), 7);
 		req.user.picture = req.body.picture;
 		User.updateUser(req.user, function(err) {
 			if (err) {

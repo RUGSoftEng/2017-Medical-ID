@@ -15,7 +15,7 @@ var nodemailer = require('nodemailer');
 
 /*Display login page*/
 router.get('/login', function(req, res){
-	res.render('login');
+	res.render('login', {page: "Login"});
 });
 
 /*Renew code linked to profile*/
@@ -35,7 +35,7 @@ router.post("/register", function(req,res, next){
 	validateRegisterDetails(req);
 
 	var errors = req.validationErrors();
-	
+
 	if(errors){
 		res.render('login',{ errors: errors });
 	} else {
@@ -56,54 +56,6 @@ router.post("/register", function(req,res, next){
 			]
 		});
 		createUser(req, res, newUser);
-		console.log(newUser.email+' created');
-		
-		// send new user an email to verify their email address
-		async.waterfall([
-			function(done) {
-			  crypto.randomBytes(20, function(err, buf) {
-			//Generate our reset token	
-				var token = buf.toString('hex');
-				done(err, token);
-			  });
-			},
-			//Find user with email, save token value and expiry time:
-			function(token, done) {
-				newUser.resetPasswordToken = token;
-				newUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-
-				newUser.save(function(err) {
-				  done(err, token, newUser);
-				});
-			},
-			//Logs in to gmail via nodemailer using SMTP and sends the email containing the reset token
-			//TODO: use a configuration file (added to .gitignore) and add the file to the server manually. 
-			function(token, newUser, done) {
-			  var transporter = nodemailer.createTransport({
-				service: 'Gmail',
-				auth: {
-					user: 'medicalid17@gmail.com',
-					pass: 'enterpasswordhere'
-				}
-				});
-			  var mailOptions = {
-				to: newUser.email,
-				from: 'passwordreset@medid.herokuapp.com',
-				subject: 'Node.js Verify email',
-				text: 'You are receiving this email because you (or someone else) need to verify the email adress used for your account.\n\n' +
-				  'To verify your account please click on the <a href="http://'+req.headers.host + '/verify/' + token +'">link</a>' + '\n\n' +			
-					'If the link does not work paste the token:\n'
-					+ token+ '\n\n'+
-				  'If you did not request this, please ignore this email and this email adress will not be verified.\n'
-			  };
-			  
-			  transporter.sendMail(mailOptions, function(err) {
-				req.flash('info', 'An e-mail has been sent to ' + newUser.email + ' with further instructions.');
-				done(err, 'done');
-			  });
-			  req.flash('success_msg', 'A verification e-mail has been sent to you');
-			}
-		  ]);
 	}
 });
 
@@ -122,7 +74,7 @@ passport.use(new LocalStrategy({passReqToCallback: true},
    User.getUserByEmail(email.toLowerCase(), function(err, user){
    	if(err) throw err;
    	if(!user){
-   		return done(null, false, req.flash('error_msg', 'Unknown user'));
+   		return done(null, false, req.flash('error_msg', 'Login failed: invalid username/password.'));
    	}
 
    	User.comparePassword(password, user.password, function(err, isMatch){
@@ -130,7 +82,7 @@ passport.use(new LocalStrategy({passReqToCallback: true},
    		if(isMatch){
    			return done(null, user);
    		} else {
-   			return done(null, false, req.flash('error_msg', 'Invalid password'));
+   			return done(null, false, req.flash('error_msg', 'Login failed: invalid username/password.'));
    		}
    	});
    });
@@ -173,16 +125,61 @@ function createUser(req, res, newUser){
 		if (err && err.errors) {
 			if (err.errors.email && err.errors.email.kind == 'unique') {
 				req.flash('error_msg', 'Email address is already in use');
-			} else if (err.errors.code && err.errors.email.kind == 'unique') {
+				res.redirect('/login');
+			} else if (err.errors.code && err.errors.code.kind == 'unique') {
 				newUser.code = genCode();
 				createUser(req, res, newUser);
 			} else {
 				throw err;
 			}
 		} else {
-			req.flash('success_msg', 'You are registered and can now login');
+			// send new user an email to verify their email address
+			async.waterfall([
+				function(done) {
+				crypto.randomBytes(20, function(err, buf) {
+				//Generate our reset token	
+				var token = buf.toString('hex');
+				done(err, token);
+			  });
+			},
+			//Find user with email, save token value and expiry time:
+			function(token, done) {
+				newUser.resetPasswordToken = token;
+				newUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+				newUser.save(function(err) {
+				  done(err, token, newUser);
+				});
+			},
+			//Logs in to gmail via nodemailer using SMTP and sends the email containing the reset token
+			//TODO: use a configuration file (added to .gitignore) and add the file to the server manually. 
+			function(token, newUser, done) {
+			  var transporter = nodemailer.createTransport({
+				service: 'Gmail',
+				auth: {
+					user: 'medicalid17@gmail.com',
+					pass: 'enterpasswordhere'
+				}
+				});
+			  var mailOptions = {
+				to: newUser.email,
+				from: 'passwordreset@medid.herokuapp.com',
+				subject: 'Node.js Verify email',
+				text: 'You are receiving this email because you (or someone else) need to verify the email adress used for your account.\n\n' +
+				  'To verify your account please click on the <a href="http://'+req.headers.host + '/verify/' + token +'">link</a>' + '\n\n' +			
+					'If the link does not work paste the token:\n'
+					+ token+ '\n\n'+
+				  'If you did not request this, please ignore this email and this email adress will not be verified.\n'
+			  };
+			  
+			  transporter.sendMail(mailOptions, function(err) {
+				done(err, 'done');
+			  });
+			  req.flash('success_msg', 'A verification e-mail has been sent to you');
+			  res.redirect('/login');
+			}
+		  ]);
 		}
-		res.redirect('/login');
 	});
 }
 
