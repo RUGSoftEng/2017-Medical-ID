@@ -14,8 +14,8 @@ router.get('/FAQ', function (req, res){
 	res.render('FAQ');
 });
 
-router.get('/copyright', function (req, res){
-	res.render('copyright');
+router.get('/terms', function (req, res){
+	res.render('terms');
 });
 
 router.get('/contact', function (req, res){
