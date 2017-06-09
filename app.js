@@ -12,9 +12,10 @@ var mongo = require('mongodb');
 var mongoose = require('mongoose');
 var serverSettings = require('./serverSettings.js');
 var forceHttps = require('express-force-https');
+var config = require('./config')
 mongoose.Promise = require('bluebird');
 
-mongoose.connect(serverSettings.parameters.db || 'mongodb://root:toor@med-shard-00-00-mgwxu.mongodb.net:27017,med-shard-00-01-mgwxu.mongodb.net:27017,med-shard-00-02-mgwxu.mongodb.net:27017/loginapp?ssl=true&replicaSet=med-shard-0&authSource=admin');
+mongoose.connect(serverSettings.parameters.db || 'mongodb://'+config.mdbU+':'+config.mdbP+'@med-shard-00-00-mgwxu.mongodb.net:27017,med-shard-00-01-mgwxu.mongodb.net:27017,med-shard-00-02-mgwxu.mongodb.net:27017/loginapp?ssl=true&replicaSet=med-shard-0&authSource=admin');
 
 if (serverSettings.parameters.db) {
 	console.log("Connected to custom database '" + serverSettings.parameters.db + "'.");
