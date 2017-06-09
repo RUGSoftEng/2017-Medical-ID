@@ -50,7 +50,7 @@ var Creator = {
     * @member {string}
     */
     saveEndpoint: "",
-
+  
     /**
      * Boolean on whether the fields should be saved.
      * @member {string}
