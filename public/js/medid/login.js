@@ -8,17 +8,6 @@ define(['jquery'], function($) {
   var passwordstrength = {
     strengthbox: $('.pass-strength')
   };
-  
-  /**
-   * Method to update the styling of the password strength box.
-   * @param {String} text - The text to be set
-   * @param {String} bgcolor - The background color to be set
-   * @param {String} textcolor - The text color to be set
-   */
-  passwordstrength.updateStyling = function(text, bgcolor, textcolor){
- 	passwordstrength.strengthbox.text(text);
-	passwordstrength.strengthbox.css({'background-color': bgcolor,'color': textcolor});
-  }
 
   /**
    * Method to decide what the password strength box should show. Based on the content of the given password
@@ -39,11 +28,15 @@ define(['jquery'], function($) {
 	
 	// Depending on the count variable, assign different 
 	if(string.length < 8 || count <= 1){
-		passwordstrength.updateStyling('Weak', 'red', 'white');
+		passwordstrength.strengthbox.css("background-color", "#ff6666");
+        $(".strength-text").text("Weak");
 	}else if(count == 2){
-		passwordstrength.updateStyling('Fair', 'yellow', 'black');
+		passwordstrength.strengthbox.css("background-color", "#ffff66");
+        $(".strength-text").text("Fair");
+        
 	} else {
-		passwordstrength.updateStyling('Strong', 'green', 'white');
+		passwordstrength.strengthbox.css("background-color", "#66ff66");
+        $(".strength-text").text("Strong");
 	}
   }
 

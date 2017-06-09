@@ -56,8 +56,8 @@
                         <label for="password" class="cols-sm-2 control-label">Password</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                                <input type="password" class="form-control" name="password" id="password" placeholder="Enter your password" />
+                                <span class="input-group-addon" data-toggle="tooltip" title="A strong password contains at least 8 characters, 1 number, 1 capital letter and 1 symbol"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                <input type="password" class="form-control pass-strength" name="password" id="password" placeholder="Enter your password" />
                             </div>
                         </div>
                     </div>
@@ -69,9 +69,9 @@
                                 <input type="password" class="form-control" name="password2" id="password2" placeholder="Confirm your password" />
                             </div>
                         </div>
+                        <small>Strength: <span class="strength-text"></span></small>
                     </div>
 
-                    <div class="pass-strength">Weak</div>
                     <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
                 </form>
 
@@ -81,5 +81,7 @@
 </div>
 <script>
     require(['medid/login']);
-
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>
