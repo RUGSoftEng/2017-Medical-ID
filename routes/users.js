@@ -134,9 +134,9 @@ router.post('/delete', function(req, res){
    			});
    		} else {
    			req.flash('error_msg', 'Wrong password, try again.');
-   			res.redirect('/login');
+   			res.redirect('/create');
    		}
-   	});	
+   	});
 });
 
 function genCode() {
@@ -165,7 +165,7 @@ function createUser(req, res, newUser){
 			async.waterfall([
 				function(done) {
 				crypto.randomBytes(20, function(err, buf) {
-				//Generate our reset token	
+				//Generate our reset token
 				var token = buf.toString('hex');
 				done(err, token);
 			  });
@@ -180,7 +180,7 @@ function createUser(req, res, newUser){
 				});
 			},
 			//Logs in to gmail via nodemailer using SMTP and sends the email containing the reset token
-			//TODO: use a configuration file (added to .gitignore) and add the file to the server manually. 
+			//TODO: use a configuration file (added to .gitignore) and add the file to the server manually.
 			function(token, newUser, done) {
 			  var transporter = nodemailer.createTransport({
 				service: 'Gmail',
@@ -194,12 +194,12 @@ function createUser(req, res, newUser){
 				from: 'passwordreset@medid.herokuapp.com',
 				subject: 'Node.js Verify email',
 				text: 'You are receiving this email because you (or someone else) need to verify the email adress used for your account.\n\n' +
-				  'To verify your account please click on the <a href="http://'+req.headers.host + '/verify/' + token +'">link</a>' + '\n\n' +			
+				  'To verify your account please click on the <a href="http://'+req.headers.host + '/verify/' + token +'">link</a>' + '\n\n' +
 					'If the link does not work paste the token:\n'
 					+ token+ '\n\n'+
 				  'If you did not request this, please ignore this email and this email adress will not be verified.\n'
 			  };
-			  
+
 			  transporter.sendMail(mailOptions, function(err) {
 				done(err, 'done');
 			  });

@@ -37,6 +37,18 @@ var Settings = {
   picturePreview: $('#picturePreview'),
 
   /**
+   * Reference to the delete account button.
+   * @member {Object}
+   */
+  removeButton: $('#removeAccount'),
+
+  /**
+   * Reference to the delete account form.
+   * @member {Object}
+   */
+  removeForm: $('#removeForm'),
+
+  /**
    * Limit for pictures to be uploaded in bytes.
    * @member {number}
    */
@@ -127,3 +139,15 @@ Settings.pictureInput.on('change', function() {
     $(this).val(null);
   }
 });
+
+Settings.removeButton.on('click', function() {
+  if (Settings.removeForm.is(':visible')) {
+    Settings.removeForm.slideUp();
+    Settings.removeButton.removeClass('btn-secondary');
+    Settings.removeButton.addClass('btn-danger');
+  } else {
+    Settings.removeForm.slideDown();
+    Settings.removeButton.addClass('btn-secondary');
+    Settings.removeButton.removeClass('btn-danger');
+  }
+})
