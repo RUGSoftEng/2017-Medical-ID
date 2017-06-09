@@ -13,7 +13,11 @@
     {{creator}}
 
     <nav class="navbar navbar-toggleable navbar-inverse bg-inverse">
+        {{#if page}}
+        <span class="navbar-brand unselectable">Medical ID | {{page}}</span>
+        {{else}}
         <span class="navbar-brand unselectable">Medical ID</span>
+        {{/if}}
 
         <button type="button" class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#myNavbar">
 				<span class="navbar-toggler-icon"></span>
