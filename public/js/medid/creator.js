@@ -12,7 +12,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     * @requires document
     */
     var creator = {
-        
+
         /**
         * The DIV element containing all the fields of the creator form.
         * The element is set to sortable to allow reordering of fields through drag and drop.
@@ -22,8 +22,23 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
             axis: "y",
             cursor: "move",
             tolerance: "pointer",
-            containment: "parent"
+            containment: "parent",
+            update: function(event, ui) {
+              creator.cardNum = creator.seperator.prevAll().length;
+              if (creator.cardNum > 7) {
+              	$('#fields .fieldBox:nth-child(7)').after(creator.seperator);
+              	creator.cardNum = 7;
+              }
+              creator.colorCardFields();
+              creator.saveFields();
+            }
         }),
+
+        /**
+         * The seperator element.
+         * @member {Object}
+         */
+        seperator: $('#seperator'),
 
         /**
         * Used to possibly store the user's name to use explicitly.
@@ -36,6 +51,12 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
         * @member {string}
         */
         saveEndpoint: "",
+
+        /**
+         * Boolean on whether the fields should be saved.
+         * @member {string}
+         */
+        saveEnabled: false,
 
         /**
         * The element to display messages in.
@@ -72,44 +93,44 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
         * @member {number}
         */
         cardFieldSize: MIDcard.fieldSize,
-        
+
         /**
         * The amount of rows selected for the card. Ranges from 1 to 7.
         * @member {number}
         */
         cardNum: null,
-        
+
         /**
         * The element containing the user's name.
         * @member {Object}
         */
         name: null,
-        
+
         /**
         * The picture object to retrieve (via the src attribute) the profile picture from.
         * @member {Object}
         */
         picture: null,
-        
+
         /**
         * The image data of the profile picture.
         * @member {String}
         */
         image: null,
-        
+
         /**
         * The base width of the profile picture as it relates to the height (imageHeight).
         * @member {number}
         */
         imageWidth: 0,
-        
+
         /**
         * The base height of the profile picture as it relates to the width (imageWidth).
         * @member {number}
         */
         imageHeight: 0
     }
-    
+
     /**
     * Retrieval method for the field data.
     * Also retrieves the picture.
@@ -118,17 +139,15 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     creator.fields = function () {
         var fields = [];
         var label, field;
-        
-        creator.list.children('div.fieldBox').each(function () {
+
+        creator.list.children('.fieldBox').each(function () {
             label = $(this).find('.medid-label');
             field = $(this).find('.medid-field');
             inprofile = $(this).find('.toggle').find('.btn-success').is(':visible');
 
             fields.push({label: label.val(), field: field.val(), inprofile: inprofile});
         });
-
-        creator.userName = creator.name.val();
-    
+        creator.userName = creator.name.val() || "";
         if (creator.picture.attr('src') != 'img/placeholder.png') {
             creator.image = creator.picture.attr('src');
             creator.imageWidth = creator.picture.width();
@@ -151,17 +170,17 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
                         .attr('maxlength', creator.labelSize)
                         .attr('type', 'text')
                         .val(label);
-        
+
         colon =         $('<span></span>')
                         .addClass('input-group-addon')
                         .html(' ');
-        
+
         inputField =    $('<input></input>')
                         .addClass('medid-field form-control')
                         .attr('maxlength', creator.fieldSize)
                         .attr('type', 'text')
                         .val(field);
-        
+
         inputGroup =    $('<div></div>')
                         .addClass('input-group')
                         .append([inputLabel, colon, inputField]);
@@ -169,15 +188,15 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
         removeField =   $('<button></button>')
                         .addClass('removeField btn btn-danger')
                         .html("<svg class='icon-bin'><use xlink:href='/img/icons.svg#icon-bin'></use></svg>");
-        
+
         moveUp =        $('<span></span>')
                         .addClass('clickable moveUp')
                         .html("<svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-up'></use></svg>");
-    
+
         moveDown =      $('<span></span>')
                         .addClass('clickable moveDown')
                         .html("<svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-down'></use></svg>");
-                
+
         toggle =        $('<div></div>')
                         .addClass('toggle')
                         .attr('data-toggle', 'buttons')
@@ -201,7 +220,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
                             )
                             .append('private')
                         );
-        
+
         operations =    $('<div></div>')
                         .addClass('row')
                         .addClass('justify-content-around')
@@ -213,7 +232,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
                             .append(moveUp)
                             .append(moveDown)
                         );
-        
+
         field =         $('<div></div>')
                         .addClass('fieldBox card')
                         .append(
@@ -230,11 +249,16 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
                                 .append(operations)
                             )
                         );
-        
+
+        toggle.on('click', function() {
+            creator.saveFields();
+        });
+
         // Remove the field
         removeField.on('click', function() {
             $(this).parent().parent().parent().parent().remove();
             creator.colorCardFields();
+            creator.saveFields();
         });
 
         // Move the field
@@ -242,21 +266,23 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
             row = $(this).parent().parent().parent().parent().parent();
             row.prev().before(row);
             creator.colorCardFields();
+            creator.saveFields();
         });
 
         moveDown.on('click', function() {
             row = $(this).parent().parent().parent().parent().parent();
             row.before(row.next());
             creator.colorCardFields();
+            creator.saveFields();
         });
 
         // Keep track of the input lengths
         inputLabel.on('change', function() {
             colon = $(this).next();
-            
+
             if ($(this).val().length > creator.cardLabelSize) {
                 $(this).addClass('red-border');
-                
+
                 if (colon.html() == ' ') {
                     colon
                     .addClass('warning-block')
@@ -264,21 +290,23 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
                 }
             } else {
                 $(this).removeClass('red-border');
-                
+
                 if (colon.html() != ' ') {
                     colon
                     .removeClass('warning-block')
                     .html(' ');
                 }
             }
+
+            creator.saveFields();
         });
 
         inputField.on('change', function() {
             colon = $(this).prev();
-    
+
             if ($(this).val().length > creator.cardFieldSize) {
                 $(this).addClass('red-border');
-    
+
                 if (colon.html() == ' ') {
                     colon
                     .addClass('warning-block')
@@ -286,17 +314,23 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
                 }
             } else {
                 $(this).removeClass('red-border');
-                
+
                 if (colon.html() != ' ') {
                     colon
                     .removeClass('warning-block')
                     .html(' ');
                 }
             }
+
+            creator.saveFields();
         });
 
         // Add row to creator
-        this.list.append(field);
+        if (creator.list.children().length - 1 < creator.cardNum) {
+          field.insertBefore(creator.seperator);
+        } else {
+          creator.list.append(field);
+        }
 
         // Updating coloring may be necesarry
         creator.colorCardFields();
@@ -307,22 +341,15 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     * @param {Settings} settings - The settings object.
     */
     creator.settings = function (settings) {
-        creator.cardNum = settings.cardNumInput.val();
         creator.picture = settings.picturePreview;
         creator.name = settings.nameInput;
-        
+
         if (creator.picture.attr('src') != 'img/placeholder.png') {
             creator.image = creator.picture.attr('src');
         }
 
         settings.showError = creator.showError;
         settings.showMessage = creator.showMessage;
-
-        // Listeners
-        settings.cardNumInput.on('input', function() {
-            creator.cardNum = $(this).val();
-            creator.colorCardFields();
-        });
     }
 
     /**
@@ -333,7 +360,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
         creator.message.hide();
         creator.message.text(text);
         creator.message.slideDown();
-    
+
         setTimeout(function () {
             creator.message.slideUp(function () {
                 creator.message.val("");
@@ -349,7 +376,7 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
         creator.error.hide();
         creator.error.text(text);
         creator.error.slideDown();
-    
+
         setTimeout(function () {
             creator.error.slideUp(function () {
                 creator.error.val("");
@@ -362,26 +389,28 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     * This amount of rows is read from the cardNum variable, and has to be updated seperately from input.
     */
     creator.colorCardFields = function() {
-        creator.list.children().css("background", "#ABC");
-        creator.list.children().slice(0,creator.cardNum ).css("background", "#ACA");
+        creator.list.children(".fieldBox").css("background", "#ABC");
+        creator.seperator.prevAll(".fieldBox").css("background", "#ACA");
     }
 
     /**
     * Store the field data on the server.
     */
     creator.saveFields = function () {
-        $.ajax({
-            type: 'POST',
-            data: JSON.stringify(creator.fields()),
-            contentType: 'application/json',
-            enctype: 'multipart/form-data',
-            url: creator.saveEndpoint,
-            success: function(data) {
-                if (data.status == "success") {
-                    creator.showMessage("Data successfully stored.");
-                }
-            }
-        });
+        if (creator.saveEnabled) {
+          $.ajax({
+              type: 'POST',
+              data: JSON.stringify({fields: creator.fields(), cardNum: creator.seperator.prevAll().length}),
+              contentType: 'application/json',
+              enctype: 'multipart/form-data',
+              url: creator.saveEndpoint,
+              success: function(data) {
+                  if (data.status == "success") {
+                      // creator.showMessage("Data successfully stored.");
+                  }
+              }
+          });
+        }
     }
 
     // LISTENERS
@@ -421,23 +450,25 @@ define(['jquery', 'medid/card', 'medid/document'], function($, MIDcard, MIDdocum
     */
     creator.init = function () {
         if (creator.saveEndpoint == "") {
-            console.log("Error: no endpoint found for saving this document!")
+            console.log("Error: no endpoint found for saving this document!");
         } else {
             $.getJSON(creator.saveEndpoint, function(data) {
-                for (i = 0; i < data.length; i++) {
-                    creator.addField(data[i].label, data[i].field, data[i].inprofile);
+                fields = data.fields;
+                creator.cardNum = data.cardNum;
+                for (i = 0; i < fields.length; i++) {
+                    creator.addField(fields[i].label, fields[i].field, fields[i].inprofile);
                 }
-                
+
                 creator.colorCardFields();
-    
+
                 /* Only show the form once it is loaded */
-    
+
                 $('#creatorFormLoading').fadeOut(function () {
                     $('#creatorForm').slideDown();
                     $('.longloadErr').remove();
                 });
             });
-            
+
             setTimeout(function() {
                 if ($('#creatorFormLoading').is(":visible")) {
                     $('#creatorFormLoading').after("<p class='longloadErr' id='error_msg'>Things seem to take a bit long. Try refreshing.</p>");

@@ -5,6 +5,7 @@ var async = require('async');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var User = require('../models/user');
+var config = require('../config')
 
 // Get Homepage
 router.get('/', function(req, res){
@@ -56,10 +57,10 @@ router.post('/', function(req, res, next) {
     //TODO: use a configuration file (added to .gitignore) and add the file to the server manually. 
     function(token, user, done) {
       var transporter = nodemailer.createTransport({
-        service: 'Gmail',
+        service: config.service,
         auth: {
-            user: 'medicalid17@gmail.com',
-            pass: 'enterpasswordhere'
+            user: config.username,
+            pass: config.password
         }
         });
       var mailOptions = {
@@ -121,8 +122,8 @@ router.post('/reset/:token', function(req, res) {
       var smtpTransport = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
-            user: 'medicalid17@gmail.com',
-            pass: 'enterpasswordhere'
+            user: config.username,
+            pass: config.password
         }
         });
       var mailOptions = {

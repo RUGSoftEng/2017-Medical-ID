@@ -1,7 +1,7 @@
-[
+{"fields": [
   {"label": "Name", "field": "", "inprofile": true},
   {"label": "Date of Birth", "field": "", "inprofile": true},
   {"label": "Blood type", "field": "", "inprofile": true},
   {"label": "Donor", "field": "", "inprofile": true},
   {"label": "Insurance", "field": "", "inprofile": true}
-]
+], "cardNum": 5}
