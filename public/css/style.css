@@ -5,19 +5,28 @@ html,body {
     min-height: 100vh;
 }
 
-.bigButtonCell {
+.navbar-brand a {
+	color: white;
+}
+
+.navbar-brand a:hover {
+	text-decoration: none;
+}
+
+a.bigButtonCell {
     background-color: hsl(221, 61%, 50%);
     width: 75%;
     margin: 0 auto;
     padding: 15px 0;
     border-radius: 15px;
     border: thin solid hsl(221, 61%, 25%);
-}
-
-.bigButtonCell a {
     text-decoration: none;
     color: white;
     font-size: 2em;
+}
+
+a.bigButtonCell:hover {
+  text-decoration: none;
 }
 
 .main-page-col {
@@ -77,6 +86,10 @@ h2.page-header {
   background-color: #ABC;
 }
 
+.fieldSeperator {
+  margin: 5px;
+}
+
 .card-block {
   margin: 0px;
   padding: 0px;
@@ -131,6 +144,10 @@ h2.page-header {
 .header {
     padding-bottom: 1rem;
     border-bottom: thin solid black;
+}
+
+#footer .navbar-nav{
+  flex-direction: row;
 }
 
 /* HELPER CLASSES */
@@ -202,4 +219,9 @@ h2.page-header {
 }
 .btn.active span:last-child  {
 	display: none;
+}
+
+.alert {
+  position: absolute;
+  z-index: 1;
 }

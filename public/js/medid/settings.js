@@ -27,12 +27,6 @@ define(['jquery'], function($) {
     nameInput: $('#inputName'),
 
     /**
-     * Reference to the input location for the 'cardNum' setting.
-     * @member {Object}
-     */
-    cardNumInput: $('#inputCardNum'),
-
-    /**
      * Reference to the input location of the profile picture.
      * @member {Object}
      */
@@ -73,7 +67,6 @@ define(['jquery'], function($) {
    */
   settings.collectSettings = function() {
     settings.values.name = settings.nameInput.val();
-    settings.values.cardNum = settings.cardNumInput.val();
     settings.values.picture = settings.picturePreview.attr('src');
   }
 
@@ -115,7 +108,7 @@ define(['jquery'], function($) {
   }
 
   // LISTENERS
-  $('.updateSettings').on('click', function() {
+  settings.nameInput.on('change', function() {
     settings.updateSettings();
   });
 
@@ -128,6 +121,7 @@ define(['jquery'], function($) {
         data = e.target.result;
         settings.values.picture = data;
         settings.picturePreview.attr('src', settings.values.picture);
+        settings.updateSettings();
       }
       reader.readAsDataURL(file);
     } else {

@@ -21,11 +21,6 @@
                             <input class='form-control' id='uploadPicture' type="file" name="pic" accept="image/*">
                         </div>
                     </li>
-                    <li class="list-group-item">
-                        <label for="inputEmail">Amount of fields on your card</label>
-                        <input type="number" class="form-control" id="inputCardNum" value="7" max="7" min="1">
-                        <small>The top fields will appear on the card.</small>
-                    </li>
                 </ul>
             </div>
 
@@ -43,8 +38,13 @@
                 </div>
 
                 <div class="card-block">
+                    <div class='card fieldSeperator'>
+						<div class='card-header'><h5>Fields on the card:</h5></div>
+					</div>
                     <div id='fields'>
-
+						<div id='seperator' class='fieldSeperator card'>
+							<div class='card-header'><h5>Fields not on the card:</h5></div>
+						</div>
                     </div>
                 </div>
 
@@ -55,13 +55,12 @@
                         <input type='button' value='Create document' class="createDoc btn btn-primary" />
                         <span id='message'></span>
                     </p>
-                    <p>To save your settings, please <a href='/users/register'>register</a> as a user.</p>
+                    <p>To save your settings, please <a href='/login'>register</a> as a user.</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script>
-    require(['medid/profile']);
-
+    require(['medid/create']);
 </script>
