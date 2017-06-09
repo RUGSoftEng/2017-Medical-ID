@@ -10,7 +10,11 @@ router.get('/', function(req, res){
 		res.render('create/create', {page: "Profile"});
 	} else {
 		req.page = "Create";
-		res.render('create/guestcreate', {page: "Create"});
+		res.render('create/guestcreate', {
+			page: "Create",
+			include: {
+				js: ['lib/jquery-ui.min', 'lib/jquery.ui.touch-punch', 'medid/util', 'medid/res', 'medid/hyphenator', 'lib/jspdf.min', 'lib/pdfmake.min', 'lib/vfs_fonts', 'medid/document', 'medid/card', 'medid/creator', 'medid/settings', 'medid/guestcreate']
+			}});
 	}
 });
 

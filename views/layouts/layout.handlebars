@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <script src='/js/lib/tether.min.js'></script>
-    <script data-main='/js/common.js' src='/js/lib/require.js'></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
@@ -48,6 +47,9 @@
 
     <script src='/js/lib/jquery.min.js'></script>
     <script src='/js/lib/bootstrap.min.js'></script>
+    {{#each include.js}}
+    <script src='/js/{{this}}.js'></script>
+    {{/each}}
 </body>
 
 </html>
