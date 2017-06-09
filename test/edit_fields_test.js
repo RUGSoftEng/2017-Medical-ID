@@ -58,8 +58,8 @@ function getFields(callback){
 		    method: "GET",
 		    json: true
 		}, function (error, response, body){
-			stripId(body);
-			callback(null, body);
+			stripId(body.fields);
+			callback(null, body.fields);
 		}
 	);
 }
@@ -72,7 +72,7 @@ function editFields(fields, callback)
     		jar: cookieJar,
 		    method: "POST",
 		    json: true,
-		    body: editedFields
+		    body: {fields: editedFields}
 		},
 		callback
 	);
