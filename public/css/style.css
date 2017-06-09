@@ -155,6 +155,10 @@ h2.page-header {
     border-bottom: thin solid black;
 }
 
+#footer .navbar-nav{
+  flex-direction: row;
+}
+
 /* HELPER CLASSES */
 [class^="icon-"], [class*=" icon-"] {
     height: 18px;
