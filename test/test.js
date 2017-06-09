@@ -34,11 +34,12 @@ var register_tests = require('./register_test');
 var login_tests = require('./login_test');
 var edit_fields_tests = require('./edit_fields_test');
 var change_code_tests = require('./change_code_test');
+var delete_tests = require('./delete_test');
 
 // prepare cleanup, pass the exact number of tests (callbacks to wait on) as the first argument;
 // require cleanup.js in the test files and call tryCleanup on it in every test before asserting
-cleanup.init(11, function(){
-	console.log('cleanup');
+cleanup.init(14, function(){
+	console.log('Cleaning up...');
 	server.close();
 	mongoose.disconnect();
 });
@@ -52,5 +53,6 @@ register_tests(suite);
 login_tests(suite);
 edit_fields_tests(suite);
 change_code_tests(suite);
+delete_tests(suite);
 
 suite.export(module);
