@@ -16,7 +16,11 @@ var nodemailer = require('nodemailer');
 
 /*Display login page*/
 router.get('/login', function(req, res){
-	res.render('login', {page: "Login"});
+	res.render('login', {
+		page: "Login",
+		include: {
+			js: ['medid/login']
+		}});
 });
 
 /*Renew code linked to profile*/
@@ -38,7 +42,12 @@ router.post("/register", function(req,res, next){
 	var errors = req.validationErrors();
 
 	if(errors){
-		res.render('login',{ errors: errors });
+		res.render('login',	{
+			page: "Login",
+			errors: errors,
+			include: {
+				js: ['medid/login']
+			}});
 	} else {
 		var newUser = new User({
 			name: name,
