@@ -72,7 +72,7 @@ function editFields(fields, callback)
     		jar: cookieJar,
 		    method: "POST",
 		    json: true,
-		    body: {fields: editedFields}
+		    body: {fields: editedFields, cardNum: 7}
 		},
 		callback
 	);
