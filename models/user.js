@@ -40,7 +40,7 @@ var UserSchema = mongoose.Schema({
 		field: String,
 		inprofile: Boolean
 	}]
-});
+}, { versionKey: false });
 
 /*apply the uniqueValidator plugin to UserSchema: pre save validation for unique fields */
 UserSchema.plugin(uniqueValidator);
@@ -82,7 +82,7 @@ module.exports.updateUser = function(update, callback){
 	User.findById(update._id, function(err, user){
 		if (err)
 			throw err;
-		
+
 		user = update;
 		user.save(callback);
 	});

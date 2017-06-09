@@ -8,14 +8,16 @@ var baseURL = 'https://medid.herokuapp.com';
 /* Retrieves user input from client, stores it. */
 router.post('/fields', function(req, res){
 	if (req.user) {
-		req.user.fields = [];
-		for (i = 0; i < req.body.length; i++) {
-			req.user.fields.push({
-				label: req.body[i].label.substring(0,30),
-				field: req.body[i].field.substring(0,200),
-				inprofile: (req.body[i].inprofile ? true : false)
-			})
+		fields = [];
+		for (i = 0; i < req.body.fields.length; i++) {
+			fields.push({
+				label: req.body.fields[i].label.substring(0,30),
+				field: req.body.fields[i].field.substring(0,200),
+				inprofile: (req.body.fields[i].inprofile ? true : false)
+			});
 		}
+		req.user.fields = fields;
+		req.user.cardNum = req.body.cardNum;
 		User.updateUser(req.user, function(err){
 			if(err) throw err;
 		});
@@ -29,7 +31,7 @@ router.post('/fields', function(req, res){
 /* Returns user fields to client. */
 router.get('/fields', function(req, res) {
 	if (req.user) {
-		res.json(req.user.fields);
+		res.json({fields: req.user.fields, cardNum: req.user.cardNum});
 	} else {
 		res.sendFile('json/guestDocument.json', {root: __dirname + '/../public/'});
 	}
