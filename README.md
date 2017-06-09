@@ -36,7 +36,7 @@ git clone -b develop https://github.com/RUGSoftEng/2017-Medical-ID.git
 git pull origin develop
 
 **Creating a new local branch:**   
-git checkout -b newBranch develop
+git checkout -b newBranch develop  
 note: must push origin branchName 
 
 **Before a push:**   
