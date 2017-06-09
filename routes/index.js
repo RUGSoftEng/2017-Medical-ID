@@ -11,19 +11,19 @@ router.get('/', function(req, res){
 });
 
 router.get('/about', function (req, res){
-	res.render('about');
+	res.render('info/about', {page: "About"});
 });
 
 router.get('/FAQ', function (req, res){
-	res.render('FAQ');
+	res.render('info/FAQ', {page: "FAQ"});
 });
 
 router.get('/terms', function (req, res){
-	res.render('terms');
+	res.render('info/terms', {page: "Terms"});
 });
 
 router.get('/contact', function (req, res){
-	res.render('contact');
+	res.render('info/contact', {page: "Contact"});
 });
 
 module.exports = router;
