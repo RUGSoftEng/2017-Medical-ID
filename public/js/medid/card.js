@@ -121,6 +121,7 @@ MIDcard.createPDF = function (creator, callback) {
 			doc.setTextColor(124,124,124);
 			doc.text(145, 46, "Enter the code:");
 			doc.setTextColor(0,0,0);
+			doc.setFont("Courier")
 			doc.setFontStyle("bold"); doc.text(150, 50, hyphenator.insertHyphen(code.code)); doc.setFontStyle("normal");
 		} else {
 			doc.addImage(code.qr, 'JPEG', 123, 25, 38, 38);
