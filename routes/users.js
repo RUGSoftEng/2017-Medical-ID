@@ -4,6 +4,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var crypto = require('crypto');
 var algorithm = 'aes256';
+var config = require('../config')
 
 var User = require('../models/user');
 
@@ -157,8 +158,8 @@ function createUser(req, res, newUser){
 			  var transporter = nodemailer.createTransport({
 				service: 'Gmail',
 				auth: {
-					user: 'medicalid17@gmail.com',
-					pass: 'enterpasswordhere'
+					user:  config.username,
+					pass:  config.password
 				}
 				});
 			  var mailOptions = {
