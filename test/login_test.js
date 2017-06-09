@@ -42,7 +42,7 @@ module.exports = function(suite){
 				assert.isString(resMsg);
 				assert.equal(resMsg, '/login');
 				assert.isString(flashMsg);
-				assert.equal(flashMsg, 'error_msg: Unknown user');
+				assert.equal(flashMsg, 'error_msg: Login failed: invalid username/password.');
 			}
 		}
 	}).addBatch({
@@ -56,7 +56,7 @@ module.exports = function(suite){
 				assert.isString(resMsg);
 				assert.equal(resMsg, '/login');
 				assert.isString(flashMsg);
-				assert.equal(flashMsg, 'error_msg: Invalid password');
+				assert.equal(flashMsg, 'error_msg: Login failed: invalid username/password.');
 			}
 		}
 	});

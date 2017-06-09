@@ -30,7 +30,7 @@ module.exports = function(suite){
 				assert.isString(resMsg);
 				assert.equal(resMsg, '/login');
 				assert.isString(flashMsg);
-				assert.equal(flashMsg, 'success_msg: You are registered and can now login');
+				assert.equal(flashMsg, 'success_msg: A verification e-mail has been sent to you');
 			}
 		}
 	}).addBatch({
