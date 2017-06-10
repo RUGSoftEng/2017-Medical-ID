@@ -1,134 +1,153 @@
-define(['jquery'], function($) {
+/**
+ * The "Settings" module is designed to manage the Settings form and handle updating.
+ * This includes uploading a profile picture and updating information like name and e-mail.
+ * @exports Settings
+ * @requires jQuery
+ */
+var Settings = {
 
   /**
-   * The "settings" module is designed to manage the settings form and handle updating.
-   * This includes uploading a profile picture and updating information like name and e-mail.
-   * @exports settings
-   * @requires jQuery
+   * Object to store Settings prior to sending them to the server for updating.
+   * @member {Object}
    */
-  var settings = {
-
-    /**
-     * Object to store settings prior to sending them to the server for updating.
-     * @member {Object}
-     */
-    values: {},
-
-    /**
-     * Endpoint location on the server to send updated settings to.
-     * @member {String}
-     */
-    settingsEndpoint: '/create/settings',
-
-    /**
-     * Reference to the input location for the 'name' setting.
-     * @member {Object}
-     */
-    nameInput: $('#inputName'),
-
-    /**
-     * Reference to the input location of the profile picture.
-     * @member {Object}
-     */
-    pictureInput: $('#uploadPicture'),
-
-    /**
-     * Reference to the preview image location of the profile picture.
-     * @member {Object}
-     */
-    picturePreview: $('#picturePreview'),
-
-    /**
-     * Limit for pictures to be uploaded in bytes.
-     * @member {number}
-     */
-    imageMax: 500000,
-
-    /**
-     * Limit for pictures to be uploaded in words.
-     * @member {string}
-     */
-    imageMaxString: "500Kb"
-  };
+  values: {},
 
   /**
-   * Wrapper method for the procedure to update the settings.
-   * This entails collecting the data, sending them to the server and refreshing on success.
+   * Endpoint location on the server to send updated Settings to.
+   * @member {String}
    */
-  settings.updateSettings = function() {
-    settings.collectSettings();
-    settings.sendSettings(function() {
-      settings.showMessage("Settings updated successfully");
-    });
-  }
+  SettingsEndpoint: '/create/Settings',
 
   /**
-   * Method to collect the settings from the form and put them in the module object.
+   * Reference to the input location for the 'name' setting.
+   * @member {Object}
    */
-  settings.collectSettings = function() {
-    settings.values.name = settings.nameInput.val();
-    settings.values.picture = settings.picturePreview.attr('src');
-  }
+  nameInput: $('#inputName'),
 
   /**
-   * Method to send settings to the server.
-   * @param {method} successCallback - Callback to be called on success.
+   * Reference to the input location of the profile picture.
+   * @member {Object}
    */
-  settings.sendSettings = function(successCallback) {
-    $.ajax({
-      type: 'POST',
-      data: JSON.stringify(settings.values),
-      contentType: 'application/json',
-      enctype: 'multipart/form-data',
-      url: settings.settingsEndpoint,
-      success: function(data) {
-        if (data.status == "success") {
-          successCallback();
-        }
-      }
-    });
-  }
+  pictureInput: $('#uploadPicture'),
 
   /**
-   * Method to show an error message.
-   * To be overridden by a bound creator module.
-   * @param {String} message - Message to show
+   * Reference to the preview image location of the profile picture.
+   * @member {Object}
    */
-  settings.showError = function(message) {
-    alert(message);
-  }
+  picturePreview: $('#picturePreview'),
 
   /**
-   * Method to show a message.
-   * To be overridden by a bound creator module.
-   * @param {String} message - Message to show
+   * Reference to the delete account button.
+   * @member {Object}
    */
-  settings.showMessage = function(message) {
-    alert(message);
-  }
+  removeButton: $('#removeAccount'),
 
-  // LISTENERS
-  settings.nameInput.on('change', function() {
-    settings.updateSettings();
+  /**
+   * Reference to the delete account form.
+   * @member {Object}
+   */
+  removeForm: $('#removeForm'),
+
+  /**
+   * Limit for pictures to be uploaded in bytes.
+   * @member {number}
+   */
+  imageMax: 500000,
+
+  /**
+   * Limit for pictures to be uploaded in words.
+   * @member {string}
+   */
+  imageMaxString: "500Kb"
+};
+
+/**
+ * Wrapper method for the procedure to update the Settings.
+ * This entails collecting the data, sending them to the server and refreshing on success.
+ */
+Settings.updateSettings = function() {
+  Settings.collectSettings();
+  Settings.sendSettings(function() {
+    Settings.showMessage("Settings updated successfully");
   });
+}
 
-  settings.pictureInput.on('change', function() {
-    var file = this.files[0];
-    if (file.size < settings.imageMax) {
-      reader = new FileReader();
-      reader.onload = function(e) {
-        // Set new picture
-        data = e.target.result;
-        settings.values.picture = data;
-        settings.picturePreview.attr('src', settings.values.picture);
-        settings.updateSettings();
+/**
+ * Method to collect the Settings from the form and put them in the module object.
+ */
+Settings.collectSettings = function() {
+  Settings.values.name = Settings.nameInput.val();
+  Settings.values.picture = Settings.picturePreview.attr('src');
+}
+
+/**
+ * Method to send Settings to the server.
+ * @param {method} successCallback - Callback to be called on success.
+ */
+Settings.sendSettings = function(successCallback) {
+  $.ajax({
+    type: 'POST',
+    data: JSON.stringify(Settings.values),
+    contentType: 'application/json',
+    enctype: 'multipart/form-data',
+    url: Settings.SettingsEndpoint,
+    success: function(data) {
+      if (data.status == "success") {
+        successCallback();
       }
-      reader.readAsDataURL(file);
-    } else {
-      settings.showError("Error: image too large (maximum is " + settings.imageMaxString + ")!");
-      $(this).val(null);
     }
   });
+}
 
-  return settings;
+/**
+ * Method to show an error message.
+ * To be overridden by a bound creator module.
+ * @param {String} message - Message to show
+ */
+Settings.showError = function(message) {
+  alert(message);
+}
+
+/**
+ * Method to show a message.
+ * To be overridden by a bound creator module.
+ * @param {String} message - Message to show
+ */
+Settings.showMessage = function(message) {
+  alert(message);
+}
+
+// LISTENERS
+Settings.nameInput.on('change', function() {
+  Settings.updateSettings();
 });
+
+Settings.pictureInput.on('change', function() {
+  var file = this.files[0];
+  if (file.size < Settings.imageMax) {
+    reader = new FileReader();
+    reader.onload = function(e) {
+      // Set new picture
+      data = e.target.result;
+      Settings.values.picture = data;
+      Settings.picturePreview.attr('src', Settings.values.picture);
+      Settings.updateSettings();
+    }
+    reader.readAsDataURL(file);
+  } else {
+    Settings.showError("Error: image too large (maximum is " + Settings.imageMaxString + ")!");
+    $(this).val(null);
+  }
+});
+
+Settings.removeButton.on('click', function() {
+  if (Settings.removeForm.is(':visible')) {
+    Settings.removeForm.slideUp();
+    Settings.removeButton.removeClass('btn-secondary');
+    Settings.removeButton.addClass('btn-danger');
+  } else {
+    Settings.removeForm.slideDown();
+    Settings.removeButton.addClass('btn-secondary');
+    Settings.removeButton.removeClass('btn-danger');
+  }
+})
