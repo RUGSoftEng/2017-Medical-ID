@@ -92,6 +92,10 @@ h2.page-header {
 	max-width: 100px;
 }
 
+#removeForm {
+  display: none;
+}
+
 .fieldBox {
   margin: 5px;
   background-color: #ABC;
