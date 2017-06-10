@@ -66,6 +66,11 @@
     {{#each include.js}}
     <script src='/js/{{this}}.js'></script>
     {{/each}}
+    <script>
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip()
+		})
+	</script>
 </body>
 
 </html>
