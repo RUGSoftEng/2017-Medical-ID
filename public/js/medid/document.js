@@ -14,21 +14,21 @@ var MIDdocument = {};
  * @member {Object}
  */
 MIDdocument.documentStyle = {
-	header: {
-		fontSize: 22,
-		bold: true
-	},
-	subheader: {
-		fontSize: 17,
-		margin: [20, 0]
-	},
-	smallSubheader: {
-		fontSize: 10,
-		margin: [20, 0]
-	},
-	fields: {
-		alignment: 'justify'
-	}
+    header: {
+        fontSize: 22,
+        bold: true
+    },
+    subheader: {
+        fontSize: 17,
+        margin: [20, 0]
+    },
+    smallSubheader: {
+        fontSize: 10,
+        margin: [20, 0]
+    },
+    fields: {
+        alignment: 'justify'
+    }
 };
 
 /**
@@ -49,45 +49,61 @@ MIDdocument.logoSize = 100;
  * @returns {Object} The object of the generated document.
  */
 MIDdocument.createPDF = function (creator) {
-	// Get fields from Creator engine, turn them into something useful
-	var fields = MIDdocument.parseFields( creator.fields() );
+    // Get fields from Creator engine, turn them into something useful
+    var fields = MIDdocument.parseFields(creator.fields());
 
-	var picture;
-	if (creator.image) {
-		picture = {image: creator.image, width: creator.imageWidth, height: creator.imageHeight}
-	} else {
-		picture = {image: Resources.med, width: 100}
-	}
+    var picture;
+    if (creator.image) {
+        picture = {
+            image: creator.image,
+            width: creator.imageWidth,
+            height: creator.imageHeight
+        }
+    } else {
+        picture = {
+            image: Resources.med,
+            width: 100
+        }
+    }
 
-	/* This is the actual final document definition
-	 * This object alone defines the creation of the PDF
-	 */
-	var doc = {
-		content: [
-			{
-				columns: [
+    /* This is the actual final document definition
+     * This object alone defines the creation of the PDF
+     */
+    var doc = {
+        content: [
+            {
+                columns: [
 					[
-						{ text: 'Medical ID', style: 'header' },
-						{ text: creator.userName, style: 'subheader' },
-						{ text: "Generated on " + Util.formatDate(), style: 'smallSubheader' }
+                        {
+                            text: 'Medical ID',
+                            style: 'header'
+                        },
+                        {
+                            text: creator.userName,
+                            style: 'subheader'
+                        },
+                        {
+                            text: "Generated on " + Util.formatDate(),
+                            style: 'smallSubheader'
+                        }
 					],
 					picture
 				]
 			},
 
-			{
-				table: {
-					widths: [MIDdocument.labelWidth, '*'],
-					body: fields
-				},
-				style: 'fields',
-				layout: 'noBorders'
+            {
+                table: {
+                    widths: [MIDdocument.labelWidth, '*'],
+                    body: fields
+                },
+                style: 'fields',
+                layout: 'noBorders'
 			}
 		],
 
-		styles: MIDdocument.documentStyle
-	};
-return pdfMake.createPdf(doc);
+        styles: MIDdocument.documentStyle
+    };
+    return pdfMake.createPdf(doc);
 }
 
 /**
@@ -99,17 +115,23 @@ return pdfMake.createPdf(doc);
  * @param {boolean} values[].inprofile - Boolean denoting whether the field is to be included.
  */
 MIDdocument.parseFields = function (values) {
-	var fields = [];
-	for (i = 0; i < values.length; i++) {
-		if (values[i].inprofile) {
-			if (values[i].label) {
-				fields.push([{text: values[i].label, bold: true}, values[i].field]);
-			} else if (values[i].field) {
-				fields.push([{text: values[i].field, colSpan: 2}, {}]);
-			}
-		}
-	}
-	return fields;
+    var fields = [];
+    for (i = 0; i < values.length; i++) {
+        if (values[i].inprofile) {
+            if (values[i].label) {
+                fields.push([{
+                    text: values[i].label,
+                    bold: true
+                }, values[i].field]);
+            } else if (values[i].field) {
+                fields.push([{
+                    text: values[i].field,
+                    colSpan: 2
+                }, {}]);
+            }
+        }
+    }
+    return fields;
 }
 
 /**
@@ -118,7 +140,7 @@ MIDdocument.parseFields = function (values) {
  * @param {method} callback - Callback method to return the PDF data.
  */
 MIDdocument.get = function (creator, callback) {
-	MIDdocument.createPDF(creator).getDataUrl(callback);
+    MIDdocument.createPDF(creator).getDataUrl(callback);
 }
 
 /**
@@ -127,5 +149,5 @@ MIDdocument.get = function (creator, callback) {
  * @param {String} name - The document name for the document PDF.
  */
 MIDdocument.download = function (creator, name) {
-	MIDdocument.createPDF(creator).download(name);
+    MIDdocument.createPDF(creator).download(name);
 }

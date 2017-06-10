@@ -10,18 +10,18 @@
 
             <div class="card-block">
                 <ul class="form-group list-group list-group-flush">
-                  <li class="list-group-item">
-                      <label for="inputName">Your name</label>
-                      <input type="text" class="form-control" id="inputName" placeholder="Fill in your name.">
-                      <small>This name is only used at the top of your document.</small>
-                  </li>
-                  <li class="list-group-item">
-                      <label for="uploadPicture">Your profile picture</label>
-                      <div class='input-group'>
-                          <span class='input-group-addon'><img id='picturePreview' src="img/placeholder.png" /></span>
-                          <input class='form-control' id='uploadPicture' type="file" name="pic" accept="image/*">
-                      </div>
-                  </li>
+                    <li class="list-group-item">
+                        <label for="inputName">Your name</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="Fill in your name.">
+                        <small>This name is only used at the top of your document.</small>
+                    </li>
+                    <li class="list-group-item">
+                        <label for="uploadPicture">Your profile picture</label>
+                        <div class='input-group'>
+                            <span class='input-group-addon'><img id='picturePreview' src="img/placeholder.png" /></span>
+                            <input class='form-control' id='uploadPicture' type="file" name="pic" accept="image/*">
+                        </div>
+                    </li>
                 </ul>
             </div>
 
@@ -30,34 +30,34 @@
     </div>
 
     <div class="col-12 col-lg-8 pl-3 pr-3 pb-3">
-      <div id='PDFCreate'>
-          <img src='/img/loading.gif' id='creatorFormLoading' />
+        <div id='PDFCreate'>
+            <img src='/img/loading.gif' id='creatorFormLoading' />
 
-          <div class="card" id='creatorForm' style='display: none;'>
-              <div class="card-header">
-                  <h4 class="mb-0">Your fields</h4>
-                  <small>
+            <div class="card" id='creatorForm' style='display: none;'>
+                <div class="card-header">
+                    <h4 class="mb-0">Your fields</h4>
+                    <small>
                   Use drag-and-drop to modify your set-up of fields.<br />
                   Private fields will never appear in your profile, but may appear on your card.
                   </small>
-              </div>
+                </div>
 
-              <div class="card-block">
-                  <div class='card fieldSeperator'>
-                    <div class='card-header'>
-            <h5>Fields on the card:</h5>
-            <small>Select up to 7 fields.</small>
-          </div>
-        </div>
-                  <div id='fields'>
-          <div id='seperator' class='fieldSeperator card'>
-            <div class='card-header'>
-              <h5>Fields not on the card:</h5>
-              <small>Unlimited.</small>
-            </div>
-          </div>
-                  </div>
-              </div>
+                <div class="card-block">
+                    <div class='card fieldSeperator'>
+                        <div class='card-header'>
+                            <h5>Fields on the card:</h5>
+                            <small>Select up to 7 fields.</small>
+                        </div>
+                    </div>
+                    <div id='fields'>
+                        <div id='seperator' class='fieldSeperator card'>
+                            <div class='card-header'>
+                                <h5>Fields not on the card:</h5>
+                                <small>Unlimited.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="card-footer">
                     <p>
