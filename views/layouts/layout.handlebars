@@ -13,12 +13,17 @@
     {{creator}}
 
     <nav class="navbar navbar-toggleable navbar-inverse bg-inverse">
-        <a href="/" class="navbar-left"><img src="/img/logo.png" height=40px></a>
-        {{#if page}}
-        <span class="navbar-brand unselectable">Medical ID | {{page}}</span>
-        {{else}}
-        <span class="navbar-brand unselectable">Medical ID</span>
-        {{/if}}
+        
+        
+        <span class="navbar-brand unselectable">
+			<a href="/" class="navbar-left"><img src="/img/logo.png" height=35px></a>
+			{{#if page}}
+			<span class="align-middle">Medical ID | {{page}}</span>
+			{{else}}
+			<span class="align-middle">Medical ID</span>
+			{{/if}}
+		</span>
+        
 
         <button type="button" class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#myNavbar">
 				  <span class="navbar-toggler-icon"></span>
@@ -66,11 +71,6 @@
     {{#each include.js}}
     <script src='/js/{{this}}.js'></script>
     {{/each}}
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        });
-    </script>
 </body>
 
 </html>
