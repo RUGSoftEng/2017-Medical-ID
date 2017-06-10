@@ -37,7 +37,18 @@ a.bigButtonCell:hover {
     height: calc(50vh - 24.5px);
 }
 
+.main-info {
+    padding: 15px;
+    background-color: hsl(221, 61%, 90%);
+    border-radius: 15px;
+    width: 75%;
+    margin-bottom: 15px;
+}
+
 .main-page-col-l {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
     background-color: hsl(221, 61%, 80%);
 }
 
@@ -224,4 +235,13 @@ h2.page-header {
 .alert {
   position: absolute;
   z-index: 1;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 45px;
 }

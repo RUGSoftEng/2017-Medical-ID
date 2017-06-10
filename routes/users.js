@@ -4,6 +4,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var crypto = require('crypto');
 var algorithm = 'aes256';
+var config = require('../config')
 
 var User = require('../models/user');
 
@@ -111,6 +112,24 @@ router.get('/logout', function(req, res){
 	res.redirect('/login');
 });
 
+router.post('/delete', function(req, res){
+	User.comparePassword(req.body.password, req.user.password, function(err, isMatch){
+   		if(err) throw err;
+   		if(isMatch){
+   			var id = req.user._id;
+   			req.logout();
+   			User.findByIdAndRemove(id, function(err){
+   				if(err) throw err;
+   				req.flash('success_msg', 'Your account has been deleted.');
+   				res.redirect('/login');
+   			});
+   		} else {
+   			req.flash('error_msg', 'Wrong password, try again.');
+   			res.redirect('/login');
+   		}
+   	});	
+});
+
 function genCode() {
 	var LENGTH = 12;
 	var ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -157,8 +176,8 @@ function createUser(req, res, newUser){
 			  var transporter = nodemailer.createTransport({
 				service: 'Gmail',
 				auth: {
-					user: 'medicalid17@gmail.com',
-					pass: 'enterpasswordhere'
+					user:  config.username,
+					pass:  config.password
 				}
 				});
 			  var mailOptions = {
