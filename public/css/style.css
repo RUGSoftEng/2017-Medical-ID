@@ -144,14 +144,6 @@ h2.page-header {
     align-items: center;
 }
 
-.loginblock {
-    padding-right: 25px;
-}
-
-.registerblock {
-    padding-left: 25px;
-}
-
 .wrapper {
     display: flex;
     align-items: center;
@@ -208,6 +200,14 @@ footer .navbar-nav {
         border-radius: 15px;
         background-color: hsl(221, 61%, 80%);
         padding-top: 15px;
+    }
+
+    .loginblock {
+        padding-right: 25px;
+    }
+
+    .registerblock {
+        padding-left: 25px;
     }
 }
 
