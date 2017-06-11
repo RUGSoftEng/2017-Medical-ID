@@ -16,9 +16,7 @@
     <nav class="navbar navbar-toggleable navbar-inverse bg-inverse">
         <span class="navbar-brand unselectable">
             <a href="/" class="navbar-left"><img src="/img/logo.png" height=35px></a>
-            {{#if page}}
-            <span class="align-middle">Medical ID | {{page}}</span> {{else}}
-            <span class="align-middle">Medical ID</span> {{/if}}
+            <span class="align-middle">Medical ID <span class="hidden-sm-up">| {{page}}</span></span>
         </span>
 
 
@@ -38,6 +36,8 @@
                 {{/if}}
             </ul>
         </div>
+        
+        <span class="navbar-brand hidden-xs-down">{{page}}</span>
     </nav>
 
     {{#if success_msg}}
