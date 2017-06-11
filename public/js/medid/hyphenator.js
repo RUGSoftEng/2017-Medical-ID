@@ -8,12 +8,12 @@ var hyphenator = {};
  * Method to return the string with hyphens denoting codons.
  * @returns {string} The string with hypens.
  */
-hyphenator.insertHyphen = function(string) {
-	if (string.length > 3) {
-		return string.slice(0, 3) + "-" + hyphenator.insertHyphen(string.slice(3));
-	} else {
-		return string;
-	}
+hyphenator.insertHyphen = function (string) {
+    if (string.length > 3) {
+        return string.slice(0, 3) + "-" + hyphenator.insertHyphen(string.slice(3));
+    } else {
+        return string;
+    }
 }
 
 // Listener

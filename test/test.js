@@ -6,23 +6,23 @@ var cleanup = require('./cleanup');
 serverSettings.parameters.db = 'mongodb://localhost/loginapp';
 
 // middleware for testing res and req objects
-serverSettings.parameters.test = function(req, res, next){
-	req.flashMsg = '';
-	req.flash = function(type, msg){
-		this.flashMsg = type + ": " + msg;
-	};
-	res.req = req;
-	res.oldRender = res.render;
-	res.oldRedirect = res.redirect;
-	res.render = function(msg, obj){
-		app.testCallback(msg, this.req.flashMsg, obj);
-		this.oldRender(msg, obj);
-	}
-	res.redirect = function(msg){
-		app.testCallback(msg, this.req.flashMsg);
-		this.oldRedirect(msg);
-	};
-	next();
+serverSettings.parameters.test = function (req, res, next) {
+    req.flashMsg = '';
+    req.flash = function (type, msg) {
+        this.flashMsg = type + ": " + msg;
+    };
+    res.req = req;
+    res.oldRender = res.render;
+    res.oldRedirect = res.redirect;
+    res.render = function (msg, obj) {
+        app.testCallback(msg, this.req.flashMsg, obj);
+        this.oldRender(msg, obj);
+    }
+    res.redirect = function (msg) {
+        app.testCallback(msg, this.req.flashMsg);
+        this.oldRedirect(msg);
+    };
+    next();
 };
 
 var serverApp = require('../app');
@@ -38,10 +38,10 @@ var delete_tests = require('./delete_test');
 
 // prepare cleanup, pass the exact number of tests (callbacks to wait on) as the first argument;
 // require cleanup.js in the test files and call tryCleanup on it in every test before asserting
-cleanup.init(14, function(){
-	console.log('Cleaning up...');
-	server.close();
-	mongoose.disconnect();
+cleanup.init(14, function () {
+    console.log('Cleaning up...');
+    server.close();
+    mongoose.disconnect();
 });
 
 var suite = vows.describe('Testing');

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Medical ID</title>
+    <title>Medical ID{{#if page}} | {{page}}{{/if}}</title>
     <link rel="stylesheet" href="/css/bootstrap.css" />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
@@ -13,16 +14,15 @@
     {{creator}}
 
     <nav class="navbar navbar-toggleable navbar-inverse bg-inverse">
-        <a href="/" class="navbar-left"><img src="/img/logo.png" height=40px></a>
-        {{#if page}}
-        <span class="navbar-brand unselectable">Medical ID | {{page}}</span>
-        {{else}}
-        <span class="navbar-brand unselectable">Medical ID</span>
-        {{/if}}
+        <span class="navbar-brand unselectable">
+            <a href="/" class="navbar-left"><img src="/img/logo.png" height=35px></a>
+            <span class="align-middle">Medical ID <span class="hidden-sm-up">| {{page}}</span></span>
+        </span>
+
 
         <button type="button" class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#myNavbar">
-				  <span class="navbar-toggler-icon"></span>
-			  </button>
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="navbar-nav">
@@ -36,6 +36,8 @@
                 {{/if}}
             </ul>
         </div>
+        
+        <span class="navbar-brand hidden-xs-down">{{page}}</span>
     </nav>
 
     {{#if success_msg}}
@@ -50,8 +52,7 @@
         {{{body}}}
     </div>
 
-    <!--
-    <footer class = "navbar navbar-inverse bg-inverse footer" id="footer">
+    <footer class="navbar navbar-inverse bg-inverse footer" id="footer">
         <ul class="navbar-nav">
             <li class="nav-item"><a class="nav-link" href="/about">About &#160; </a></li>
             <li class="nav-item"><a class="nav-link" href="/FAQ">FAQ &#160; </a></li>
@@ -59,13 +60,11 @@
             <li class="nav-item"><a class="nav-link" href="/contact">Contact </a></li>
         </ul>
     </footer>
-    -->
 
     <script src='/js/lib/jquery.min.js'></script>
     <script src='/js/lib/bootstrap.min.js'></script>
     {{#each include.js}}
     <script src='/js/{{this}}.js'></script>
     {{/each}}
-</body>
-
+    </body>
 </html>
