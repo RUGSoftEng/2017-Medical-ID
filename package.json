@@ -1,6 +1,6 @@
 {
   "name": "med-id",
-  "version": "0.2.0",
+  "version": "6.0.0",
   "description": "Web application for creating medical ID cards and documents.",
   "main": "app.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "mongoose": "*",
     "mongoose-unique-validator": "*",
     "nodemailer": "*",
+    "nodemailer-express-handlebars": "2.0.0",
     "passport": "*",
     "passport-http": "*",
     "passport-local": "*",

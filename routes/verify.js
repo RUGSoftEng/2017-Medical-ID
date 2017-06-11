@@ -5,6 +5,7 @@ var async = require('async');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var User = require('../models/user');
+var transporter = require('../emailConfig');
 var config = require('../config')
 
 // Get Homepage
@@ -21,20 +22,21 @@ router.get('/:token', function (req, res) {
         }
     }, function (err, user) {
         if (!user) {
-            req.flash('error', 'GET: Email verification token is invalid or has expired.');
-            return res.redirect('/verify');
+            req.flash('error', 'Email verification token is invalid or has expired.');
+            res.redirect('/verify');
         }
 
         user.verified = true;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        
         user.save(function (err) {
             if (err) {
                 res.send(err);
             }
             console.log('from get(/:token) ' + user.email + ' is verified: ' + user.verified);
-            user.resetPasswordToken = undefined;
-            user.resetPasswordExpires = undefined;
-            req.flash('Email verified');
-            res.redirect('/create');
+            req.flash('success_msg', 'Email verified. You can now log in');
+            res.redirect('/login');
         });
     });
 });
@@ -46,13 +48,13 @@ router.post('/', function (req, res) {
                 resetPasswordToken: req.body.token
             }, function (err, user) {
                 if (!user) {
-                    req.flash('error', 'POST: Password reset token is invalid.');
+                    req.flash('error', 'Password reset token is invalid.');
                     console.log('ERROR token ' + req.params.token + ' was not found')
                     return res.redirect('back');
                 }
 
                 if (Date.now() > user.resetPasswordExpires) {
-                    req.flash('error', 'POST: The password reset token expired.');
+                    req.flash('error', 'The password reset token expired.');
                     return res.redirect('back');
                 }
 
@@ -70,27 +72,26 @@ router.post('/', function (req, res) {
             });
     },
     function (user, done) {
-            var smtpTransport = nodemailer.createTransport({
-                service: 'Gmail',
-                auth: {
-                    user: config.username,
-                    pass: config.password
-                }
-            });
             var mailOptions = {
                 to: user.email,
-                from: 'noreply@medid.com',
-                subject: 'Your Account has been verified',
-                text: 'Hello,\n\n' +
-                    'This is a confirmation that your account ' + user.email + ' has just been verified.\n'
+                subject: 'Medical ID: Your account has been verified',
+                template: 'verificationconfirm-email',
+                context: {
+                    name: user.name,
+                    useremail: user.email
+                }
             };
-            smtpTransport.sendMail(mailOptions, function (err) {
-                req.flash('success', 'Success! Your Accont has been verified.');
+            transporter.sendMail(mailOptions, function (err) {
                 done(err);
             });
     }
   ], function (err) {
-        res.redirect('/');
+        if(err) {
+            res.send(err);
+        } else {
+            req.flash('success', 'Success! Your account has been verified.');
+            res.redirect('/');
+        }
     });
 });
 

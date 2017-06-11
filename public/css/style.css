@@ -152,7 +152,7 @@ h2.page-header {
     padding-left: 25px;
 }
 
-.loginwrapper {
+.wrapper {
     display: flex;
     align-items: center;
     min-height: calc(100vh - 101px);
@@ -204,9 +204,10 @@ footer .navbar-nav {
 /* MEDIA QUERIES */
 
 @media (min-width: 576px) {
-    .loginbox {
+    .bluebox {
         border-radius: 15px;
         background-color: hsl(221, 61%, 80%);
+        padding-top: 15px;
     }
 }
 
