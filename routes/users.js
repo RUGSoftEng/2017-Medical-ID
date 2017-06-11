@@ -4,6 +4,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var crypto = require('crypto');
 var algorithm = 'aes256';
+var transporter = require('../emailConfig');
 var config = require('../config')
 
 var User = require('../models/user');
@@ -38,6 +39,7 @@ router.post("/register", function (req, res, next) {
     var email = req.body.email.toLowerCase();
     var password = req.body.password;
     var password2 = req.body.password2;
+    
     validateRegisterDetails(req);
 
     var errors = req.validationErrors();
@@ -107,6 +109,7 @@ passport.use(new LocalStrategy({
     function (req, email, password, done) {
         User.getUserByEmail(email.toLowerCase(), function (err, user) {
             if (err) throw err;
+            
             if (!user) {
                 return done(null, false, req.flash('error_msg', 'Login failed: invalid username/password.'));
             }
@@ -151,6 +154,7 @@ router.get('/logout', function (req, res) {
 router.post('/delete', function (req, res) {
     User.comparePassword(req.body.password, req.user.password, function (err, isMatch) {
         if (err) throw err;
+        
         if (isMatch) {
             var id = req.user._id;
             req.logout();
@@ -168,9 +172,9 @@ router.post('/delete', function (req, res) {
 
 function genCode() {
     var LENGTH = 12;
-    var ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var ALPHANUMERIC = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var result = '';
-    for (var i = LENGTH; i > 0; --i) result += ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+    for (var i = LENGTH; i > 0; --i) result += ALPHANUMERIC[Math.floor(Math.random() * ALPHANUMERIC.length)];
     return result;
 }
 
@@ -190,50 +194,46 @@ function createUser(req, res, newUser) {
         } else {
             // send new user an email to verify their email address
             async.waterfall([
-				function (done) {
+                function (done) {
                     crypto.randomBytes(20, function (err, buf) {
                         //Generate our reset token
                         var token = buf.toString('hex');
                         done(err, token);
                     });
-			},
-			//Find user with email, save token value and expiry time:
-			function (token, done) {
+                },
+                
+                //Find user with email, save token value and expiry time:
+                function (token, done) {
                     newUser.resetPasswordToken = token;
                     newUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
                     newUser.save(function (err) {
                         done(err, token, newUser);
                     });
-			},
-			//Logs in to gmail via nodemailer using SMTP and sends the email containing the reset token
-			//TODO: use a configuration file (added to .gitignore) and add the file to the server manually.
-			function (token, newUser, done) {
-                    var transporter = nodemailer.createTransport({
-                        service: 'Gmail',
-                        auth: {
-                            user: config.username,
-                            pass: config.password
-                        }
-                    });
+                },
+                
+                //Logs in to gmail via nodemailer using SMTP and sends the email containing the reset token
+                //TODO: use a configuration file (added to .gitignore) and add the file to the server manually.
+                function (token, newUser, done) {
                     var mailOptions = {
                         to: newUser.email,
-                        from: 'passwordreset@medid.herokuapp.com',
-                        subject: 'Node.js Verify email',
-                        text: 'You are receiving this email because you (or someone else) need to verify the email adress used for your account.\n\n' +
-                            'To verify your account please click on the <a href="http://' + req.headers.host + '/verify/' + token + '">link</a>' + '\n\n' +
-                            'If the link does not work paste the token:\n' +
-                            token + '\n\n' +
-                            'If you did not request this, please ignore this email and this email adress will not be verified.\n'
+                        subject: 'Medical ID: Verify your email',
+                        template: "verification-email",
+                        context : {
+                            name: newUser.name,
+                            host: req.headers.host,
+                            token: token
+                        }
                     };
 
                     transporter.sendMail(mailOptions, function (err) {
                         done(err, 'done');
                     });
+                    
                     req.flash('success_msg', 'A verification e-mail has been sent to you');
                     res.redirect('/login');
-			}
-		  ]);
+                }
+            ]);
         }
     });
 }
