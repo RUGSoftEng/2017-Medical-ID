@@ -24,8 +24,11 @@ passwordstrength.update = function (string) {
     // Calculate the 'score' of the password
     var count = containsNumber + containsUppercase + containsSymbol;
 
-    // Depending on the count variable, assign different 
-    if (string.length < 8 || count <= 1) {
+    // Depending on the count variable, assign different
+    if (string.length < 8) {
+        passwordstrength.strengthbox.css("background-color", "#ff6666");
+        $(".strength-text").text("Very Weak");
+    } else if (count <= 1) {
         passwordstrength.strengthbox.css("background-color", "#ff6666");
         $(".strength-text").text("Weak");
     } else if (count == 2) {
