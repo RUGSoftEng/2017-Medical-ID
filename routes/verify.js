@@ -35,8 +35,14 @@ router.get('/:token', function (req, res) {
                 res.send(err);
             }
             console.log('from get(/:token) ' + user.email + ' is verified: ' + user.verified);
-            req.flash('success_msg', 'Email verified. You can now log in');
-            res.redirect('/login');
+            req.flash('success_msg', 'Your Email is now verified');
+			req.login(user, function (err) {
+                if ( ! err ){
+                    res.redirect('/');
+                } else {
+                    res.redirect('/login');
+                }
+            })
         });
     });
 });
