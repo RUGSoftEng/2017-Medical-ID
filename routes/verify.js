@@ -32,55 +32,78 @@ router.get('/:token', function (req, res) {
             user.save(function (err) {
                 if (err) {
                     res.send(err);
-                } else {
-                    req.flash('success_msg', 'Email verified. You can now log in');
-                    res.redirect('/login');
                 }
-            });   
+                console.log('from get(/:token) ' + user.email + ' is verified: ' + user.verified);
+                req.flash('success_msg', 'Your Email is now verified');
+                req.login(user, function (err) {
+                    if ( ! err ){
+                        res.redirect('/');
+                    } else {
+                        res.redirect('/login');
+                    }
+                });
+            });  
         }
     });
 });
 
 router.post('/', function (req, res) {
-    async.waterfall([
-    function (done) {
-        User.findOne({
-            resetPasswordToken: req.body.token
-        }, function (err, user) {
-            if (!user) {
-                req.flash('error_msg', 'Password reset token is invalid.');
-                res.redirect('back');
-            } else if (Date.now() > user.resetPasswordExpires) {
-                req.flash('error_msg', 'The password reset token expired.');
-                res.redirect('back');
-            } else {
-                user.verified = true;
-                user.resetPasswordToken = undefined;
-                user.resetPasswordExpires = undefined;
+	if(req.body.token == ''){
+		req.flash('error', 'Please enter your verify token');
+		res.redirect('/verify');
+	} else {
+		async.waterfall([
+		function (done) {
+		        User.findOne({
+		            resetPasswordToken: req.body.token
+		        }, function (err, user) {
+		            if (!user) {
+		                req.flash('error', 'Verify token is invalid.');
+		                console.log('ERROR token ' + req.params.token + ' was not found')
+		                res.redirect('back');
+		            }
 
-                user.save(function (err) {
-                    req.logIn(user, function (err) {
-                        done(err, user);
-                    });
-                });
-            }
-        });
-    },
-    function (user, done) {
-        var mailOptions = {
-            to: user.email,
-            subject: 'Medical ID: Your account has been verified',
-            template: 'verificationconfirm-email',
-            context: {
-                name: user.name,
-                useremail: user.email
-            }
-        };
-        transporter.sendMail(mailOptions, function (err) {
-            done(err);
-        });
-    }
-  ]);
+		            if (Date.now() > user.resetPasswordExpires) {
+		                req.flash('error', 'The password reset token expired.');
+		                res.redirect('back');
+		            }
+
+		            user.verified = true;
+		            user.resetPasswordToken = undefined;
+		            user.resetPasswordExpires = undefined;
+		            console.log('User ' + user.email + ' verified:' + user.verified)
+
+		            user.save(function (err) {
+		                req.logIn(user, function (err) {
+		                    done(err, user);
+		                });
+		            });
+
+		        });
+		},
+		function (user, done) {
+		        var mailOptions = {
+		            to: user.email,
+		            subject: 'Medical ID: Your account has been verified',
+		            template: 'verificationconfirm-email',
+		            context: {
+		                name: user.name,
+		                useremail: user.email
+		            }
+		        };
+		        transporter.sendMail(mailOptions, function (err) {
+		            done(err);
+		        });
+		}
+	  ], function (err) {
+		    if(err) {
+		        res.send(err);
+		    } else {
+		        req.flash('success', 'Success! Your account has been verified.');
+		        res.redirect('/');
+		    }
+		});
+	}
 });
 
 module.exports = router;
