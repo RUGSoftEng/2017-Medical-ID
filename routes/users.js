@@ -89,6 +89,7 @@ router.post("/register", function (req, res, next) {
                 }
 			]
         });
+        console.log('User object created');
         createUser(req, res, newUser);
     }
 });
@@ -198,6 +199,7 @@ function createUser(req, res, newUser) {
                     crypto.randomBytes(20, function (err, buf) {
                         //Generate our reset token
                         var token = buf.toString('hex');
+                        console.log('Token generated');
                         done(err, token);
                     });
                 },
@@ -206,8 +208,9 @@ function createUser(req, res, newUser) {
                 function (token, done) {
                     newUser.resetPasswordToken = token;
                     newUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-
+                    
                     newUser.save(function (err) {
+                        console.log('Token set on user');
                         done(err, token, newUser);
                     });
                 },
@@ -227,6 +230,7 @@ function createUser(req, res, newUser) {
                     };
 
                     transporter.sendMail(mailOptions, function (err) {
+                        console.log('Verify email sent');
                         done(err, 'done');
                     });
                     
