@@ -22,7 +22,7 @@ router.get('/reset/:token', function (req, res) {
         }
     }, function (err, user) {
         if (!user) {
-            req.flash('error', 'Password reset token is invalid or has expired.');
+            req.flash('error_msg', 'Password reset token is invalid or has expired.');
             res.redirect('/forgot');
         } else {
             console.log('User: ' + user.email + ' found with reset token');
@@ -51,9 +51,8 @@ router.post('/', function (req, res, next) {
             User.findOne({
                 email: req.body.email
             }, function (err, user) {
-                console.log(user);
                 if (!user) {
-                    req.flash('error', 'No account with that email address exists.');
+                    req.flash('error_msg', 'No account with that email address exists.');
                     res.redirect('/forgot');
                 } else {
                     user.resetPasswordToken = token;
@@ -103,11 +102,10 @@ router.post('/reset/:token', function (req, res) {
                 resetPasswordToken: req.params.token
             }, function (err, user) {
                 if (!user) {
-                    req.flash('error', 'POST: Password reset token is invalid.');
-                    console.log('ERROR token ' + req.params.token + ' was not found')
+                    req.flash('error_msg', 'Password reset token is invalid.');
                     res.redirect('back');
                 } else if (Date.now() > user.resetPasswordExpires) {
-                    req.flash('error', 'POST: The password reset token expired.');
+                    req.flash('error_msg', 'The password reset token expired.');
                     res.redirect('back');
                 } else {
                     done(err, user);   
@@ -149,7 +147,7 @@ router.post('/reset/:token', function (req, res) {
         if(err) {
             res.send(err);
         } else {
-            req.flash('success', 'Success! Your password has been changed.');
+            req.flash('success_msg', 'Success! Your password has been changed.');
             res.redirect('/');
         }
     });

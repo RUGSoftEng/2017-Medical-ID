@@ -22,7 +22,7 @@ router.get('/:token', function (req, res) {
         }
     }, function (err, user) {
         if (!user) {
-            req.flash('error', 'Email verification token is invalid or has expired.');
+            req.flash('error_msg', 'Email verification token is invalid or has expired.');
             res.redirect('/verify');
         } else {
             user.verified = true;
@@ -33,7 +33,6 @@ router.get('/:token', function (req, res) {
                 if (err) {
                     res.send(err);
                 } else {
-                    console.log('from get(/:token) ' + user.email + ' is verified: ' + user.verified);
                     req.flash('success_msg', 'Email verified. You can now log in');
                     res.redirect('/login');
                 }
@@ -49,17 +48,15 @@ router.post('/', function (req, res) {
             resetPasswordToken: req.body.token
         }, function (err, user) {
             if (!user) {
-                req.flash('error', 'Password reset token is invalid.');
-                console.log('ERROR token ' + req.params.token + ' was not found')
+                req.flash('error_msg', 'Password reset token is invalid.');
                 res.redirect('back');
             } else if (Date.now() > user.resetPasswordExpires) {
-                req.flash('error', 'The password reset token expired.');
+                req.flash('error_msg', 'The password reset token expired.');
                 res.redirect('back');
             } else {
                 user.verified = true;
                 user.resetPasswordToken = undefined;
                 user.resetPasswordExpires = undefined;
-                console.log('User ' + user.email + ' verified:' + user.verified)
 
                 user.save(function (err) {
                     req.logIn(user, function (err) {
@@ -83,14 +80,7 @@ router.post('/', function (req, res) {
             done(err);
         });
     }
-  ], function (err) {
-        if(err) {
-            res.send(err);
-        } else {
-            req.flash('success', 'Success! Your account has been verified.');
-            res.redirect('/');
-        }
-    });
+  ]);
 });
 
 module.exports = router;
