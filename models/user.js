@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var uniqueValidator = require('mongoose-unique-validator');
 var config = require('../config');
-var encryptDB = require('mongoose-encryption');
+//var encryptDB = require('mongoose-encryption');
 
 /*User schema for database: defines user info
   cardNum = the card contains the first "cardNum" elements of "fields"*/
@@ -50,7 +50,7 @@ var UserSchema = mongoose.Schema({
 UserSchema.plugin(uniqueValidator);
 
 // apply the encryption plugin to the schema
-UserSchema.plugin(encryptDB, { secret: config.encryptDbSecret, encryptedFields: ['fields']});
+//UserSchema.plugin(encryptDB, { secret: config.encryptDbSecret, encryptedFields: ['fields']});
 
 var User = module.exports = mongoose.model('User', UserSchema);
 
