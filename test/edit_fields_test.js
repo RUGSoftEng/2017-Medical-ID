@@ -146,17 +146,6 @@ module.exports = function (suite) {
             }
         }
     }).addBatch({
-        'When a user retrieves the data they edited in a previous session': {
-            topic: function () {
-                var callback = this.callback;
-                getFields(callback);
-            },
-            'the data is updated in the system': function (fields) {
-                cleanup.tryCleanup();
-                assert.deepEqual(fields, editedFields);
-            }
-        }
-    }).addBatch({
         'When a user tries to log out': {
             topic: function () {
                 testLogout(this.callback);

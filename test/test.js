@@ -38,7 +38,7 @@ var delete_tests = require('./delete_test');
 
 // prepare cleanup, pass the exact number of tests (callbacks to wait on) as the first argument;
 // require cleanup.js in the test files and call tryCleanup on it in every test before asserting
-cleanup.init(14, function () {
+cleanup.init(13, function () {
     console.log('Cleaning up...');
     server.close();
     mongoose.disconnect();
