@@ -22,28 +22,28 @@ router.get('/:token', function (req, res) {
         }
     }, function (err, user) {
         if (!user) {
-            req.flash('error', 'Email verification token is invalid or has expired.');
+            req.flash('error_msg', 'Email verification token is invalid or has expired.');
             res.redirect('/verify');
-        }
+        } else {
+            user.verified = true;
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpires = undefined;
 
-        user.verified = true;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
-        
-        user.save(function (err) {
-            if (err) {
-                res.send(err);
-            }
-            console.log('from get(/:token) ' + user.email + ' is verified: ' + user.verified);
-            req.flash('success_msg', 'Your Email is now verified');
-			req.login(user, function (err) {
-                if ( ! err ){
-                    res.redirect('/');
-                } else {
-                    res.redirect('/login');
+            user.save(function (err) {
+                if (err) {
+                    res.send(err);
                 }
-            })
-        });
+                console.log('from get(/:token) ' + user.email + ' is verified: ' + user.verified);
+                req.flash('success_msg', 'Your Email is now verified');
+                req.login(user, function (err) {
+                    if ( ! err ){
+                        res.redirect('/');
+                    } else {
+                        res.redirect('/login');
+                    }
+                });
+            });  
+        }
     });
 });
 

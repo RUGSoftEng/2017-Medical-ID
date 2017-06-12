@@ -36,9 +36,9 @@ var edit_fields_tests = require('./edit_fields_test');
 var change_code_tests = require('./change_code_test');
 var delete_tests = require('./delete_test');
 
-// prepare cleanup, pass the exact number of tests (callbacks to wait on) as the first argument;
-// require cleanup.js in the test files and call tryCleanup on it in every test before asserting
-cleanup.init(14, function () {
+/* prepare cleanup, pass the exact number of tests (callbacks to wait on) as the first argument;
+ * require cleanup.js in the test files and call tryCleanup on it in every test before asserting */
+cleanup.init(13, function () {
     console.log('Cleaning up...');
     server.close();
     mongoose.disconnect();
@@ -46,9 +46,9 @@ cleanup.init(14, function () {
 
 var suite = vows.describe('Testing');
 
-// testing modules add batches to the suite object (order is important):
-// note: batches are executed sequancially, tests within the same batch are executed asynchronously
-// warning: tests that use app.testCallback must be in different batches
+/* testing modules add batches to the suite object (order is important):
+ * note: batches are executed sequancially, tests within the same batch are executed asynchronously
+ * warning: tests that use app.testCallback must be in different batches */
 register_tests(suite);
 login_tests(suite);
 edit_fields_tests(suite);

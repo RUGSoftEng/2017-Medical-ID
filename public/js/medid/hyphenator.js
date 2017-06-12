@@ -17,10 +17,9 @@ hyphenator.insertHyphen = function (string) {
 }
 
 // Listener
-/* THIS LISTENER IS DISCONTINUED AS IT DOES NOT WORK PROPERLY
 $('.hyphenCode').on('input', function () {
 	var text = $(this).val().replace(/[^0-9a-zA-Z]/gi, '');
 	text = hyphenator.insertHyphen(text);
 	$(this).val(text);
 });
-*/
+

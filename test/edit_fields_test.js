@@ -91,8 +91,8 @@ function getFields(callback) {
         method: "GET",
         json: true
     }, function (error, response, body) {
-        stripId(body.fields);
-        callback(null, body.fields);
+            stripId(body.fields);
+            callback(null, body.fields);
     });
 }
 
@@ -157,20 +157,6 @@ module.exports = function (suite) {
                 assert.equal(resMsg, '/login');
                 assert.isString(flashMsg);
                 assert.equal(flashMsg, 'success_msg: You are logged out');
-                //test cookieJar._jar.store.idx in some way
-            }
-        }
-    }).addBatch({
-        'When a user retrieves the data they edited in a previous session': {
-            topic: function () {
-                var callback = this.callback;
-                login("a@b.com", "pass", function () {
-                    getFields(callback);
-                });
-            },
-            'the data is updated in the system': function (fields) {
-                cleanup.tryCleanup();
-                assert.deepEqual(fields, editedFields);
             }
         }
     });
