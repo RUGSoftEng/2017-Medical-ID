@@ -231,7 +231,13 @@ function createUser(req, res, newUser) {
                     });
                     
                     req.flash('success_msg', 'A verification e-mail has been sent to you');
-                    res.redirect('/login');
+                    req.login(user, function (err) {
+				        if ( ! err ){
+				            res.redirect('/create');
+				        } else {
+				            res.redirect('/login');
+				        }
+				    })
                 }
             ]);
         }

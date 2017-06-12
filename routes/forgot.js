@@ -120,6 +120,8 @@ router.post('/reset/:token', function (req, res) {
             user.password = bcrypt.hashSync(req.body.password, 10);
             user.resetPasswordToken = undefined;
             user.resetPasswordExpires = undefined;
+			if(!user.verified)			
+				user.verified = true;
             
             console.log('Changed user ' + user.email + ' password')
             
