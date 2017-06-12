@@ -28,7 +28,7 @@ module.exports = function (suite) {
                 cleanup.tryCleanup();
                 cleanup.cleanCallback(app);
                 assert.isString(resMsg);
-                assert.equal(resMsg, '/login');
+                assert.equal(resMsg, '/create');
                 assert.isString(flashMsg);
                 assert.equal(flashMsg, 'success_msg: A verification e-mail has been sent to you');
             }
