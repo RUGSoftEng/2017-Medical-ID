@@ -209,11 +209,13 @@ function createUser(req, res, newUser) {
                     
                     newUser.save(function (err) {
                         console.log(newUser);
-                        done(err, token, newUser);
+                        //done(err, token, newUser);
+                        req.flash('success_msg', 'A verification e-mail has been sent to you');
+                        res.redirect('/login');
                     });
-                },
+                }
                 
-                //Logs in to gmail via nodemailer using SMTP and sends the email containing the reset token
+                /*//Logs in to gmail via nodemailer using SMTP and sends the email containing the reset token
                 //TODO: use a configuration file (added to .gitignore) and add the file to the server manually.
                 function (token, newUser, done) {
                     var mailOptions = {
@@ -233,7 +235,7 @@ function createUser(req, res, newUser) {
                     
                     req.flash('success_msg', 'A verification e-mail has been sent to you');
                     res.redirect('/login');
-                }
+                }*/
             ]);
         }
     });
