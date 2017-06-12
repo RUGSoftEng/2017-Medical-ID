@@ -192,15 +192,15 @@ Creator.addField = function (label, field, inprofile) {
 
     removeField = $('<button></button>')
         .addClass('removeField btn btn-danger')
-        .html("<svg class='icon-bin'><use xlink:href='/img/icons.svg#icon-bin'></use></svg>");
+        .html("<img src='/img/bin.png'></img>");
 
     moveUp = $('<span></span>')
         .addClass('clickable moveUp')
-        .html("<svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-up'></use></svg>");
+        .html("<img src='/img/up.png'></img>");
 
     moveDown = $('<span></span>')
         .addClass('clickable moveDown')
-        .html("<svg class='icon-arrow-up'><use xlink:href='/img/icons.svg#icon-arrow-down'></use></svg>");
+        .html("<img src='/img/down.png'></img>");
 
     toggle = $('<div></div>')
         .addClass('toggle')

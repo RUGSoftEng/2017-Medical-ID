@@ -173,20 +173,6 @@ footer .navbar-nav {
 
 /* HELPER CLASSES */
 
-[class^="icon-"],
-[class*=" icon-"] {
-    height: 18px;
-    width: 18px;
-    display: inline-block;
-    fill: currentColor;
-}
-
-.icon-bin {
-    height: 12px;
-    width: 12px;
-    fill: black;
-}
-
 .unselectable {
     user-select: none;
     cursor: default;
