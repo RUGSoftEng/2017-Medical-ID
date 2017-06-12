@@ -142,7 +142,6 @@ module.exports = function (suite) {
             },
             'the data is updated in the system': function (fields) {
                 cleanup.tryCleanup();
-                console.log(fields);
                 assert.deepEqual(fields, editedFields);
             }
         }
