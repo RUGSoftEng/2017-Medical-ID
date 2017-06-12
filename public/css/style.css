@@ -258,8 +258,3 @@ footer .navbar-nav {
 .btn.active span:last-child {
     display: none;
 }
-
-.alert {
-    position: absolute;
-    z-index: 1;
-}
