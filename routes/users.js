@@ -208,34 +208,23 @@ function createUser(req, res, newUser) {
                     newUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
                     
                     newUser.save(function (err) {
-                        console.log(newUser);
-                        //done(err, token, newUser);
-                        req.flash('success_msg', 'A verification e-mail has been sent to you');
-                        res.redirect('/login');
+                        var mailOptions = {
+                            to: newUser.email,
+                            subject: 'Medical ID: Verify your email',
+                            template: "verification-email",
+                            context : {
+                                name: newUser.name,
+                                host: req.headers.host,
+                                token: token
+                            }
+                        };
+                    
+                        transporter.sendMail(mailOptions, function (err) {
+                            req.flash('success_msg', 'A verification e-mail has been sent to you');
+                            res.redirect('/login');
+                        });
                     });
                 }
-                
-                /*//Logs in to gmail via nodemailer using SMTP and sends the email containing the reset token
-                //TODO: use a configuration file (added to .gitignore) and add the file to the server manually.
-                function (token, newUser, done) {
-                    var mailOptions = {
-                        to: newUser.email,
-                        subject: 'Medical ID: Verify your email',
-                        template: "verification-email",
-                        context : {
-                            name: newUser.name,
-                            host: req.headers.host,
-                            token: token
-                        }
-                    };
-                    
-                    transporter.sendMail(mailOptions, function (err) {
-                        done(err, 'done');
-                    });
-                    
-                    req.flash('success_msg', 'A verification e-mail has been sent to you');
-                    res.redirect('/login');
-                }*/
             ]);
         }
     });

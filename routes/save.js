@@ -18,12 +18,12 @@ router.post('/fields', function (req, res) {
         }
         req.user.fields = fields;
         req.user.cardNum = req.body.cardNum;
-        User.updateUser(req.user, function (err) {
+        req.user.save(function(err){
             if (err) throw err;
-        });
-        res.json({
-            status: "success"
-        });
+            res.json({
+                status: "success"
+            });
+        });        
     } else {
         res.json({
             status: "not authenticated"
