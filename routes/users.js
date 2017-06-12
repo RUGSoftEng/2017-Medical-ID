@@ -215,6 +215,7 @@ function createUser(req, res, newUser) {
                 //Logs in to gmail via nodemailer using SMTP and sends the email containing the reset token
                 //TODO: use a configuration file (added to .gitignore) and add the file to the server manually.
                 function (token, newUser, done) {
+                    console.log('Doing mail options...');
                     var mailOptions = {
                         to: newUser.email,
                         subject: 'Medical ID: Verify your email',
@@ -225,12 +226,12 @@ function createUser(req, res, newUser) {
                             token: token
                         }
                     };
-
+                    console.log('Done with mail options!');
                     //transporter.sendMail(mailOptions, function (err) {
                         //console.log('Verify email sent');
                         done(err, 'done');
                     //});
-                    console.log('Done!');
+                    
                     req.flash('success_msg', 'A verification e-mail has been sent to you');
                     res.redirect('/login');
                 }
