@@ -150,7 +150,7 @@ h2.page-header {
     min-height: calc(100vh - 101px);
 }
 
-.footer {
+footer {
     width: 100%;
     height: 45px;
 }
