@@ -5,6 +5,7 @@ var app = require('../app').app;
 
 function testRegister(name, email, pass1, pass2, callback) {
     app.testCallback = callback;
+    console.log('HERE');
     request({
         url: "http://localhost:" + app.get('port') + "/register",
         method: "POST",
