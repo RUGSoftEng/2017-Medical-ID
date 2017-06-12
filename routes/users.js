@@ -206,7 +206,7 @@ function createUser(req, res, newUser) {
                 function (token, done) {
                     newUser.resetPasswordToken = token;
                     newUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-
+                    
                     newUser.save(function (err) {
                         done(err, token, newUser);
                     });
@@ -225,13 +225,19 @@ function createUser(req, res, newUser) {
                             token: token
                         }
                     };
-
+                    
                     transporter.sendMail(mailOptions, function (err) {
                         done(err, 'done');
                     });
                     
                     req.flash('success_msg', 'A verification e-mail has been sent to you');
-                    res.redirect('/login');
+                    req.login(user, function (err) {
+				        if ( ! err ){
+				            res.redirect('/create');
+				        } else {
+				            res.redirect('/login');
+				        }
+				    })
                 }
             ]);
         }
