@@ -192,15 +192,15 @@ Creator.addField = function (label, field, inprofile) {
 
     removeField = $('<button></button>')
         .addClass('removeField btn btn-danger')
-        .html("<img src='/img/bin.png'></img>");
+        .html("<img src='/img/bin.png' class='icon'></img>");
 
     moveUp = $('<span></span>')
         .addClass('clickable moveUp')
-        .html("<img src='/img/up.png'></img>");
+        .html("<img src='/img/up.png' class='icon'></img>");
 
     moveDown = $('<span></span>')
         .addClass('clickable moveDown')
-        .html("<img src='/img/down.png'></img>");
+        .html("<img src='/img/down.png' class='icon'></img>");
 
     toggle = $('<div></div>')
         .addClass('toggle')

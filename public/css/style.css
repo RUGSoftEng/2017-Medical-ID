@@ -170,6 +170,9 @@ footer .navbar-nav {
     flex-direction: row;
 }
 
+.icon {
+    width: 14px;
+}
 
 /* HELPER CLASSES */
 
