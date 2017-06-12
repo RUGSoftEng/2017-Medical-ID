@@ -18,9 +18,6 @@ node_js:
   - "stable"
 
 notifications:
-  slack:
-    on_success: never
-    on_failure: never
   email:
     on_success: never
     on_failure: never
