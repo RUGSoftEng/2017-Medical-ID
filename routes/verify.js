@@ -24,40 +24,38 @@ router.get('/:token', function (req, res) {
         if (!user) {
             req.flash('error', 'Email verification token is invalid or has expired.');
             res.redirect('/verify');
-        }
+        } else {
+            user.verified = true;
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpires = undefined;
 
-        user.verified = true;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
-        
-        user.save(function (err) {
-            if (err) {
-                res.send(err);
-            }
-            console.log('from get(/:token) ' + user.email + ' is verified: ' + user.verified);
-            req.flash('success_msg', 'Email verified. You can now log in');
-            res.redirect('/login');
-        });
+            user.save(function (err) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    console.log('from get(/:token) ' + user.email + ' is verified: ' + user.verified);
+                    req.flash('success_msg', 'Email verified. You can now log in');
+                    res.redirect('/login');
+                }
+            });   
+        }
     });
 });
 
 router.post('/', function (req, res) {
     async.waterfall([
     function (done) {
-            User.findOne({
-                resetPasswordToken: req.body.token
-            }, function (err, user) {
-                if (!user) {
-                    req.flash('error', 'Password reset token is invalid.');
-                    console.log('ERROR token ' + req.params.token + ' was not found')
-                    return res.redirect('back');
-                }
-
-                if (Date.now() > user.resetPasswordExpires) {
-                    req.flash('error', 'The password reset token expired.');
-                    return res.redirect('back');
-                }
-
+        User.findOne({
+            resetPasswordToken: req.body.token
+        }, function (err, user) {
+            if (!user) {
+                req.flash('error', 'Password reset token is invalid.');
+                console.log('ERROR token ' + req.params.token + ' was not found')
+                res.redirect('back');
+            } else if (Date.now() > user.resetPasswordExpires) {
+                req.flash('error', 'The password reset token expired.');
+                res.redirect('back');
+            } else {
                 user.verified = true;
                 user.resetPasswordToken = undefined;
                 user.resetPasswordExpires = undefined;
@@ -68,22 +66,22 @@ router.post('/', function (req, res) {
                         done(err, user);
                     });
                 });
-
-            });
+            }
+        });
     },
     function (user, done) {
-            var mailOptions = {
-                to: user.email,
-                subject: 'Medical ID: Your account has been verified',
-                template: 'verificationconfirm-email',
-                context: {
-                    name: user.name,
-                    useremail: user.email
-                }
-            };
-            transporter.sendMail(mailOptions, function (err) {
-                done(err);
-            });
+        var mailOptions = {
+            to: user.email,
+            subject: 'Medical ID: Your account has been verified',
+            template: 'verificationconfirm-email',
+            context: {
+                name: user.name,
+                useremail: user.email
+            }
+        };
+        transporter.sendMail(mailOptions, function (err) {
+            done(err);
+        });
     }
   ], function (err) {
         if(err) {

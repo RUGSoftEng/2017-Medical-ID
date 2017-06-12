@@ -24,11 +24,12 @@ router.get('/reset/:token', function (req, res) {
         if (!user) {
             req.flash('error', 'Password reset token is invalid or has expired.');
             res.redirect('/forgot');
+        } else {
+            console.log('User: ' + user.email + ' found with reset token');
+            res.render('reset', {
+                user: req.user
+            });
         }
-        console.log('User: ' + user.email + ' found with reset token');
-        res.render('reset', {
-            user: req.user
-        });
     });
 });
 
@@ -50,17 +51,18 @@ router.post('/', function (req, res, next) {
             User.findOne({
                 email: req.body.email
             }, function (err, user) {
+                console.log(user);
                 if (!user) {
                     req.flash('error', 'No account with that email address exists.');
                     res.redirect('/forgot');
+                } else {
+                    user.resetPasswordToken = token;
+                    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+                    user.save(function (err) {
+                        done(err, token, user);
+                    });   
                 }
-
-                user.resetPasswordToken = token;
-                user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-
-                user.save(function (err) {
-                    done(err, token, user);
-                });
             });
         },
 
@@ -104,14 +106,12 @@ router.post('/reset/:token', function (req, res) {
                     req.flash('error', 'POST: Password reset token is invalid.');
                     console.log('ERROR token ' + req.params.token + ' was not found')
                     res.redirect('back');
-                }
-
-                if (Date.now() > user.resetPasswordExpires) {
+                } else if (Date.now() > user.resetPasswordExpires) {
                     req.flash('error', 'POST: The password reset token expired.');
                     res.redirect('back');
+                } else {
+                    done(err, user);   
                 }
-                
-                done(err, user);
             });
         },
         
