@@ -1,6 +1,6 @@
 {
   "name": "med-id",
-  "version": "0.2.0",
+  "version": "7.0.0",
   "description": "Web application for creating medical ID cards and documents.",
   "main": "app.js",
   "scripts": {
@@ -11,30 +11,32 @@
   "license": "ISC",
   "repository": "https://github.com/RUGSoftEng/2017-Medical-ID",
   "dependencies": {
-    "bcryptjs": "*",
-    "bluebird": "^3.5.0",
-    "body-parser": "*",
-    "connect-flash": "*",
-    "cookie-parser": "^1.4.1",
-    "email-validator": "^1.0.7",
-    "express": "*",
-    "express-force-https": "^1.0.0",
-    "express-handlebars": "*",
-    "express-messages": "*",
-    "express-session": "*",
-    "express-validator": "*",
-    "mongodb": "*",
-    "mongoose": "*",
-    "mongoose-unique-validator": "*",
-    "nodemailer": "*",
-    "passport": "*",
-    "passport-http": "*",
-    "passport-local": "*",
+    "bcryptjs": "2.4.3",
+    "bluebird": "3.5.0",
+    "body-parser": "1.17.2",
+    "connect-flash": "0.1.1",
+    "cookie-parser": "1.4.1",
+    "email-validator": "1.0.7",
+    "express": "4.15.3",
+    "express-force-https": "1.0.0",
+    "express-handlebars": "3.0.0",
+    "express-messages": "1.0.1",
+    "express-session": "1.15.3",
+    "express-validator": "3.2.0",
+    "mongodb": "2.2.28",
+    "mongoose": "4.10.5",
+    "mongoose-encryption": "1.5.0",
+    "mongoose-unique-validator": "1.0.5",
+    "nodemailer": "4.0.1",
+    "nodemailer-express-handlebars": "2.0.0",
+    "passport": "0.3.2",
+    "passport-http": "0.3.0",
+    "passport-local": "1.0.0",
     "qrcode-js": "0.0.2",
-    "sharp": "^0.17.3"
+    "sharp": "0.17.3"
   },
   "devDependencies": {
-    "vows": "*",
-    "request": "*"
+    "vows": "0.8.1",
+    "request": "2.81.0"
   }
 }

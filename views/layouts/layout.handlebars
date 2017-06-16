@@ -1,58 +1,70 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Medical ID</title>
-		<link rel="stylesheet" href="/css/bootstrap.css" />
-		<link rel="stylesheet" href="/css/style.css" />
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-		<script src='/js/lib/tether.min.js'></script>
-		<script data-main='/js/common.js' src='/js/lib/require.js'></script>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-	</head>
 
-	<body>
-		{{creator}}
+<head>
+    <title>Medical ID{{#if page}} | {{page}}{{/if}}</title>
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <script src='/js/lib/tether.min.js'></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
 
-		<nav class="navbar navbar-toggleable navbar-inverse bg-inverse">
-			<span class="navbar-brand unselectable">Medical ID</span>
+<body>
+    <!--{{creator}}-->
 
-			<button type="button" class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#myNavbar">
-				<span class="navbar-toggler-icon"></span>
-			</button>
+    <nav class="navbar navbar-toggleable navbar-inverse bg-inverse">
+        <span class="navbar-brand unselectable">
+            <a href="/" class="navbar-left"><img src="/img/logo.png" height=35px></a>
+            <span class="align-middle">Medical ID<span class="hidden-sm-up">{{#if page}} | {{page}}{{/if}}</span></span>
+        </span>
 
-			<div class="collapse navbar-collapse" id="myNavbar">
-				<ul class="navbar-nav">
-					<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-					{{#if user}}
-						<li class="nav-item"><a class="nav-link" href="/create">Profile</a></li>
-						<li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
-					{{else}}
-						<li class="nav-item"><a class="nav-link" href="/create">Create</a></li>
-						<li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-					{{/if}}
-				</ul>
-			</div>
-		</nav>
 
-        {{#if success_msg}}
-		  <div class="alert alert-success mb-0">{{success_msg}}</div>
-		{{/if}}
+        <button type="button" class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#myNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-        {{#if error_msg}}
-		  <div class="alert alert-danger mb-0">{{error_msg}}</div>
-		{{/if}}
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                {{#if user}}
+                <li class="nav-item"><a class="nav-link" href="/create">Profile</a></li>
+                <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                {{else}}
+                <li class="nav-item"><a class="nav-link" href="/create">Create</a></li>
+                <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                {{/if}}
+            </ul>
+        </div>
+        
+        <span class="navbar-brand hidden-xs-down">{{page}}</span>
+    </nav>
 
-		{{#if errors}}
-            {{#each errors}}
-                <div class="alert alert-danger mb-0">{{msg}}</div>
-            {{/each}}
-        {{/if}}
+    {{#if success_msg}}
+    <div class="alert col-12 alert-success mb-0">{{success_msg}}</div>
+    {{/if}} {{#if error_msg}}
+    <div class="alert col-12 alert-danger mb-0">{{error_msg}}</div>
+    {{/if}} {{#if errors}} {{#each errors}}
+    <div class="alert col-12 alert-danger mb-0">{{msg}}</div>
+    {{/each}} {{/if}}
 
-		<div class="container-fluid">
-            {{{body}}}
-		</div>
+    <div class="container-fluid">
+        {{{body}}}
+    </div>
 
-		<script src='/js/lib/jquery.min.js'></script>
-		<script src='/js/lib/bootstrap.min.js'></script>
-	</body>
+    <footer class="navbar navbar-inverse bg-inverse">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="/about">About &#160; </a></li>
+            <li class="nav-item"><a class="nav-link" href="/FAQ">FAQ &#160; </a></li>
+            <li class="nav-item"><a class="nav-link" href="/terms">Terms &#160; </a></li>
+            <li class="nav-item"><a class="nav-link" href="/contact">Contact </a></li>
+        </ul>
+    </footer>
+
+    <script src='/js/lib/jquery.min.js'></script>
+    <script src='/js/lib/bootstrap.min.js'></script>
+    {{#each include.js}}
+    <script src='/js/{{this}}.js'></script>
+    {{/each}}
+    </body>
 </html>
